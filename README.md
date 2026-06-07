@@ -70,6 +70,35 @@ full rationale:
 Browse [`adrs/`](adrs/) for the catalog. Categories: `architecture`,
 `testing`, `process`, `ai-workflow`.
 
+## The work-tracking layer
+
+CFD documents context, decisions, and in-flight state — but **tasks
+themselves live in a persistent agent-readable tracker** (canonical:
+GitHub Issues + Milestones), with a **fixed body template** so any
+session can parse a task in O(1) tokens.
+
+The template forces every issue to declare:
+
+- **Context** — trigger and user-visible outcome.
+- **Target** — files/dirs the work goes into, plus an existing file to
+  mirror.
+- **ADRs to load** — pre-reading list, so the session opens with the
+  right constraints already in scope.
+- **Acceptance criteria** — markdown checkboxes that copy verbatim into
+  the PR description.
+- **Estimated sessions** — anything `>1` must be decomposed first.
+
+See
+[`adrs/process/work-units-as-external-tracker.md`](adrs/process/work-units-as-external-tracker.md)
+for the full ADR, and the
+[`/issue:new`](templates/.claude/commands/issue-new.md) /
+[`/issue:start`](templates/.claude/commands/issue-start.md) slash
+commands in the templates.
+
+The principle is tracker-agnostic. Linear, Jira, Asana — all valid if
+their CLI supports `create`, `view`, `list --milestone`, and `edit`.
+The body template stays the same; only the CLI changes.
+
 ## The 6 principles (one-liner each)
 
 1. **Context Before Code** — resolve context at session start, not during.

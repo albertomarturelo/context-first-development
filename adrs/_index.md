@@ -40,6 +40,7 @@ cp adrs/architecture/repository-pattern.md \
 - [Document the convention, not just the fix](process/document-corrections-not-fixes.md)
 - [Atomic task instructions for AI sessions](process/atomic-task-instructions.md)
 - [The session-close ritual](process/session-close-ritual.md)
+- [Work units live in an external tracker with a fixed body template](process/work-units-as-external-tracker.md)
 
 ### AI Workflow
 
