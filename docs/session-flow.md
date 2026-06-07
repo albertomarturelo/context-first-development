@@ -194,10 +194,12 @@ against the project's context — NOT by reading the changed files in
 full, but by **cross-checking the diff against indices** (CONVENTIONS,
 ADRs, the linked issue's AC, the PR template).
 
-**Key property:** the operational thesis of CFD made literal. Tokens
-spent scale with **diff size**, not with **repo size**. A reviewer
-that reads every changed file pays `O(repo)`; a CFD reviewer pays
-`O(diff)`.
+**Key property:** the operational thesis of CFD made literal. The
+review's *agenda* is set by the indices (CONVENTIONS + ADRs + AC +
+PR template + the team's curated checklist). The depth of file reads
+is whatever that agenda demands — minimal for a small Node API,
+exhaustive for a strict KMP project. The work is **verification
+against known rules**, not **discovery of intent from code**.
 
 This is the
 [`pr-review-against-context`](../adrs/process/pr-review-against-context.md)
@@ -211,22 +213,27 @@ sequenceDiagram
     participant ISS as PR + Issues<br/>(via gh)
     participant CONV as docs/CONVENTIONS.md
     participant ADRs as docs/decisions/
+    participant CODE as Changed files
 
     Note over R,A: PR #87 is open. Ready for review.
 
     R->>A: /review-pr 87
     A->>ISS: gh pr view 87
     A->>ISS: gh pr diff 87
-    Note right of A: ~1–3k tokens<br/>(diff only, NO full-file reads)
+    A->>ISS: git log base..head (commit story)
+    Note right of A: ~1–3k tokens<br/>(PR metadata + diff)
 
     A->>ISS: gh issue view (linked)
     A->>CONV: read
     A->>ADRs: read each ADR named in the issue body
-    Note right of A: Total context load: ~2–4k tokens
+    Note right of A: Agenda loaded: ~2–4k tokens
 
-    A->>A: cross-check diff vs<br/>AC + CONVENTIONS + ADRs + PR template
+    A->>CODE: read changed files to the depth the<br/>team's checklist demands
+    Note right of A: Verification reads, not discovery.<br/>Strict-KMP: full files. Small-API: diff-bounded.
 
-    A-->>R: structured report<br/>✓ AC items satisfied<br/>⚠ CONVENTIONS line X borderline<br/>✗ ADR-7 verifiable consequence not met
+    A->>A: apply team checklist<br/>(workflow + architecture + tests<br/>+ AC + docs drift + ...)
+
+    A-->>R: structured report<br/>✓ Passes (cite ADR / CONV line)<br/>⚠ Suggestions<br/>✗ Blocks merge (cite verifiable consequence)
 
     Note over R: Reviewer decides:<br/>request changes / approve / merge.
 ```

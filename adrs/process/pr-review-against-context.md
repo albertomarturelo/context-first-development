@@ -1,6 +1,6 @@
-<!-- Shareable ADR. Token budget: ~500. -->
+<!-- Shareable ADR. Token budget: ~550. -->
 
-# ADR-`<NNN>`: Review the PR Against Context, Not the Code
+# ADR-`<NNN>`: Review the PR Against Context, Not Against Intent Discovery
 
 ## Status
 
@@ -11,11 +11,10 @@
 Adopt this ADR when:
 
 - Your project ships work via PRs (branch → review → merge).
-- The repo already has CFD context (`CLAUDE.md`, ADRs,
-  `CONVENTIONS.md`, an issue tracker with AC checklists).
-- You want PR review to scale to small teams without becoming the
-  bottleneck — or you want a fast pre-review pass before a human
-  reviewer engages.
+- The repo has CFD context (`CLAUDE.md`, ADRs, `CONVENTIONS.md`,
+  issue tracker with AC checklists, optionally a PR template).
+- You want PR review to scale, to be reproducible across reviewers,
+  and to apply the team's rules mechanically.
 
 Skip if you commit straight to `main`, or if your PRs do not link to
 issues with explicit AC.
@@ -23,72 +22,85 @@ issues with explicit AC.
 ## Context
 
 PR review is the last validation before code reaches `main`. Without
-discipline, an agent asked to review a PR will **scan every changed
-file in full**, re-derive the project's intent from the code, and pay
-`O(diff size + touched file sizes)` tokens — often well over 30k for
-a modest PR.
+indices, an agent asked to review a PR has to **discover the project's
+intent from the code** — what patterns it uses, what conventions
+apply, why certain choices were made. That discovery work scales with
+repo size and burns the most tokens.
 
-But CFD's central bet is that the project's intent does NOT need to
-be re-derived. It is already captured in:
+CFD's bet is that intent does NOT need re-discovery. It is captured
+in:
 
 - The linked issue's **AC checklist** (the "what must be true").
-- The repo's **`CONVENTIONS.md`** (the "how we do things here").
-- The relevant **ADRs** (the "why we chose this, what we rejected").
-- The **PR template** (the "what the PR body should say").
+- `CONVENTIONS.md` (the "how we do things here").
+- The relevant **ADRs** with their *Verifiable Consequences*.
+- The **PR template** (the "what the PR body must contain").
+- Any **team-specific review checklist** the project defines.
 
-A PR review that reads the diff and cross-checks against these
-indices runs at `O(diff size)` — typically 3–6k tokens total — and
-catches strictly more issues than a "read every file and judge"
-review, because indices include rejected alternatives the code alone
-cannot reveal.
+A CFD review loads those first, then applies them as a verification
+agenda against the diff AND the changed files. **The depth of file
+reading is a project-level decision, codified in the slash command
+itself.** A strict KMP project's `/review-pr` reads every changed
+file in full because the ADRs demand layer-boundary checks, Compose
+recomposition safety, networking conventions, etc. A small Node API's
+`/review-pr` may legitimately stop at the diff because the indices
+encode less.
+
+The work changes either way: **verification against known rules
+instead of discovery from scratch.**
 
 ## Decision
 
 PR review on this project is mediated by a `/review-pr <n>` slash
 command (or equivalent Skill) that:
 
-1. **Fetches** PR metadata + diff via `gh pr view` and `gh pr diff`.
-2. **Loads context first**: `docs/CONVENTIONS.md`, the linked issue
-   body (AC + "ADRs to load"), each named ADR, and the PR template
-   if `.github/PULL_REQUEST_TEMPLATE.md` exists.
-3. **Cross-checks** the diff against each context artifact:
-   - **AC checklist**: implemented? missing items? extras?
-   - **`CONVENTIONS`**: respected?
-   - **Touched ADRs**: consistent with each ADR's *Verifiable
-     Consequences*?
-   - **PR template**: required sections filled?
-   - **Branch / PR title**: conform to project rules?
-4. **Reports** ✓ / ⚠ / ✗ per item. Does NOT auto-fix.
+1. **Fetches** PR metadata + diff via `gh pr view` / `gh pr diff`,
+   plus the branch's commit history.
+2. **Loads the indices** that define the verification agenda:
+   `CONVENTIONS`, the linked issue body, every ADR named there, the
+   PR template, and any team-curated review checklist embedded in
+   the slash command body.
+3. **Reads source files to the depth the agenda requires.** No
+   project-agnostic "minimize reads" rule — the team's checklist
+   decides. Reads in service of verification, not discovery.
+4. **Reports** ✓ / ⚠ / ✗ per checklist item, citing the specific
+   ADR / CONVENTIONS line / AC item being satisfied or violated.
+5. **Does NOT auto-fix.** Findings are surfaced for the author to
+   address on the next session.
 
-**No full-file scans by default.** If the diff is too narrow to be
-understood on its own, the command names the file it needs and
-explains why. Silent scope expansion is forbidden.
+The slash command body itself **is** the team's checklist. It evolves
+with the project: a new convention → a new line in the slash command.
+This is the same dynamic as `document-corrections-not-fixes` applied
+to review.
 
 ## Alternatives Considered
 
-1. **Full-file read on every PR.** Simple; pays `O(repo)` tokens per
-   review; re-derives intent the indices already hold.
-2. **Diff only, no context load.** Fast but misses ADR / convention
-   violations the diff alone cannot reveal.
-3. **Skip the machine review step.** PRs land without checks;
-   defects surface in production. False economy.
+1. **Discovery-driven review (no indices).** Scales with repo size;
+   re-derives intent each PR; ignores rejected alternatives that
+   live only in ADRs. The default everywhere CFD is not adopted.
+2. **Strict "diff only, no file reads".** Fast but blind to refactors
+   whose impact appears outside the diff. Rejected — the depth call
+   belongs to the team, not the methodology.
+3. **External code-review SaaS.** Useful complement; not a
+   substitute. Doesn't load your ADRs as the agenda; reviews against
+   a vendor's rules.
 
 ## Verifiable Consequences
 
 A reader can confirm this ADR is being followed if:
 
-- A `/review-pr` (or equivalent) procedure exists in
-  `.claude/commands/` or `.claude/skills/`.
-- Recent PR comment threads reference specific ADRs and
-  `CONVENTIONS` lines, not generic "looks good" reactions.
-- Tokens-per-review correlate with **diff size**, not with **repo
-  size**.
+- A `/review-pr` (or equivalent) exists in `.claude/commands/` or
+  `.claude/skills/` and its body **embeds the team's checklist**
+  citing real ADR numbers and CONVENTIONS sections.
+- Recent PR comment threads reference specific ADRs / CONVENTIONS
+  lines, not generic "looks good" reactions.
+- The slash command grows with the project: `git log` on its file
+  shows additions after new conventions land.
 
 ## Trade-offs
 
-- The review depends on context being current. Stale `CONVENTIONS`
-  or out-of-date ADRs poison the review. Mitigation:
-  `/context:validate` runs periodically.
-- Diff-only can miss issues that surface only on a full file read
-  (e.g. a refactor that breaks an invariant elsewhere). The
-  named-file escape hatch exists for that case.
+- The review depends on indices being current. Stale CONVENTIONS or
+  out-of-date ADRs poison the review. Mitigation:
+  `/context:validate` periodically + the `document-corrections-not-fixes`
+  discipline.
+- Customizing the checklist takes upfront work the first time. Pays
+  back from the first review onward.
