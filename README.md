@@ -1,5 +1,7 @@
 # Context-First Development
 
+[![Validate catalog](https://github.com/albertomarturelo/context-first-development/actions/workflows/validate-catalog.yml/badge.svg)](https://github.com/albertomarturelo/context-first-development/actions/workflows/validate-catalog.yml)
+
 > Your AI agent has amnesia at the start of every session. CFD is the cure.
 
 **CFD is a methodology for engineers who use AI coding agents** (Claude

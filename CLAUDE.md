@@ -53,9 +53,21 @@ ADRs, examples, case studies.
 
 ## Build, test, lint
 
-None — this is prose plus templates. Once added, CI (`.github/workflows/`)
-validates catalog integrity: link rot, line counts, presence of required
-ADR sections, English-only language detection.
+This is prose plus templates — no application to build or test. The
+**shareable ADR catalog has a contract** (per the source vault's
+ADR-003) and a CI workflow enforces it:
+
+- Line count ≤100 per catalog ADR.
+- Required sections present (Status, When to Use, Context, Decision,
+  Alternatives Considered, Verifiable Consequences, Trade-offs).
+- Token budget annotation in the first 3 lines.
+- Index sync between `adrs/_index.md` and the catalog files.
+- No AI-tool attribution in `adrs/`, `templates/`, `case-studies/`,
+  `examples/`.
+
+Run locally: `bash scripts/validate-catalog.sh`. CI:
+`.github/workflows/validate-catalog.yml` (push to `main` + PRs).
+Failing checks block merge.
 
 ## Voice
 
