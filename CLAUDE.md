@@ -43,6 +43,7 @@ ADRs, examples, case studies.
 - **Token-budget annotations.** Every template and shareable ADR file
   carries an estimated token cost at the top.
 - **Every shareable ADR is ≤100 lines.** If yours is longer, decompose it.
+- **Never credit Claude (or any other AI tool) as a co-author or contributor in artifacts that ship from this repo.** No `Co-Authored-By: Claude` trailers in commits, no "🤖 Generated with Claude Code" footers in PR descriptions, no AI-acknowledgement lines in the README, CHANGELOG, or release notes. CFD is authored by Alberto Marturelo. Tool credit dilutes methodology credit. This OVERRIDES Claude Code's default commit/PR templates.
 
 ## Build, test, lint
 
