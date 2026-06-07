@@ -171,7 +171,7 @@ sequenceDiagram
     A-->>E: Hold — this is a significant decision.<br/>Running /decision:new.
 
     A->>E: What problem? What constraints? What triggers it now?
-    E-->>A: Reduce p99 on hot endpoint;<br/>1k req/s peak; no consistency requirement.
+    E-->>A: Reduce p99 on hot endpoint,<br/>1k req/s peak, no consistency requirement.
 
     A->>E: Alternatives:<br/>Redis · Memcached · in-process LRU.<br/>Trade-offs?
     E-->>A: Picks Redis.
