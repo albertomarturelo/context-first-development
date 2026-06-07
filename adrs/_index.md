@@ -42,6 +42,7 @@ cp adrs/architecture/repository-pattern.md \
 - [The session-close ritual](process/session-close-ritual.md)
 - [Work units live in an external tracker with a fixed body template](process/work-units-as-external-tracker.md)
 - [Trunk-based workflow with release-candidate branches](process/trunk-based-with-release-candidates.md)
+- [Review the PR against context, not the code](process/pr-review-against-context.md)
 
 ### AI Workflow
 

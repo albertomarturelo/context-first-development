@@ -187,16 +187,63 @@ sequenceDiagram
 
 ---
 
+## Scenario E — PR review against context (closing the cycle)
+
+**When:** the session opened a PR. Before merge, the diff is reviewed
+against the project's context — NOT by reading the changed files in
+full, but by **cross-checking the diff against indices** (CONVENTIONS,
+ADRs, the linked issue's AC, the PR template).
+
+**Key property:** the operational thesis of CFD made literal. Tokens
+spent scale with **diff size**, not with **repo size**. A reviewer
+that reads every changed file pays `O(repo)`; a CFD reviewer pays
+`O(diff)`.
+
+This is the
+[`pr-review-against-context`](../adrs/process/pr-review-against-context.md)
+catalog ADR in action.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor R as Reviewer
+    participant A as Agent
+    participant ISS as PR + Issues<br/>(via gh)
+    participant CONV as docs/CONVENTIONS.md
+    participant ADRs as docs/decisions/
+
+    Note over R,A: PR #87 is open. Ready for review.
+
+    R->>A: /review-pr 87
+    A->>ISS: gh pr view 87
+    A->>ISS: gh pr diff 87
+    Note right of A: ~1–3k tokens<br/>(diff only, NO full-file reads)
+
+    A->>ISS: gh issue view (linked)
+    A->>CONV: read
+    A->>ADRs: read each ADR named in the issue body
+    Note right of A: Total context load: ~2–4k tokens
+
+    A->>A: cross-check diff vs<br/>AC + CONVENTIONS + ADRs + PR template
+
+    A-->>R: structured report<br/>✓ AC items satisfied<br/>⚠ CONVENTIONS line X borderline<br/>✗ ADR-7 verifiable consequence not met
+
+    Note over R: Reviewer decides:<br/>request changes / approve / merge.
+```
+
+---
+
 ## How to use these diagrams
 
-- **You're learning CFD.** Read A → B → C → D in order. By the end
-  you've seen every flow the methodology actually runs.
-- **You're adopting CFD.** A is your day 0. B is the loop you run from
-  day 1 onward. C and D are the failure-recovery patterns that keep
-  the methodology honest.
-- **You're presenting CFD to your team.** B is the headline. A is the
-  "how do I start?" answer. C and D are the slides that explain why
-  CFD is more than "another file format" — they show the discipline.
+- **You're learning CFD.** Read A → B → C → D → E in order. By the
+  end you've seen every flow the methodology actually runs.
+- **You're adopting CFD.** A is your day 0. B is the loop you run
+  from day 1 onward. C and D are the failure-recovery patterns that
+  keep the methodology honest. E is how the loop closes before merge.
+- **You're presenting CFD to your team.** B is the headline. A is
+  the "how do I start?" answer. C and D are the slides that explain
+  why CFD is more than "another file format". E is the slide that
+  shows the token economy of the whole approach — *diff, not repo*.
 
 ## See also
 

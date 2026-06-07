@@ -39,3 +39,6 @@ applied to a Node/Express stack.
   history enforced (ADR-004).
 - Use `/issue:new` to create tracker issues; use `/issue:start <n>` to
   pick one up. Don't open work without an issue.
+- Use `/review-pr <n>` before merge — cross-checks the diff against
+  the AC checklist, CONVENTIONS, and the touched ADRs without
+  scanning full files.

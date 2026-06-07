@@ -26,3 +26,9 @@ Do NOT close the session without completing step 1.
 
 After completion, output a one-paragraph session summary suitable for
 pasting into the PR description.
+
+If a PR has been opened from this session, the natural next step is
+`/review-pr <n>` — it cross-checks the diff against the AC checklist,
+`CONVENTIONS`, the loaded ADRs, and the PR template, without scanning
+full files. See `adrs/process/pr-review-against-context.md` in the
+catalog.
