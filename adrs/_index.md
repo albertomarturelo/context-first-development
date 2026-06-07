@@ -41,6 +41,7 @@ cp adrs/architecture/repository-pattern.md \
 - [Atomic task instructions for AI sessions](process/atomic-task-instructions.md)
 - [The session-close ritual](process/session-close-ritual.md)
 - [Work units live in an external tracker with a fixed body template](process/work-units-as-external-tracker.md)
+- [Trunk-based workflow with release-candidate branches](process/trunk-based-with-release-candidates.md)
 
 ### AI Workflow
 
