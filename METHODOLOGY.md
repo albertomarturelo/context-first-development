@@ -31,8 +31,13 @@ downstream of it.
 
 ## If you only have 5 minutes
 
-Read **The 6 principles** + **The daily routine** sections of the gist,
-then come back here and skim the [ADR catalog](adrs/_index.md).
+Read **The 6 principles** + **The daily routine** sections of the
+gist, then come back here and:
+
+- Skim the [ADR catalog](adrs/_index.md).
+- Look at [**CFD in motion**](docs/session-flow.md) — four Mermaid
+  sequence diagrams that graph what a session actually does, message
+  by message.
 
 ## Why a pointer instead of a copy
 

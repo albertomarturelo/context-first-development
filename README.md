@@ -99,7 +99,11 @@ See
 for the full ADR, and the
 [`/issue:new`](templates/.claude/commands/issue-new.md) /
 [`/issue:start`](templates/.claude/commands/issue-start.md) slash
-commands in the templates.
+commands in the templates. To see this layer composed with the rest of
+CFD in motion (issue auto-load on `/session:start`, AC → PR
+description, etc.), see [**CFD in motion**](docs/session-flow.md) —
+four Mermaid sequence diagrams covering bootstrap, the canonical
+session, correction-to-convention, and decision-before-implementation.
 
 The principle is tracker-agnostic. Linear, Jira, Asana — all valid if
 their CLI supports `create`, `view`, `list --milestone`, and `edit`.
