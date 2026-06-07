@@ -11,15 +11,21 @@ code. The result is sessions that cost ~10–30× fewer tokens and produce
 code that actually fits the project — without re-explaining decisions on
 every prompt.
 
-**Evidence.** CFD-style sessions are designed to consume **500–1,500
-tokens at start** instead of the **20,000–50,000** that
-code-scanning produces. Real-world adopter you can click through right
-now: **[`nemo-cli`](case-studies/nemo-cli.md)** — a production Python
-CLI built solo with CFD discipline (`CLAUDE.md` as ~80-line index,
-11 ADRs with an explicit `002 → 004` supersession, MIT-licensed,
-`pyright` strict, ~98% line coverage). A team case study from Equifax
-(ID Watchdog Mobile) is in progress;
-see [`case-studies/`](case-studies/).
+**Evidence.** Measured on
+[`examples/node-express`](examples/node-express/) (see
+[`case-studies/measurement-node-express.md`](case-studies/measurement-node-express.md)):
+a CFD-style `/session:start` consumes **~824 tokens** vs **~10,519
+tokens** for scan-everything — a **12.8× reduction** at session
+orientation. Reproducible on your own project via
+[`scripts/measure-session-cost.sh`](scripts/measure-session-cost.sh).
+
+Real-world adopter you can click through:
+**[`nemo-cli`](case-studies/nemo-cli.md)** — production Python CLI
+built solo with CFD discipline (`CLAUDE.md` as ~80-line index, 11 ADRs
+with an explicit `002 → 004` supersession, MIT-licensed, `pyright`
+strict, ~98% line coverage). A team case study from Equifax
+(ID Watchdog Mobile) is in progress; see
+[`case-studies/`](case-studies/).
 
 ## The 30-second pitch
 
