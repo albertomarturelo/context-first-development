@@ -11,9 +11,13 @@ every prompt.
 
 **Evidence.** CFD-style sessions are designed to consume **500–1,500
 tokens at start** instead of the **20,000–50,000** that
-code-scanning produces. A real-world case study from a team at Equifax
-(ID Watchdog Mobile) is in progress; see
-[`case-studies/id-watchdog-equifax.md`](case-studies/id-watchdog-equifax.md).
+code-scanning produces. Real-world adopter you can click through right
+now: **[`nemo-cli`](case-studies/nemo-cli.md)** — a production Python
+CLI built solo with CFD discipline (`CLAUDE.md` as ~80-line index,
+11 ADRs with an explicit `002 → 004` supersession, MIT-licensed,
+`pyright` strict, ~98% line coverage). A team case study from Equifax
+(ID Watchdog Mobile) is in progress;
+see [`case-studies/`](case-studies/).
 
 ## The 30-second pitch
 

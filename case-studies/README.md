@@ -14,6 +14,9 @@ Each case study must satisfy:
 
 ## Current case studies
 
+- **[nemo-cli](nemo-cli.md)** — production Python CLI (broker portal
+  client) built solo with CFD. 11 ADRs with an explicit `002 → 004`
+  supersession. Public, MIT-licensed, clickable end-to-end.
 - [ID Watchdog Mobile (Equifax)](id-watchdog-equifax.md) — in
   progress (pending team review).
 
