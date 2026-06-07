@@ -40,6 +40,12 @@ ADRs, examples, case studies.
 - **Templates are model-agnostic.** Use `CLAUDE.md` as the canonical
   filename but explicitly support `AGENTS.md` (symlink or duplicate).
   Slash commands are written in plain prose, not Claude-specific DSL.
+- **Slash commands are the canonical invocation primitive in
+  `templates/`, but Claude Skills (`.claude/skills/<name>/SKILL.md`)
+  are equally valid for project adopters.** See
+  `adrs/ai-workflow/slash-commands-vs-skills.md` for the per-procedure
+  guidance. Do NOT ship a parallel `templates/.claude/skills/`
+  directory — one canonical template set is enough.
 - **Token-budget annotations.** Every template and shareable ADR file
   carries an estimated token cost at the top.
 - **Every shareable ADR is ≤100 lines.** If yours is longer, decompose it.

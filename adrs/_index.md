@@ -47,6 +47,7 @@ cp adrs/architecture/repository-pattern.md \
 
 - [English as the context language](ai-workflow/english-as-context-language.md)
 - [Write the ADR before implementing the decision](ai-workflow/adr-before-implementing.md)
+- [Slash commands vs Claude Skills — both are valid](ai-workflow/slash-commands-vs-skills.md)
 
 ## Contributing
 
