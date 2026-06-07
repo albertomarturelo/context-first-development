@@ -82,9 +82,14 @@ while IFS= read -r link; do
 done < <(grep -oE '\([a-z][a-z-]*/[a-z][a-z0-9-]*\.md\)' adrs/_index.md)
 
 # 5. AI-tool attribution forbidden.
+# Match only column-0 occurrences. Real commit trailers and PR
+# footers sit at column 0; markdown mentions of the same strings
+# (as rules to enforce in `/review-pr` checklists, for example)
+# are always indented or inside backticks. This pattern catches
+# the real thing without false positives on rule documentation.
 echo ""
 echo "5. No AI-tool attribution in shipped artifacts"
-ATTRIB_HITS=$(grep -rEn "Co-Authored-By: Claude|Generated with Claude Code|🤖 Generated" \
+ATTRIB_HITS=$(grep -rEn '^Co-Authored-By: Claude|^🤖 Generated with Claude|^Generated with Claude Code' \
   adrs/ templates/ case-studies/ examples/ 2>/dev/null || true)
 if [ -n "$ATTRIB_HITS" ]; then
   err "AI-tool attribution found:"

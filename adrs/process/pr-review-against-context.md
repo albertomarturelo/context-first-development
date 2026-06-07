@@ -39,14 +39,11 @@ in:
 A CFD review loads those first, then applies them as a verification
 agenda against the diff AND the changed files. **The depth of file
 reading is a project-level decision, codified in the slash command
-itself.** A strict KMP project's `/review-pr` reads every changed
-file in full because the ADRs demand layer-boundary checks, Compose
-recomposition safety, networking conventions, etc. A small Node API's
-`/review-pr` may legitimately stop at the diff because the indices
-encode less.
-
-The work changes either way: **verification against known rules
-instead of discovery from scratch.**
+itself.** A strict KMP project reads every changed file in full
+because the ADRs demand layer-boundary checks, Compose recomposition
+safety, networking conventions, etc. A small Node API may stop at the
+diff. The work is verification against known rules, not discovery
+from scratch.
 
 ## Decision
 
@@ -67,22 +64,20 @@ command (or equivalent Skill) that:
 5. **Does NOT auto-fix.** Findings are surfaced for the author to
    address on the next session.
 
-The slash command body itself **is** the team's checklist. It evolves
-with the project: a new convention → a new line in the slash command.
-This is the same dynamic as `document-corrections-not-fixes` applied
-to review.
+The slash command body itself **is** the team's checklist — it
+evolves with the project (new convention → new line in the slash
+command), echoing the `document-corrections-not-fixes` discipline.
 
 ## Alternatives Considered
 
 1. **Discovery-driven review (no indices).** Scales with repo size;
    re-derives intent each PR; ignores rejected alternatives that
    live only in ADRs. The default everywhere CFD is not adopted.
-2. **Strict "diff only, no file reads".** Fast but blind to refactors
-   whose impact appears outside the diff. Rejected — the depth call
-   belongs to the team, not the methodology.
-3. **External code-review SaaS.** Useful complement; not a
-   substitute. Doesn't load your ADRs as the agenda; reviews against
-   a vendor's rules.
+2. **Project-agnostic depth rule** (e.g. "always read full files" or
+   "always diff only"). Rejected — depth belongs to the team, not the
+   methodology.
+3. **External code-review SaaS.** Useful complement; doesn't load
+   your ADRs as the agenda.
 
 ## Verifiable Consequences
 
@@ -98,9 +93,7 @@ A reader can confirm this ADR is being followed if:
 
 ## Trade-offs
 
-- The review depends on indices being current. Stale CONVENTIONS or
-  out-of-date ADRs poison the review. Mitigation:
-  `/context:validate` periodically + the `document-corrections-not-fixes`
-  discipline.
-- Customizing the checklist takes upfront work the first time. Pays
-  back from the first review onward.
+- Depends on indices being current. Stale CONVENTIONS or out-of-date
+  ADRs poison the review. Mitigation: `/context:validate` + the
+  `document-corrections-not-fixes` discipline.
+- Customizing the checklist is upfront work; pays back from review 1.
