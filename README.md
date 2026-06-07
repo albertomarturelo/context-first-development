@@ -44,7 +44,7 @@ the design.
 
 ## What's in this repo
 
-```
+```text
 README.md          this file
 METHODOLOGY.md     pointer to the canonical essay (gist)
 templates/         drop-in scaffolding for any project
@@ -121,4 +121,4 @@ See [`LICENSE`](LICENSE) for the full text.
 
 > Marturelo, Alberto. *Context-First Development (CFD): A Methodology for
 > AI-Assisted CLI Development.* 2026.
-> https://gist.github.com/7b5c6f91f17b83852724fa73100c8588
+> <https://gist.github.com/7b5c6f91f17b83852724fa73100c8588>
