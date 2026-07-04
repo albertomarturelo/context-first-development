@@ -1,0 +1,15 @@
+{
+  "name": "context-first-development",
+  "owner": {
+    "name": "Alberto Marturelo Lorenzo",
+    "email": "amarturelo@gmail.com"
+  },
+  "description": "Context-First Development — shareable ADR catalog, drop-in templates, and the CFD workflow plugin.",
+  "plugins": [
+    {
+      "name": "cfd",
+      "source": "./",
+      "description": "Slash commands for the CFD workflow: /cfd:session-start, /cfd:session-close, /cfd:new-decision, /cfd:issue-new, /cfd:issue-start, /cfd:review-pr, /cfd:validate-context, /cfd:project-init."
+    }
+  ]
+}

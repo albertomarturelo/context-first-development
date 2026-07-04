@@ -1,6 +1,7 @@
-<!-- Slash command: /context:validate
-     Invoke periodically (weekly recommended) to check context integrity.
-     Token budget: ~2,000–5,000. -->
+---
+description: "Audit CFD context integrity — CLAUDE.md size/shape, status freshness, ADR index sync and completeness, conventions, language, token annotations — and report PASS/WARN/FAIL with proposed fixes."
+token-budget: "~2,000–5,000"
+---
 
 Validate the CFD context in this project. Check, in order, and output a
 checklist with PASS / WARN / FAIL per item:

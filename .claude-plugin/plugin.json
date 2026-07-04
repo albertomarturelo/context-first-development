@@ -1,0 +1,23 @@
+{
+  "name": "cfd",
+  "displayName": "Context-First Development",
+  "version": "0.1.0",
+  "description": "Slash commands for the Context-First Development (CFD) workflow: session start/close, decision records, issue lifecycle, PR review, and context validation.",
+  "author": {
+    "name": "Alberto Marturelo Lorenzo",
+    "email": "amarturelo@gmail.com"
+  },
+  "homepage": "https://github.com/albertomarturelo/context-first-development",
+  "repository": "https://github.com/albertomarturelo/context-first-development",
+  "license": "MIT",
+  "keywords": [
+    "context-first-development",
+    "cfd",
+    "adr",
+    "workflow",
+    "slash-commands"
+  ],
+  "commands": [
+    "./templates/.claude/commands"
+  ]
+}

@@ -1,7 +1,7 @@
-<!-- Slash command: /decision:new
-     Invoke whenever a significant technical decision arises that does not
-     yet have an ADR.
-     Token budget: ~1,000–2,500 for the whole flow. -->
+---
+description: "Guide the user through documenting a new architectural decision as an ADR (≤100 lines) with real alternatives, then update the decisions index. Invoke when a significant technical decision surfaces without an ADR."
+token-budget: "~1,000–2,500 for the whole flow"
+---
 
 Guide the user through documenting a new architectural decision.
 

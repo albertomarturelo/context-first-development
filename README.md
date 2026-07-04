@@ -11,13 +11,11 @@ code. The result is sessions that cost ~10–30× fewer tokens and produce
 code that actually fits the project — without re-explaining decisions on
 every prompt.
 
-**Evidence.** Measured on
-[`examples/node-express`](examples/node-express/) (see
-[`case-studies/measurement-node-express.md`](case-studies/measurement-node-express.md)):
-a CFD-style `/session:start` consumes **~824 tokens** vs **~10,519
-tokens** for scan-everything — a **12.8× reduction** at session
-orientation. Reproducible on your own project via
-[`scripts/measure-session-cost.sh`](scripts/measure-session-cost.sh).
+**Evidence.** Measure the effect on your own project with
+[`scripts/measure-session-cost.sh`](scripts/measure-session-cost.sh):
+it compares a CFD-style `/session:start` (reading the `CLAUDE.md` +
+`CURRENT_STATUS.md` + decisions-index triad) against scanning the whole
+project for "full context", and reports the token ratio.
 
 Real-world adopter you can click through:
 **[`nemo-cli`](case-studies/nemo-cli.md)** — production Python CLI
@@ -54,6 +52,23 @@ Templates are deliberately minimal. Fill in what the agent needs to know
 about *your* project — and resist the temptation to write more. Brevity is
 the design.
 
+### Or install the commands as a plugin (Claude Code)
+
+The CFD slash commands ship as an optional Claude Code plugin, so you can
+install them without copying files:
+
+```text
+/plugin marketplace add albertomarturelo/context-first-development
+/plugin install cfd@context-first-development
+```
+
+This exposes the commands namespaced (`/cfd:session-start`,
+`/cfd:new-decision`, `/cfd:issue-start`, …). The plugin is a
+**distribution convenience, not the source of truth** — it points at the
+same portable markdown in `templates/.claude/commands/`. Teams on other
+agents copy that markdown directly and lose nothing but the installer.
+See [`adrs/ai-workflow/distribute-commands-as-plugin.md`](adrs/ai-workflow/distribute-commands-as-plugin.md).
+
 ## What's in this repo
 
 ```text
@@ -61,7 +76,6 @@ README.md          this file
 METHODOLOGY.md     pointer to the canonical essay (gist)
 templates/         drop-in scaffolding for any project
 adrs/              shareable ADR catalog ("shadcn for AI context")
-examples/          runnable sample projects (PR-driven)
 case-studies/      evidenced adoption write-ups
 CONTRIBUTING.md    how to propose ADRs, examples, case studies
 LICENSE            MIT for code, CC-BY-SA 4.0 for prose

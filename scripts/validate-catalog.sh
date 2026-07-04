@@ -90,7 +90,7 @@ done < <(grep -oE '\([a-z][a-z-]*/[a-z][a-z0-9-]*\.md\)' adrs/_index.md)
 echo ""
 echo "5. No AI-tool attribution in shipped artifacts"
 ATTRIB_HITS=$(grep -rEn '^Co-Authored-By: Claude|^🤖 Generated with Claude|^Generated with Claude Code' \
-  adrs/ templates/ case-studies/ examples/ 2>/dev/null || true)
+  adrs/ templates/ case-studies/ 2>/dev/null || true)
 if [ -n "$ATTRIB_HITS" ]; then
   err "AI-tool attribution found:"
   echo "$ATTRIB_HITS" | sed 's/^/    /'

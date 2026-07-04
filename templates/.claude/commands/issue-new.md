@@ -1,9 +1,8 @@
-<!-- Slash command: /issue:new
-     Create a self-sufficient unit of work in the tracker.
-     Token budget for the full flow: ~1,500–3,000.
-
-     The completeness of this issue determines how cheaply the NEXT
-     session starts. Be thorough HERE so you can be cheap THERE. -->
+---
+description: "Create a self-sufficient tracker issue with the fixed CFD body template. The completeness of the issue determines how cheaply the next session starts — be thorough here."
+disable-model-invocation: true
+token-budget: "~1,500–3,000 for the full flow"
+---
 
 Guide the user through creating a new tracker issue with the fixed body
 template defined in

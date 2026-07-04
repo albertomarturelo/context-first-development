@@ -14,10 +14,6 @@ Each case study must satisfy:
 
 ## Current case studies
 
-- **[Measurement: tokens-per-session on `examples/node-express`](measurement-node-express.md)**
-  — measured **12.8× reduction** (824 vs 10,519 tokens) at session
-  orientation. Reproducible via
-  [`scripts/measure-session-cost.sh`](../scripts/measure-session-cost.sh).
 - **[nemo-cli](nemo-cli.md)** — production Python CLI (broker portal
   client) built solo with CFD. 11 ADRs with an explicit `002 → 004`
   supersession. Public, MIT-licensed, clickable end-to-end.

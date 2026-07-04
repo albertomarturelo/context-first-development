@@ -1,6 +1,9 @@
-<!-- Slash command: /issue:start <issue-number>
-     Pick up a tracker issue as the focus of THIS session.
-     Token budget: ~2,000–4,000 (issue + ADRs + 1 reference file). -->
+---
+description: "Pick up a tracker issue as the focus of this session: fetch it, load its ADRs and one reference file, and state the objective + acceptance checklist without scanning target files."
+argument-hint: "[issue-number]"
+disable-model-invocation: true
+token-budget: "~2,000–4,000 (issue + ADRs + 1 reference file)"
+---
 
 The user passes an issue number. If they don't, ask which.
 

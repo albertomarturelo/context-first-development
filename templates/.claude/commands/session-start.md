@@ -1,7 +1,8 @@
-<!-- Slash command: /session:start (alias: /project:status)
-     Invoke at the BEGINNING of every working session.
-     Token budget: ~500–1,500 baseline;
-     +1,000–2,000 if an in-progress issue is auto-loaded. -->
+---
+description: "Orient at the start of a session: read docs/CURRENT_STATUS.md and the decisions index in ~1k tokens, state the focus, and auto-load an in-progress issue if one is referenced."
+disable-model-invocation: true
+token-budget: "~500–1,500 baseline; +1,000–2,000 if an in-progress issue is auto-loaded"
+---
 
 Read the following files in order, then produce a brief summary:
 
