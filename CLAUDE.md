@@ -16,7 +16,6 @@ ADRs, examples, case studies.
   the gist (single source of truth).
 - **Templates:** `templates/` — drop-in scaffolding any project can copy.
 - **Shareable ADR catalog:** [`adrs/_index.md`](adrs/_index.md).
-- **Examples:** [`examples/README.md`](examples/README.md).
 - **Case studies:** [`case-studies/README.md`](case-studies/README.md).
 - **How to contribute:** [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
@@ -28,7 +27,6 @@ ADRs, examples, case studies.
 - **A new template artifact** → keep it minimal. Token efficiency is the
   design point — content added here costs every downstream user tokens
   forever.
-- **A new example** → see `examples/README.md` for the layout contract.
 - **A new case study** → see `case-studies/README.md` for the evidence
   contract.
 
@@ -62,8 +60,7 @@ ADR-003) and a CI workflow enforces it:
   Alternatives Considered, Verifiable Consequences, Trade-offs).
 - Token budget annotation in the first 3 lines.
 - Index sync between `adrs/_index.md` and the catalog files.
-- No AI-tool attribution in `adrs/`, `templates/`, `case-studies/`,
-  `examples/`.
+- No AI-tool attribution in `adrs/`, `templates/`, `case-studies/`.
 
 Run locally: `bash scripts/validate-catalog.sh`. CI:
 `.github/workflows/validate-catalog.yml` (push to `main` + PRs).

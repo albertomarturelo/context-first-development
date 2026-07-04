@@ -3,10 +3,8 @@
 CFD is open to contributions. The most valuable kinds, in order:
 
 1. **New ADRs for the shareable catalog** (`adrs/`).
-2. **Runnable examples** showing CFD applied to a specific stack
-   (`examples/`).
-3. **Case studies** documenting real adoption (`case-studies/`).
-4. **Refinements to templates** (`templates/`).
+2. **Case studies** documenting real adoption (`case-studies/`).
+3. **Refinements to templates** (`templates/`).
 
 ## Contributing an ADR to the catalog
 
@@ -36,30 +34,6 @@ Use [`adrs/_TEMPLATE.md`](adrs/_TEMPLATE.md) as the starting point.
 - [ ] "When to Use" and "Verifiable Consequences" sections present.
 - [ ] Token budget annotation present.
 - [ ] No project-specific names (Acme, FooCorp, MyProductService, etc.).
-
-## Contributing an example
-
-A good example is a tiny but complete project (≤30 source files) with CFD
-fully applied. An engineer should be able to clone it, run
-`/project:status`, and produce correct work in <5 minutes.
-
-Layout:
-
-```
-examples/<stack-name>/
-  README.md          what the example demonstrates
-  CLAUDE.md
-  docs/
-    ARCHITECTURE.md
-    CURRENT_STATUS.md
-    decisions/
-      _index.md
-      001-*.md       at least 3 representative ADRs
-  .claude/commands/
-  src/               the actual code
-```
-
-Open an issue before starting so we can align on scope.
 
 ## Contributing a case study
 

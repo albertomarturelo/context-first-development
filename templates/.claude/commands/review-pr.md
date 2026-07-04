@@ -1,9 +1,8 @@
-<!-- Slash command: /review-pr <PR-number>
-     Review a PR against the team's curated checklist, sourced from
-     ADRs + CONVENTIONS + the linked issue's AC + the PR template.
-     Token budget: scales with the team's checklist depth (typically
-     3k–15k). The agenda comes from indices; the depth of file
-     reading is what the agenda demands. -->
+---
+description: "Review a PR against the team's curated checklist sourced from ADRs, CONVENTIONS, the linked issue's acceptance criteria, and the PR template. Report findings; do not auto-fix."
+argument-hint: "[pr-number]"
+token-budget: "scales with the team's checklist depth, typically 3k–15k"
+---
 
 The user passes a PR number. If not provided, infer from the current
 branch:

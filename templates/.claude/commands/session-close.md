@@ -1,6 +1,8 @@
-<!-- Slash command: /session:close
-     Invoke BEFORE ending the session.
-     Token budget: ~500–1,000. -->
+---
+description: "Close a session: update docs/CURRENT_STATUS.md, capture corrections in CONVENTIONS, propose ADRs for informal decisions, and stage docs in the same commit as the code."
+disable-model-invocation: true
+token-budget: "~500–1,000"
+---
 
 Before this session ends, do ALL of the following. Do not skip any step.
 

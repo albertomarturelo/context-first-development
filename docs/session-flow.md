@@ -258,6 +258,4 @@ sequenceDiagram
 - [`templates/`](../templates/) — the slash commands referenced above.
 - [`case-studies/nemo-cli.md`](../case-studies/nemo-cli.md) — a real
   project running these flows.
-- [`examples/node-express/`](../examples/node-express/) — runnable
-  code with the same flows applied.
 - [`METHODOLOGY.md`](../METHODOLOGY.md) — the canonical essay.

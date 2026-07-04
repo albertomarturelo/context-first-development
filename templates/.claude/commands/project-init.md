@@ -1,6 +1,8 @@
-<!-- Slash command: /project:init
-     One-time bootstrap of CFD in an existing project.
-     Token budget: <10,000 total. Hard cap. -->
+---
+description: "One-time bootstrap of CFD in an existing project: infer architecture/stack/conventions from structure and dependency files, then scaffold docs/ and CLAUDE.md without reading source."
+disable-model-invocation: true
+token-budget: "<10,000 total (hard cap)"
+---
 
 Implement Context-First Development (CFD) in this project. Do NOT read
 individual source files. Instead, analyze ONLY:
@@ -10,7 +12,9 @@ individual source files. Instead, analyze ONLY:
   `go.mod`, `Gemfile`, etc.
 - The README, if any.
 
-Then create these files using the templates from this CFD repo as a base:
+Then create these files, following the shapes described below (they mirror
+the CFD `templates/docs/` set; if that directory is available locally, use
+it as the base):
 
 1. `docs/ARCHITECTURE.md` — inferred from directory structure and
    dependencies. Mark each inference as "(inferred — confirm)".
