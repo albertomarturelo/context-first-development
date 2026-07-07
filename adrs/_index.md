@@ -53,6 +53,7 @@ cp adrs/architecture/repository-pattern.md \
 - [Short sessions over long ones](ai-workflow/short-sessions-over-long.md)
 - [Distribute CFD commands as an optional plugin](ai-workflow/distribute-commands-as-plugin.md)
 - [Enforce rituals with hooks and CI, not discipline](ai-workflow/enforce-rituals-with-hooks.md)
+- [One loop, with the developer as orchestrator](ai-workflow/single-loop-human-orchestrator.md)
 
 ## Contributing
 

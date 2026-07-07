@@ -76,9 +76,27 @@ Three fundamental papers from 2025:
 2. **"Agent READMEs: An Empirical Study"** ([arXiv:2511.12884](https://arxiv.org/html/2511.12884v1)) — 2,303 context files from 1,925 repositories. Conclusion: these files are "not static documentation but complex, difficult-to-read artifacts that evolve like configuration code."
 3. **"Context Engineering for Multi-Agent LLM Code Assistants"** ([arXiv:2508.08322](https://arxiv.org/abs/2508.08322)) — Proposes multi-agent architectures with semantic retrieval.
 
+### Memory Banks: Persistent State Between Sessions
+
+[Cline's Memory Bank](https://docs.cline.bot/prompting/cline-memory-bank) (adopted and extended by Roo Code and others) pioneered structured, file-based memory for coding agents: a directory of markdown files — project brief, active context, progress, decision log — that the agent reads at session start and updates at session close. Mechanically, this is CFD's closest neighbor, and it deserves the credit: same core insight (context must live outside the session), same medium (versioned markdown), same rituals (read at start, write at close).
+
+CFD builds on that shared foundation with two additional commitments. First, **decisions as portable first-class artifacts**: full ADRs with rejected alternatives — the memory of *why not*, which is what stops an agent from re-proposing an option the team already discarded. A decision log line records what was chosen; an ADR records what was chosen *over what, and at what cost*. Second, **shared work state lives in the external tracker**, not in the memory files — which keeps the memory per-developer and the team coordination in a tool built for it. A developer comfortable with a Memory Bank workflow will find CFD immediately familiar; the two schools agree on far more than they differ on.
+
+### Spec-Driven Development: GitHub Spec Kit and Kiro
+
+In 2025 a second school consolidated: spec-driven development. [GitHub's Spec Kit](https://github.com/github/spec-kit) drives a `specify → plan → tasks` pipeline with human review gates; [AWS's Kiro](https://kiro.dev) builds requirements, design, and task documents per feature before any code is written. Both are rigorous exactly where CFD is deliberately light: the *inside* of a large feature. For multi-session work, a reviewed spec catches requirement gaps that a lightweight issue template will not.
+
+The two govern different scopes. Spec-driven governs **the feature**; CFD governs **the project between features** — decision memory, the conventions ratchet, session continuity. They compose naturally: run a spec pipeline for a large epic while CFD carries the cross-feature "why"; CFD's issue template is a lightweight spec, and its own rule that `Estimated sessions > 1` forces decomposition is precisely the point where reaching for a fuller spec pays for itself.
+
+### Multi-Agent Orchestration: Role Agents and Agent Teams
+
+A third school orchestrates multiple agents: the [BMAD-Method](https://github.com/bmadcode/BMAD-METHOD) defines agile role agents (analyst, PM, architect, developer) that hand structured artifacts to each other, and agent CLIs now ship native subagents and workflow fan-out. This school solves throughput and separation of concerns at scale.
+
+CFD deliberately defines **no agent-to-agent handoff**. There is one loop, and the developer sits inside it as orchestrator and observer — a per-session human checkpoint, consistent with CFD's drift thesis: adherence degrades as context accumulates, and a human in the loop catches drift before it compounds across a chain. This is a scope choice for CFD's audience (individuals and small teams supervising real production code), not a judgment on orchestration. The approaches also converge more than they compete: a well-formed CFD issue — context, target paths, ADRs to load, pattern to mirror, acceptance criteria — is exactly the self-contained handoff package an orchestrated agent needs. Teams that outgrow the single loop can parallelize CFD sessions over independent issues without changing a single artifact.
+
 ### What's Missing
 
-All of the above are valuable pieces of a puzzle that nobody has assembled. There are configuration files. There are templates. There are case studies. There are academic papers. But **there is no cohesive, CLI-first methodology that an individual developer or small team can adopt tomorrow** and that scales from a 10-file project to a 10,000-file one.
+Each of the above solves its slice well: instruction files standardize behavior, memory banks persist state, spec pipelines de-risk large features, orchestration buys throughput. What none of them assembles is **a cohesive, CLI-first methodology that an individual developer or small team can adopt tomorrow** — persistent decision memory with rationale, tracker-based work units, token discipline, and a human-supervised loop — and that scales from a 10-file project to a 10,000-file one.
 
 That's Context-First Development.
 
@@ -848,3 +866,7 @@ The question isn't whether you need a methodology like CFD. The question is how 
 16. GitHub. "Agentic Workflows." [github.github.io/gh-aw](https://github.github.io/gh-aw/), 2026.
 17. Steinberger, Peter. "agent-rules." [GitHub](https://github.com/steipete/agent-rules), 2025 (archived).
 18. Li, Bojie. "Claude's Context Engineering Secrets." [01.me](https://01.me/en/2025/12/context-engineering-from-claude/), 2025.
+19. Cline. "Memory Bank: How to Make Cline an Autonomous Coding Agent with Persistent Memory." [docs.cline.bot](https://docs.cline.bot/prompting/cline-memory-bank), 2025.
+20. GitHub. "Spec Kit — a toolkit for Spec-Driven Development." [github.com/github/spec-kit](https://github.com/github/spec-kit), 2025.
+21. AWS. "Kiro — an agentic IDE with spec-driven development." [kiro.dev](https://kiro.dev), 2025.
+22. "BMAD-Method: Breakthrough Method for Agile AI-Driven Development." [github.com/bmadcode/BMAD-METHOD](https://github.com/bmadcode/BMAD-METHOD), 2025.

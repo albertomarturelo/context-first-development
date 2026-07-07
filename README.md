@@ -265,6 +265,22 @@ references) lives in
 [`context-first-development.md`](context-first-development.md); see
 [`METHODOLOGY.md`](METHODOLOGY.md) for a navigable map.
 
+## How CFD relates to neighboring approaches
+
+Each of these solves its slice of the problem well; CFD composes with
+all of them rather than replacing them. Full treatment (with credit
+and references) in the essay's
+[Current Landscape](context-first-development.md#the-current-landscape-what-exists-and-why-its-not-enough)
+section.
+
+| Approach                                            | What it solves best                            | Relation to CFD                                                                                          |
+| ---------------------------------------------------- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Instruction files (`CLAUDE.md` / `AGENTS.md` alone)   | Standardizing agent behavior per repo          | CFD's foundation layer — CFD adds state, decisions, and rituals on top                                    |
+| Memory banks (Cline, Roo Code)                        | Persistent state between sessions              | Closest neighbor, and prior art for the mechanism. CFD adds ADRs with rejected alternatives and moves shared state to the tracker |
+| Spec-driven (GitHub Spec Kit, Kiro)                   | Rigorous per-feature specification             | Different scope: spec-driven governs the feature, CFD the project between features. Compose them for large epics |
+| Multi-agent orchestration (BMAD, agent teams)         | Throughput, separation of concerns             | CFD deliberately keeps one loop with the developer as orchestrator/observer — see [the ADR](adrs/ai-workflow/single-loop-human-orchestrator.md). CFD issues are handoff-ready if you later parallelize |
+| Repo packers (Repomix, repo maps)                     | Token-efficient code context                   | Orthogonal and complementary — they compress the *what*, CFD persists the *why*                           |
+
 ## Who CFD is for
 
 - **Solo developers** working with an AI agent on a non-trivial repo

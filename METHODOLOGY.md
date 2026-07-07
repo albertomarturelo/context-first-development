@@ -14,7 +14,9 @@ for link stability; when the two differ, the repo wins.
 
 - **Introduction** — the amnesia problem.
 - **Current landscape** — CLAUDE.md, AGENTS.md, Cole Medin, Spotify, ADRs,
-  Addy Osmani, the academic papers.
+  Addy Osmani, the academic papers, memory banks (Cline/Roo),
+  spec-driven development (Spec Kit, Kiro), and multi-agent
+  orchestration (BMAD) — with how CFD relates to each.
 - **The 6 principles** — Context Before Code, SSOT, Hierarchical Context,
   Decisions as First-Class, English, Automation.
 - **Knowledge architecture** — the `docs/` + `docs/decisions/` +
@@ -28,7 +30,7 @@ for link stability; when the two differ, the repo wins.
 - **Complementary tools** — Repomix, `gh` CLI.
 - **Case study** — implementing CFD in an existing project.
 - **Conclusion** — context is the competitive advantage.
-- **References** — 18 cited sources.
+- **References** — 22 cited sources.
 
 ## If you only have 5 minutes
 
