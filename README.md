@@ -96,6 +96,83 @@ The hooks are Claude Code-specific; the slash commands remain the
 portable source of truth. See
 [`adrs/ai-workflow/enforce-rituals-with-hooks.md`](adrs/ai-workflow/enforce-rituals-with-hooks.md).
 
+### Or paste one prompt (zero install, any agent)
+
+No cloning, no plugin. Paste this into your AI agent inside your repo
+and it bootstraps CFD and adopts the workflow. The prompt instructs
+the agent to **write the standing rules into the `CLAUDE.md` it
+creates** — a pasted prompt dies with the session; the methodology
+must not.
+
+```text
+You are adopting Context-First Development (CFD) in this repository.
+CFD treats context as a first-class artifact so any AI agent can work
+here across sessions without re-explanation. Full methodology:
+https://github.com/albertomarturelo/context-first-development
+
+## Step 1 — Bootstrap (do this now)
+
+Do NOT read individual source files. Analyze ONLY the directory
+structure (ls, tree -L 2), dependency files (package.json,
+pyproject.toml, Cargo.toml, go.mod, …) and the README. Then create:
+
+1. docs/ARCHITECTURE.md — layers, module map, data flow. Mark every
+   inference "(inferred — confirm)".
+2. docs/STACK.md — languages, frameworks, tooling, with versions
+   taken from the dependency files.
+3. docs/CONVENTIONS.md — 5–10 conventions inferred from layout and
+   dependency choices, each marked "(inferred — confirm)".
+4. docs/CURRENT_STATUS.md — sections: In Progress / Recently
+   Completed / Known Issues / Next Priorities. Initialize with
+   "Project initialized with CFD on <today>. No work in progress."
+5. docs/decisions/_index.md — a table: ID | Title | Status | Date.
+6. docs/decisions/001-initial-architecture.md — the current
+   architecture as ADR-001 (Status: Accepted), with sections:
+   Status, Context, Decision, Alternatives Considered, Consequences.
+7. CLAUDE.md at the repo root, ≤100 lines — an INDEX, not an
+   encyclopedia: a 2–3 sentence project description, plain markdown
+   LINKS to the docs above (links, NOT @imports — imports load
+   eagerly and defeat the index), build/test/lint commands, and the
+   full "Standing rules" section below copied VERBATIM so every
+   future session inherits this workflow. If the team uses
+   non-Claude agents too, also create AGENTS.md as a copy or symlink.
+
+## Step 2 — Standing rules (copy into CLAUDE.md; follow from now on)
+
+- Session start: read docs/CURRENT_STATUS.md and
+  docs/decisions/_index.md first (~1k tokens). Never scan source
+  code just to orient yourself.
+- Before writing code: read docs/CONVENTIONS.md.
+- Before modifying an existing file: read it. Never edit unread code.
+- When a significant decision surfaces (new dependency, new pattern,
+  new strategy): STOP. Write docs/decisions/NNN-<slug>.md FIRST —
+  including the alternatives you rejected and why — update
+  _index.md, then implement.
+- When the user corrects a pattern: fix the code AND append the rule
+  to docs/CONVENTIONS.md in the same change. A correction that is
+  not documented will be repeated.
+- Session close, before the session's final commit: update
+  docs/CURRENT_STATUS.md (move finished items to Recently Completed,
+  re-rank Next Priorities, refresh the date) and ship tracked docs/
+  changes in the SAME commit/PR as the code.
+- Precedence: code is the truth about WHAT the system does; ADRs are
+  the truth about WHY. If a doc contradicts the code, stop and flag
+  it — do not silently trust the doc, and do not "fix" correct code
+  to match a stale doc.
+- All of these context files are written in English.
+- Teams of 2+ developers: add docs/CURRENT_STATUS.md to .gitignore.
+  It is per-developer session memory; shared in-flight state lives
+  in the issue tracker.
+
+Finish by listing what you created and asking the user to review the
+inferred conventions and ADR-001 before any real work starts.
+```
+
+This is the same flow as [`/project:init`](templates/.claude/commands/project-init.md)
+plus the standing rules the other commands encode — compressed into
+one portable prompt. The templates and hooks above remain the richer
+adoption path; this is the on-ramp.
+
 ## What's in this repo
 
 ```text
