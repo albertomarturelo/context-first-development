@@ -12,8 +12,10 @@ ADRs, examples, case studies.
 
 ## Index
 
-- **Canonical methodology:** [`METHODOLOGY.md`](METHODOLOGY.md) → links to
-  the gist (single source of truth).
+- **Canonical methodology:**
+  [`context-first-development.md`](context-first-development.md) (single
+  source of truth; a gist mirror exists for link stability).
+  [`METHODOLOGY.md`](METHODOLOGY.md) is the navigable map.
 - **Templates:** `templates/` — drop-in scaffolding any project can copy.
 - **Shareable ADR catalog:** [`adrs/_index.md`](adrs/_index.md).
 - **Case studies:** [`case-studies/README.md`](case-studies/README.md).
@@ -32,9 +34,12 @@ ADRs, examples, case studies.
 
 ## Rules
 
-- **English only** for all artifacts in this repo (Principle 5 of the gist).
-- **No duplication of the gist's prose** anywhere in this repo. Use
-  `@gist/...` references or external links.
+- **English only** for all artifacts in this repo (Principle 5 of the
+  essay).
+- **No duplication of the essay's prose** in any other file of this
+  repo. `context-first-development.md` is the single authoritative
+  copy; everything else links to it. The gist is a mirror — never edit
+  the gist first.
 - **Templates are model-agnostic.** Use `CLAUDE.md` as the canonical
   filename but explicitly support `AGENTS.md` (symlink or duplicate).
   Slash commands are written in plain prose, not Claude-specific DSL.
@@ -69,5 +74,5 @@ Failing checks block merge.
 ## Voice
 
 Declarative, opinionated, evidence-backed with citations. Matches the
-voice of the canonical gist. No hedging language ("you might consider…")
-where a direct statement works.
+voice of the canonical essay. No hedging language ("you might
+consider…") where a direct statement works.

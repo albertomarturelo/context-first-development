@@ -7,15 +7,25 @@
 **CFD is a methodology for engineers who use AI coding agents** (Claude
 Code, Gemini CLI, Codex, Cursor, Aider) **on real repositories.** It treats
 context as a first-class artifact: structured, versioned, and reviewed like
-code. The result is sessions that cost ~10–30× fewer tokens and produce
-code that actually fits the project — without re-explaining decisions on
-every prompt.
+code.
 
-**Evidence.** Measure the effect on your own project with
+**The primary payoff is adherence, not tokens**: code that respects your
+conventions on the first attempt, decisions that don't get re-litigated,
+corrections that never repeat. Token savings are a welcome side effect —
+orientation drops to a few thousand tokens — but if you adopt CFD to
+save tokens you're optimizing the wrong variable. Modern agents don't
+naively scan whole repos; they search. What they *can't* search is the
+**why**: the rejected alternatives, the conventions, the in-flight state.
+That is what CFD persists.
+
+**Evidence.** Measure the ceiling on your own project with
 [`scripts/measure-session-cost.sh`](scripts/measure-session-cost.sh):
 it compares a CFD-style `/session:start` (reading the `CLAUDE.md` +
-`CURRENT_STATUS.md` + decisions-index triad) against scanning the whole
-project for "full context", and reports the token ratio.
+`CURRENT_STATUS.md` + decisions-index triad) against reading every
+file — an **upper bound**, since a real agent explores selectively.
+The honest per-session metrics (re-explanation rate,
+time-to-first-correct-action) are defined in the methodology essay's
+Metrics section; measure those on real sessions.
 
 Real-world adopter you can click through:
 **[`nemo-cli`](case-studies/nemo-cli.md)** — production Python CLI
@@ -29,7 +39,7 @@ strict, ~98% line coverage). A team case study from Equifax
 
 |                        | Without CFD                                 | With CFD                                                          |
 | ---------------------- | ------------------------------------------- | ----------------------------------------------------------------- |
-| Session start          | 20–50k tokens scanning code                 | 500–1,500 tokens reading `CLAUDE.md` + `CURRENT_STATUS.md`        |
+| Session start          | Agent re-explores the repo every session (search + targeted reads, and still no "why") | 500–1,500 tokens reading `CLAUDE.md` + `CURRENT_STATUS.md`        |
 | Architectural context  | Lives in your head, re-explained each time  | Lives in `docs/decisions/` ADRs the agent reads automatically     |
 | Agent's wrong patterns | Manually fixed every session                | Convention documented once; agent reads it next session           |
 | Project state          | Lives in your memory                        | `docs/CURRENT_STATUS.md` is the project's running session log     |
@@ -45,7 +55,7 @@ cp -r /tmp/cfd/templates/. .
 
 # Edit CLAUDE.md and fill in your project's 2–3 sentence description.
 # Open your agent (claude / gemini / codex / cursor) and run:
-> /project:status
+> /session:start
 ```
 
 Templates are deliberately minimal. Fill in what the agent needs to know
@@ -69,16 +79,33 @@ same portable markdown in `templates/.claude/commands/`. Teams on other
 agents copy that markdown directly and lose nothing but the installer.
 See [`adrs/ai-workflow/distribute-commands-as-plugin.md`](adrs/ai-workflow/distribute-commands-as-plugin.md).
 
+### The enforcement layer (hooks + CI)
+
+Rituals enforced only by discipline get skipped under deadline pressure.
+The templates ship a mechanical layer underneath them:
+
+- **`SessionStart` hook** — injects `CURRENT_STATUS.md` + the decisions
+  index automatically and warns when the context looks stale.
+- **Commit-time guard** — blocks a `git commit` that stages code without
+  staging `docs/CURRENT_STATUS.md` (escape hatch: `[skip-status]`).
+- **CI warn** — annotates (never blocks) PRs that change code without a
+  status update. Agent-agnostic.
+
+The hooks are Claude Code-specific; the slash commands remain the
+portable source of truth. See
+[`adrs/ai-workflow/enforce-rituals-with-hooks.md`](adrs/ai-workflow/enforce-rituals-with-hooks.md).
+
 ## What's in this repo
 
 ```text
-README.md          this file
-METHODOLOGY.md     pointer to the canonical essay (gist)
-templates/         drop-in scaffolding for any project
-adrs/              shareable ADR catalog ("shadcn for AI context")
-case-studies/      evidenced adoption write-ups
-CONTRIBUTING.md    how to propose ADRs, examples, case studies
-LICENSE            MIT for code, CC-BY-SA 4.0 for prose
+README.md                       this file
+context-first-development.md    the canonical methodology essay
+METHODOLOGY.md                  navigable map of the essay
+templates/                      drop-in scaffolding for any project
+adrs/                           shareable ADR catalog ("shadcn for AI context")
+case-studies/                   evidenced adoption write-ups
+CONTRIBUTING.md                 how to propose ADRs, examples, case studies
+LICENSE                         MIT for code, CC-BY-SA 4.0 for prose
 ```
 
 ## The shareable ADR catalog
@@ -122,8 +149,9 @@ for the full ADR, and the
 commands in the templates. To see this layer composed with the rest of
 CFD in motion (issue auto-load on `/session:start`, AC → PR
 description, etc.), see [**CFD in motion**](docs/session-flow.md) —
-four Mermaid sequence diagrams covering bootstrap, the canonical
-session, correction-to-convention, and decision-before-implementation.
+five Mermaid sequence diagrams covering bootstrap, the canonical
+session, correction-to-convention, decision-before-implementation,
+and PR review against context.
 
 The principle is tracker-agnostic. Linear, Jira, Asana — all valid if
 their CLI supports `create`, `view`, `list --milestone`, and `edit`.
@@ -144,8 +172,9 @@ The body template stays the same; only the CLI changes.
    command, not a remembered chore.
 
 The full essay (philosophy, anti-patterns, comparative landscape,
-references) lives in the canonical gist. See
-[`METHODOLOGY.md`](METHODOLOGY.md).
+references) lives in
+[`context-first-development.md`](context-first-development.md); see
+[`METHODOLOGY.md`](METHODOLOGY.md) for a navigable map.
 
 ## Who CFD is for
 
@@ -180,4 +209,4 @@ See [`LICENSE`](LICENSE) for the full text.
 
 > Marturelo, Alberto. *Context-First Development (CFD): A Methodology for
 > AI-Assisted CLI Development.* 2026.
-> <https://gist.github.com/7b5c6f91f17b83852724fa73100c8588>
+> <https://github.com/albertomarturelo/context-first-development>

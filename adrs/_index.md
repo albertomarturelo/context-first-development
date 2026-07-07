@@ -51,6 +51,7 @@ cp adrs/architecture/repository-pattern.md \
 - [Slash commands vs Claude Skills — both are valid](ai-workflow/slash-commands-vs-skills.md)
 - [Short sessions over long ones](ai-workflow/short-sessions-over-long.md)
 - [Distribute CFD commands as an optional plugin](ai-workflow/distribute-commands-as-plugin.md)
+- [Enforce rituals with hooks and CI, not discipline](ai-workflow/enforce-rituals-with-hooks.md)
 
 ## Contributing
 

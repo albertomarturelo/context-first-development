@@ -1,12 +1,12 @@
 # CFD in motion
 
-Four sequence diagrams showing what a CFD session actually looks like,
+Five sequence diagrams showing what a CFD session actually looks like,
 message by message. Read in order; each scenario builds on the previous.
 
 > **Notation.** All diagrams are [Mermaid sequence
 > diagrams](https://mermaid.js.org/syntax/sequenceDiagram.html) and
 > render natively on GitHub. Token-cost annotations are approximate
-> and based on the [methodology gist](../METHODOLOGY.md).
+> and based on the [methodology essay](../METHODOLOGY.md).
 
 ## Scenario A — Bootstrap: adopting CFD on an existing project
 

@@ -7,9 +7,12 @@ Validate the CFD context in this project. Check, in order, and output a
 checklist with PASS / WARN / FAIL per item:
 
 1. **`CLAUDE.md` size**: WARN if >150 lines, FAIL if >300.
-2. **`CLAUDE.md` content shape**: should be mostly `@references`, not
-   paragraphs of prose. FAIL if any section has >10 lines of inlined
-   content where an `@docs/...` reference would do.
+2. **`CLAUDE.md` content shape**: should be an index of markdown
+   LINKS to `docs/*.md`, not paragraphs of prose. FAIL if any section
+   has >10 lines of inlined content where a link would do. WARN on
+   `@docs/...` references — in Claude Code those are EAGER imports
+   that load the whole file every session, defeating the index; use
+   plain links plus `/session:start` for orientation reads.
 3. **`docs/CURRENT_STATUS.md` freshness**: run
    `git log -1 --format=%ar -- docs/CURRENT_STATUS.md`. WARN if older
    than 2 working days; FAIL if older than 1 week.

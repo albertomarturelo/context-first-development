@@ -31,4 +31,10 @@ Update discipline:
 - If you haven't updated this in >1 working day, your context is stale.
 - `git log -1 --format=%ar -- docs/CURRENT_STATUS.md` should never read
   older than the last working day during active development.
+
+Teams of 2+: because every PR touches this file, a single shared list
+becomes a merge-conflict magnet. Split "In Progress" into one
+subsection per person (### <name>), keep the rest shared, and compact
+"Recently Completed" weekly. Conflicts then stay inside each person's
+own subsection.
 -->
