@@ -228,9 +228,10 @@ for the full ADR, and the
 commands in the templates. To see this layer composed with the rest of
 CFD in motion (issue auto-load on `/session:start`, AC → PR
 description, etc.), see [**CFD in motion**](docs/session-flow.md) —
-five Mermaid sequence diagrams covering bootstrap, the canonical
-session, correction-to-convention, decision-before-implementation,
-and PR review against context.
+a flowchart of the daily loop (both entry points: existing codebase
+and greenfield) plus six Mermaid sequence diagrams covering the two
+bootstraps, the canonical session, correction-to-convention,
+decision-before-implementation, and PR review against context.
 
 The principle is tracker-agnostic. Linear, Jira, Asana — all valid if
 their CLI supports `create`, `view`, `list --milestone`, and `edit`.

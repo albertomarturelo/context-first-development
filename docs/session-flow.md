@@ -1,12 +1,62 @@
 # CFD in motion
 
-Five sequence diagrams showing what a CFD session actually looks like,
-message by message. Read in order; each scenario builds on the previous.
+A map of the whole workflow, then six sequence diagrams showing what a
+CFD session actually looks like, message by message. Start with the
+map, pick your entry point (A for an existing codebase, G for a
+greenfield repo), then read B → C → D → E in order.
 
-> **Notation.** All diagrams are [Mermaid sequence
-> diagrams](https://mermaid.js.org/syntax/sequenceDiagram.html) and
+> **Notation.** Diagrams are [Mermaid](https://mermaid.js.org/) and
 > render natively on GitHub. Token-cost annotations are approximate
 > and based on the [methodology essay](../METHODOLOGY.md).
+
+## The map — entry points and the daily loop
+
+Two ways in, one loop forever after. Adopting on an existing project
+(Scenario A) infers the docs from the code; starting from zero
+(Scenario G) declares the docs before the code. Either way you land in
+the same daily loop: orient, take or create an issue, implement,
+close, review.
+
+```mermaid
+flowchart TD
+    START(["You + an AI agent + a repository"]) --> Q{"Does the codebase<br/>exist yet?"}
+    Q -- "existing project" --> A["/project:init<br/>infer docs/ + CLAUDE.md from<br/>structure — Scenario A"]
+    Q -- "starting from zero" --> G["Greenfield bootstrap<br/>ADRs first, then scaffold<br/>— Scenario G"]
+    A --> R["Review inferred conventions<br/>and ADR-001"]
+    R --> B0["Decompose upcoming work into<br/>1-session issues via /issue:new"]
+    G --> B0
+
+    subgraph LOOP["The daily loop — every working session"]
+        SS["/session:start<br/>orient in ~1.5–3k tokens"] --> P{"In-progress issue in<br/>CURRENT_STATUS.md?"}
+        P -- "yes — auto-loaded" --> IMPL
+        P -- "no" --> T{"Issue ready<br/>in the tracker?"}
+        T -- "take one" --> IS["/issue:start N<br/>load its ADRs + pattern file"]
+        T -- "create one" --> IN["/issue:new<br/>fixed body template,<br/>then /issue:start"]
+        IS --> IMPL
+        IN --> IMPL
+        IMPL["Implement AC items<br/>(read target files before editing)"] --> MID{"Mid-session<br/>event?"}
+        MID -- "user corrects a pattern" --> C["Fix code AND document rule<br/>in CONVENTIONS.md — Scenario C"]
+        MID -- "significant decision surfaces" --> D["/decision:new — ADR lands<br/>BEFORE the code — Scenario D"]
+        C --> IMPL
+        D --> IMPL
+        MID -- "AC done, or context filling up" --> SC["/session:close<br/>update CURRENT_STATUS.md"]
+        SC --> PR["git push + gh pr create<br/>PR description = AC checklist"]
+        PR --> RV["/review-pr N<br/>verify diff against context — Scenario E"]
+    end
+
+    B0 --> SS
+    RV --> M(["Merge — closes the issue"])
+    M -.->|"next session"| SS
+```
+
+Three properties make the loop cheap: orientation is O(1k) tokens
+because state lives in `CURRENT_STATUS.md` and the tracker, not in
+chat history; every issue is 1-session-sized by construction
+(`/issue:new` forces decomposition); and sessions are disposable —
+closing early costs one `/session:start`, drifting costs redone work
+(see the
+[short-sessions](../adrs/ai-workflow/short-sessions-over-long.md)
+catalog ADR).
 
 ## Scenario A — Bootstrap: adopting CFD on an existing project
 
@@ -42,6 +92,59 @@ sequenceDiagram
 ```
 
 After this scenario you have CFD scaffold. Real work uses Scenario B.
+
+---
+
+## Scenario G — Greenfield: starting from zero
+
+**When:** Day 0 of a project that does not exist yet. `git init` and
+nothing else — no code, no docs, no decisions made.
+
+**Key property:** the mirror image of Scenario A. There, docs are
+**inferred** from existing code and marked "confirm"; here, docs are
+**declared** before any code exists and are prescriptive — the first
+commit already has an architecture it must comply with. Stack and
+architecture choices are captured as ADRs *at the moment they are
+made*, when the alternatives are still fresh, instead of being
+reverse-engineered later.
+
+This is not hypothetical: in the [sii case study](../case-studies/sii.md),
+ADR-001 ("Adopt CFD") carries the same date as the repository's
+creation.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor E as Engineer
+    participant A as Agent
+    participant ADRs as docs/decisions/
+    participant DOCS as docs/ + CLAUDE.md
+    participant ISS as Tracker<br/>(via gh)
+    participant CODE as Source code
+
+    Note over E,A: Empty repository. git init, nothing else.
+
+    E->>A: Product idea + constraints (a few paragraphs)
+    A-->>E: Stack, architecture, testing posture —<br/>these are DECISIONS, not defaults.<br/>Running /decision:new for each.
+
+    A->>E: Language/runtime? Constraints? Alternatives?
+    E-->>A: Trade-offs discussed, choices made.
+
+    A->>ADRs: 001-adopt-cfd.md
+    A->>ADRs: 002-stack.md · 003-architecture.md<br/>(each with rejected alternatives)
+    A->>DOCS: CLAUDE.md + STACK / ARCHITECTURE /<br/>CONVENTIONS
+    Note right of DOCS: DECLARED, not inferred.<br/>Code must comply with docs —<br/>the reverse of Scenario A.
+    A->>DOCS: CURRENT_STATUS.md ("scaffold is next")
+
+    A->>ISS: /issue:new — scaffold + first feature,<br/>each sized to 1 session
+    A-->>E: Day 0 done. Zero lines of code —<br/>and that is the point.
+
+    E->>A: /issue:start 1
+    A->>CODE: scaffold per ADR-002 / ADR-003
+    Note right of CODE: The first commit lands inside<br/>an architecture, not before one.
+```
+
+From here on, every session is Scenario B.
 
 ---
 
@@ -242,15 +345,21 @@ sequenceDiagram
 
 ## How to use these diagrams
 
-- **You're learning CFD.** Read A → B → C → D → E in order. By the
-  end you've seen every flow the methodology actually runs.
-- **You're adopting CFD.** A is your day 0. B is the loop you run
-  from day 1 onward. C and D are the failure-recovery patterns that
-  keep the methodology honest. E is how the loop closes before merge.
-- **You're presenting CFD to your team.** B is the headline. A is
-  the "how do I start?" answer. C and D are the slides that explain
-  why CFD is more than "another file format". E is the slide that
-  shows the token economy of the whole approach — *diff, not repo*.
+- **You're learning CFD.** Start with the map, then read A (or G) →
+  B → C → D → E. By the end you've seen every flow the methodology
+  actually runs.
+- **You're adopting CFD on an existing repo.** A is your day 0. B is
+  the loop you run from day 1 onward. C and D are the
+  failure-recovery patterns that keep the methodology honest. E is
+  how the loop closes before merge.
+- **You're starting a project from zero.** G is your day 0 —
+  decisions and docs land before the first line of code, so the
+  scaffold is born compliant. Then B, same as everyone else.
+- **You're presenting CFD to your team.** The map is the opening
+  slide. B is the headline. A and G are the "how do I start?"
+  answers. C and D are the slides that explain why CFD is more than
+  "another file format". E is the slide that shows the token economy
+  of the whole approach — *diff, not repo*.
 
 ## See also
 

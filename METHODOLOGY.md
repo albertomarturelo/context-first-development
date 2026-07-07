@@ -36,9 +36,9 @@ Read **The 6 principles** + **The daily routine** sections of the
 essay, then come back here and:
 
 - Skim the [ADR catalog](adrs/_index.md).
-- Look at [**CFD in motion**](docs/session-flow.md) — five Mermaid
-  sequence diagrams that graph what a session actually does, message
-  by message.
+- Look at [**CFD in motion**](docs/session-flow.md) — a daily-loop
+  flowchart plus six Mermaid sequence diagrams that graph what a
+  session actually does, message by message.
 
 ## Why the essay lives in the repo
 
