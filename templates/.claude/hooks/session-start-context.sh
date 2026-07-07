@@ -24,9 +24,16 @@ if [ -f docs/decisions/_index.md ]; then
 fi
 
 # Staleness check: warn if the last commit is >1 working day newer
-# than the last commit touching CURRENT_STATUS.md.
+# than the last CURRENT_STATUS.md update. Tracked file (solo mode):
+# compare git histories. Untracked file (per-developer team mode, see
+# adrs/process/current-status-per-developer.md): use file mtime.
 if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
-  last_status=$(git log -1 --format=%ct -- docs/CURRENT_STATUS.md 2>/dev/null)
+  if git ls-files --error-unmatch docs/CURRENT_STATUS.md >/dev/null 2>&1; then
+    last_status=$(git log -1 --format=%ct -- docs/CURRENT_STATUS.md 2>/dev/null)
+  else
+    last_status=$(stat -f %m docs/CURRENT_STATUS.md 2>/dev/null \
+      || stat -c %Y docs/CURRENT_STATUS.md 2>/dev/null)
+  fi
   last_commit=$(git log -1 --format=%ct 2>/dev/null)
   if [ -n "${last_commit:-}" ] && [ "${last_commit:-0}" -gt $(( ${last_status:-0} + 86400 )) ]; then
     echo "WARNING — CONTEXT MAY BE STALE: the newest commit is more than a"

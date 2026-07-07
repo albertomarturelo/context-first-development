@@ -30,6 +30,13 @@ esac
 staged=$(git diff --cached --name-only 2>/dev/null || true)
 [ -n "$staged" ] || exit 0
 
+# Per-developer mode (teams): CURRENT_STATUS.md is untracked by design
+# (adrs/process/current-status-per-developer.md). The same-commit rule
+# only applies when the file is tracked.
+if ! git ls-files --error-unmatch docs/CURRENT_STATUS.md >/dev/null 2>&1; then
+  exit 0
+fi
+
 code_staged=$(printf '%s\n' "$staged" \
   | grep -v '^docs/' | grep -v '^\.claude/' | grep -c . || true)
 status_staged=$(printf '%s\n' "$staged" \

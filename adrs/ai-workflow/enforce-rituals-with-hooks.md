@@ -49,7 +49,10 @@ slash commands as the source of truth:
 
 Hooks are agent-specific (layer 1–2 ships for Claude Code); the CI
 layer is agent-agnostic. Teams on other agents keep the commands and
-the CI check and lose only the local automation.
+the CI check and lose only the local automation. When
+`CURRENT_STATUS.md` is untracked (per-developer mode, see
+[current-status-per-developer](../process/current-status-per-developer.md)),
+layers 2–3 skip themselves and layer 1 falls back to file mtime.
 
 ## Alternatives Considered
 

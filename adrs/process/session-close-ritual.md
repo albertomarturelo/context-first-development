@@ -31,8 +31,11 @@ Every session ends with the `/session:close` ritual:
 2. **Update `docs/CONVENTIONS.md`** if any convention was clarified.
 3. **Write an ADR** if any significant decision was made informally
    during the session.
-4. **Stage all `docs/` changes in the SAME commit/PR** as the code
-   changes. Context updates ship with code, not separately.
+4. **Stage all tracked `docs/` changes in the SAME commit/PR** as the
+   code changes. Context updates ship with code, not separately. In
+   per-developer mode ([current-status-per-developer](current-status-per-developer.md))
+   the status file is untracked: this rule covers `CONVENTIONS.md`
+   and ADRs, and the tracker issue carries the shared progress.
 
 The ritual is **non-negotiable**. If a session ends without it, the next
 session starts with stale context — and you'll feel it.
@@ -52,10 +55,11 @@ session starts with stale context — and you'll feel it.
 A reader can confirm this ADR is being followed if:
 
 - `git log -1 --format=%ar -- docs/CURRENT_STATUS.md` is never older
-  than the last working day during active development.
+  than the last working day during active development (solo mode; in
+  per-developer mode check the local file's mtime instead).
 - Every PR that touches `src/` also touches
-  `docs/CURRENT_STATUS.md`. A CI check can WARN (not block) when this
-  is not true.
+  `docs/CURRENT_STATUS.md` when the file is tracked. A CI check can
+  WARN (not block) when this is not true.
 
 ## Trade-offs
 

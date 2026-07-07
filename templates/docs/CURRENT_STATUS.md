@@ -32,9 +32,11 @@ Update discipline:
 - `git log -1 --format=%ar -- docs/CURRENT_STATUS.md` should never read
   older than the last working day during active development.
 
-Teams of 2+: because every PR touches this file, a single shared list
-becomes a merge-conflict magnet. Split "In Progress" into one
-subsection per person (### <name>), keep the rest shared, and compact
-"Recently Completed" weekly. Conflicts then stay inside each person's
-own subsection.
+Teams of 2+: take this file OUT of version control
+(`echo docs/CURRENT_STATUS.md >> .gitignore`). Each developer keeps a
+personal local copy for session continuity; shared in-flight state
+lives in the tracker (issues, milestones, assignees). A single shared
+status file is a merge-conflict magnet and injects everyone else's WIP
+into your session start. Solo developers keep it tracked — it doubles
+as a session log. See adrs/process/current-status-per-developer.md.
 -->

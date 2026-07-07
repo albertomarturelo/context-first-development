@@ -87,7 +87,8 @@ The templates ship a mechanical layer underneath them:
 - **`SessionStart` hook** — injects `CURRENT_STATUS.md` + the decisions
   index automatically and warns when the context looks stale.
 - **Commit-time guard** — blocks a `git commit` that stages code without
-  staging `docs/CURRENT_STATUS.md` (escape hatch: `[skip-status]`).
+  staging `docs/CURRENT_STATUS.md` (escape hatch: `[skip-status]`;
+  skips itself in per-developer mode, where the file is untracked).
 - **CI warn** — annotates (never blocks) PRs that change code without a
   status update. Agent-agnostic.
 
@@ -156,6 +157,15 @@ and PR review against context.
 The principle is tracker-agnostic. Linear, Jira, Asana — all valid if
 their CLI supports `create`, `view`, `list --milestone`, and `edit`.
 The body template stays the same; only the CLI changes.
+
+**Teams of 2+:** `docs/CURRENT_STATUS.md` leaves version control and
+becomes per-developer (`.gitignore` it). The tracker is the only
+shared in-flight state; the status file is each developer's private
+session-continuity memory. A single committed status file is a
+merge-conflict magnet and injects everyone else's WIP into your
+session start. Solo developers keep it tracked — it doubles as a
+session log. See
+[`adrs/process/current-status-per-developer.md`](adrs/process/current-status-per-developer.md).
 
 ## The 6 principles (one-liner each)
 

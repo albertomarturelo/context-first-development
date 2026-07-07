@@ -679,7 +679,7 @@ docs/
 Additional team rules:
 
 1. **ADRs require review** — like code, decisions are reviewed in PRs.
-2. **CURRENT_STATUS.md is updated in the PR** — not in a separate commit.
+2. **CURRENT_STATUS.md leaves version control and becomes per-developer** — `.gitignore` it; each developer keeps a personal local copy for session continuity. A single shared status file is a merge-conflict magnet (every PR touches it) and pollutes each developer's session start with everyone else's in-flight state. Shared "who is doing what" lives in the tracker (issues, milestones, assignees), not in a status file. Solo developers keep the file tracked — for one person it doubles as a session log.
 3. **Slash commands are shared** — `.claude/commands/` lives in the repository.
 4. **Each member can have local preferences** — `~/.claude/CLAUDE.md` for personal configuration that doesn't affect the team.
 

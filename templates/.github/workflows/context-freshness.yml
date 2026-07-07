@@ -17,6 +17,13 @@ jobs:
 
       - name: Warn if code changed without a CURRENT_STATUS update
         run: |
+          # Per-developer mode (teams): CURRENT_STATUS.md is untracked
+          # by design (adrs/process/current-status-per-developer.md) —
+          # nothing to check.
+          if ! git ls-files --error-unmatch docs/CURRENT_STATUS.md >/dev/null 2>&1; then
+            echo "docs/CURRENT_STATUS.md is untracked (per-developer mode) — skipping."
+            exit 0
+          fi
           changed=$(git diff --name-only "origin/${{ github.base_ref }}"...HEAD)
           code=$(echo "$changed" | grep -v '^docs/' | grep -c . || true)
           status=$(echo "$changed" | grep -c '^docs/CURRENT_STATUS\.md$' || true)
