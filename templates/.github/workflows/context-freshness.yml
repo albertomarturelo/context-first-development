@@ -1,0 +1,32 @@
+# WARN-only companion to the session-close ritual
+# (adrs/process/session-close-ritual.md): every PR that changes code
+# should also update docs/CURRENT_STATUS.md. This check warns — it
+# never blocks. Agent-agnostic: works whatever tool wrote the code.
+name: Context freshness
+
+on:
+  pull_request:
+
+jobs:
+  current-status-freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Warn if code changed without a CURRENT_STATUS update
+        run: |
+          # Per-developer mode (teams): CURRENT_STATUS.md is untracked
+          # by design (adrs/process/current-status-per-developer.md) —
+          # nothing to check.
+          if ! git ls-files --error-unmatch docs/CURRENT_STATUS.md >/dev/null 2>&1; then
+            echo "docs/CURRENT_STATUS.md is untracked (per-developer mode) — skipping."
+            exit 0
+          fi
+          changed=$(git diff --name-only "origin/${{ github.base_ref }}"...HEAD)
+          code=$(echo "$changed" | grep -v '^docs/' | grep -c . || true)
+          status=$(echo "$changed" | grep -c '^docs/CURRENT_STATUS\.md$' || true)
+          if [ "${code:-0}" -gt 0 ] && [ "${status:-0}" -eq 0 ]; then
+            echo "::warning::This PR changes code but not docs/CURRENT_STATUS.md. Per the session-close ritual, context updates ship with code — update it or state why it isn't needed."
+          fi

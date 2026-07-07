@@ -29,6 +29,13 @@ Do **NOT** read source code files yet. The point of this command is to
 orient yourself in O(1k) tokens, not O(50k). Source code reading happens
 after the focus is chosen.
 
+If `docs/CURRENT_STATUS.md` does not exist (fresh clone in
+per-developer mode — the file is `.gitignore`d for teams, see
+`adrs/process/current-status-per-developer.md`), create it from
+`templates/docs/CURRENT_STATUS.md` (or a minimal stub) and populate
+"In Progress" from the tracker issues assigned to the user
+(`gh issue list --assignee @me`), then continue.
+
 If `docs/CURRENT_STATUS.md` was last updated more than 1 working day ago,
 warn the user that the context may be stale before proceeding.
 

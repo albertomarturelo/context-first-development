@@ -50,7 +50,8 @@ Case studies are first-person accounts of adopting CFD. They require:
   in your own repo's `docs/decisions/`, not in this catalog.
 - "Awesome list" entries pointing to other CFD-adjacent tools —
   `METHODOLOGY.md` already covers the landscape.
-- Translations of the gist — the gist is English by Principle 5.
+- Translations of the essay — model-facing artifacts are English by
+  Principle 5.
 
 ## Governance
 

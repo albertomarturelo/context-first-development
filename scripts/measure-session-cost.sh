@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 # Measure the token cost of /session:start (CFD-style index reads)
-# vs the cost of scanning the whole project to "have full context".
+# vs the cost of reading every file in the project.
+#
+# HONEST FRAMING: Scenario B is an UPPER BOUND, not what a modern
+# agent actually does. Real agents explore selectively (glob + grep +
+# targeted reads), typically far below the full-scan number — and
+# still recover none of the "why" (rejected alternatives, conventions,
+# in-flight state). Use the ratio as a ceiling; measure CFD's real
+# payoff with the per-session metrics in the methodology essay
+# (re-explanation rate, time-to-first-correct-action).
 #
 # Usage:
 #   bash scripts/measure-session-cost.sh [project-dir]
@@ -44,9 +52,8 @@ cfd_tokens=$((cfd_total / 4))
 printf "  %-44s %6d bytes  ≈ %5d tokens\n" "TOTAL (A)" "$cfd_total" "$cfd_tokens"
 echo ""
 
-# Scenario B: scan everything the agent would need to read to
-# honestly answer "do you have full context?" without CFD indices.
-echo "=== Scenario B — scan everything ==="
+# Scenario B: read every file — the upper bound on no-CFD orientation.
+echo "=== Scenario B — read everything (upper bound) ==="
 all_files=$(find . -type f \
   \( -name "*.ts"  -o -name "*.tsx"  -o -name "*.js"   -o -name "*.jsx" \
      -o -name "*.py" -o -name "*.go" -o -name "*.rs"  -o -name "*.kt" \
@@ -86,6 +93,11 @@ if [ "$cfd_tokens" -gt 0 ]; then
   printf "  tokens saved        = %s%%\n" "$savings"
   echo ""
   echo "Methodology: bytes/4 ≈ tokens (conservative). Real tokenizers"
-  echo "give 3.0–4.5 chars/token depending on content. The ratio is"
-  echo "the headline; the absolute numbers are approximations."
+  echo "give 3.0–4.5 chars/token depending on content."
+  echo ""
+  echo "Read the ratio as a CEILING: a real agent explores selectively"
+  echo "and lands well below Scenario B — but selective exploration"
+  echo "recovers the WHAT, never the WHY (decisions, conventions,"
+  echo "in-flight state). CFD's real payoff is adherence; measure it"
+  echo "with the essay's per-session metrics."
 fi

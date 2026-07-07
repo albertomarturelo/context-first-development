@@ -43,6 +43,7 @@ cp adrs/architecture/repository-pattern.md \
 - [Work units live in an external tracker with a fixed body template](process/work-units-as-external-tracker.md)
 - [Trunk-based workflow with release-candidate branches](process/trunk-based-with-release-candidates.md)
 - [Review the PR against context, not the code](process/pr-review-against-context.md)
+- [CURRENT_STATUS is per-developer, out of version control](process/current-status-per-developer.md)
 
 ### AI Workflow
 
@@ -51,6 +52,8 @@ cp adrs/architecture/repository-pattern.md \
 - [Slash commands vs Claude Skills — both are valid](ai-workflow/slash-commands-vs-skills.md)
 - [Short sessions over long ones](ai-workflow/short-sessions-over-long.md)
 - [Distribute CFD commands as an optional plugin](ai-workflow/distribute-commands-as-plugin.md)
+- [Enforce rituals with hooks and CI, not discipline](ai-workflow/enforce-rituals-with-hooks.md)
+- [One loop, with the developer as orchestrator](ai-workflow/single-loop-human-orchestrator.md)
 
 ## Contributing
 

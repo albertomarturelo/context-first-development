@@ -21,8 +21,13 @@ Before this session ends, do ALL of the following. Do not skip any step.
    review, in passing), propose creating an ADR via `/decision:new`
    before closing.
 
-4. **Stage all `docs/` changes in the SAME commit/PR as the session's
-   code changes.** Context updates ship with code, not after.
+4. **Stage all TRACKED `docs/` changes in the SAME commit/PR as the
+   session's code changes.** Context updates ship with code, not
+   after. In per-developer mode (teams — `CURRENT_STATUS.md` is
+   `.gitignore`d, see `adrs/process/current-status-per-developer.md`)
+   this applies to `CONVENTIONS.md` and ADRs only; the status file
+   stays local. Also make sure the tracker issue reflects the
+   session's progress — in team mode the tracker IS the shared state.
 
 Do NOT close the session without completing step 1.
 
