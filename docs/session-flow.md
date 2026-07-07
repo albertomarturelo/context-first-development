@@ -256,6 +256,6 @@ sequenceDiagram
 
 - [`adrs/_index.md`](../adrs/_index.md) — the shareable ADR catalog.
 - [`templates/`](../templates/) — the slash commands referenced above.
-- [`case-studies/nemo-cli.md`](../case-studies/nemo-cli.md) — a real
+- [`case-studies/sii.md`](../case-studies/sii.md) — a real
   project running these flows.
 - [`METHODOLOGY.md`](../METHODOLOGY.md) — the canonical essay.

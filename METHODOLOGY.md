@@ -46,8 +46,9 @@ It didn't always — v1 kept the essay in the gist and this file was a
 pointer, on Single Source of Truth grounds. In practice the pointer
 inverted the principle: the canonical artifact was the one place that
 couldn't take PRs, wasn't versioned with the catalog it governs, and
-couldn't be read by an agent inside an adopting repo. The first real
-adopter ([nemo-cli](case-studies/nemo-cli.md)) had to vendor the essay
+couldn't be read by an agent inside an adopting repo. An early
+adopter (`nemo-cli`, the Python predecessor of the
+[sii case study](case-studies/sii.md)) had to vendor the essay
 to work around it. SSOT means one authoritative copy — and that copy
 belongs where the artifacts downstream of it live and version. The
 gist remains as a mirror for inbound links.

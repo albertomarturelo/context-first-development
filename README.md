@@ -28,11 +28,12 @@ time-to-first-correct-action) are defined in the methodology essay's
 Metrics section; measure those on real sessions.
 
 Real-world adopter you can click through:
-**[`nemo-cli`](case-studies/nemo-cli.md)** — production Python CLI
-built solo with CFD discipline (`CLAUDE.md` as ~80-line index, 11 ADRs
-with an explicit `002 → 004` supersession, MIT-licensed, `pyright`
-strict, ~98% line coverage). A team case study from Equifax
-(ID Watchdog Mobile) is in progress; see
+**[`sii`](case-studies/sii.md)** — a TypeScript monorepo (shared core
++ CLI + MCP server for Chile's tax authority) **born with CFD on
+day 0**: ADR-001 is the adoption decision, 21 ADRs landed in the first
+week, `CLAUDE.md`'s Critical Rules cite their backing ADRs by number,
+and the packages ship on public npm under MIT. A team case study from
+Equifax (ID Watchdog Mobile) is in progress; see
 [`case-studies/`](case-studies/).
 
 ## The 30-second pitch
