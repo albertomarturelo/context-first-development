@@ -63,22 +63,45 @@ Templates are deliberately minimal. Fill in what the agent needs to know
 about *your* project — and resist the temptation to write more. Brevity is
 the design.
 
-### Or install the commands as a plugin (Claude Code)
+### The plugin is a shortcut for the commands only — not a second install path
 
-The CFD slash commands ship as an optional Claude Code plugin, so you can
-install them without copying files:
+The `cp` above is the full setup. There is also an optional Claude Code
+plugin, but it is **not an alternative to copying** — the two cover
+different things:
+
+| What you get                                    | `cp -r templates/. .` | `/plugin install` |
+| ------------------------------------------------ | :-------------------: | :---------------: |
+| Slash commands (`session-start`, `issue-new`, …)  |          ✅           |  ✅ (`/cfd:*`)    |
+| `CLAUDE.md` + `docs/` scaffold                    |          ✅           |        ❌         |
+| Hooks + `settings.json` + freshness CI            |          ✅           |        ❌         |
+
+The plugin ships **only the slash commands**. The scaffold — which is most
+of CFD — comes from the templates regardless, so **you always copy the
+templates**; the plugin is just a one-command way to keep the *commands*
+updated from the marketplace instead of re-copying them.
 
 ```text
 /plugin marketplace add albertomarturelo/context-first-development
 /plugin install cfd@context-first-development
 ```
 
-This exposes the commands namespaced (`/cfd:session-start`,
-`/cfd:new-decision`, `/cfd:issue-start`, …). The plugin is a
-**distribution convenience, not the source of truth** — it points at the
-same portable markdown in `templates/.claude/commands/`. Teams on other
-agents copy that markdown directly and lose nothing but the installer.
-See [`adrs/ai-workflow/distribute-commands-as-plugin.md`](adrs/ai-workflow/distribute-commands-as-plugin.md).
+**Pick one channel for the commands, never both.** If you install the
+plugin, delete `.claude/commands/` from your copied templates — otherwise
+you get the same procedure twice (`/cfd:session-start` *and*
+`/session-start`), two copies that drift. The plugin is a **distribution
+convenience, not the source of truth**: its manifest points at the same
+portable markdown in `templates/.claude/commands/`, and teams on
+non-Claude agents copy that markdown directly and lose nothing but the
+installer. See
+[`adrs/ai-workflow/distribute-commands-as-plugin.md`](adrs/ai-workflow/distribute-commands-as-plugin.md).
+
+> **Commands vs Skills.** CFD ships its procedures as slash commands, not
+> Claude Skills — this repo contains no `SKILL.md`. Skills are a valid
+> alternative an adopter can choose *per procedure* (the model discovers
+> and fires them), but pick one primitive per procedure: a command **or** a
+> skill for `session-start`, never both, or the procedure runs from two
+> places. See
+> [`adrs/ai-workflow/slash-commands-vs-skills.md`](adrs/ai-workflow/slash-commands-vs-skills.md).
 
 ### The enforcement layer (hooks + CI)
 
