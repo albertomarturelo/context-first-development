@@ -487,35 +487,47 @@ GitHub CLI (`gh`) is a fundamental piece of CFD because it connects repository c
 
 ### Issues as Work Units
 
-```bash
-# Create an issue with full context
-gh issue create \
-  --title "Implement notification repository" \
-  --body "## Context
-See ADR-012 for the notification system decision.
+Context, decisions and in-flight state live in the repository. **Tasks do not.** They live in a persistent, agent-readable tracker — canonically GitHub Issues — with a **fixed body template** so that any session can parse a work unit at constant token cost instead of reverse-engineering it from a prose description.
 
-## Acceptance Criteria
-- [ ] NotificationRepository interface in domain layer
-- [ ] PostgreSQL implementation in data layer
-- [ ] Unit tests for repository implementation
-- [ ] Integration test with test database
+The template is not a suggestion; `/issue:start` parses by section header, so the section names and their order are part of the contract:
 
-## References
-- ADR-012: docs/decisions/012-notification-system.md
-- Pattern reference: src/users/domain/user_repository" \
-  --label "feature,notifications"
+```markdown
+## Context
+What triggered this, and what the user-visible outcome is.
+
+## Target
+- Files / dirs: src/notifications/domain/notification-repository.ts (new file)
+- Pattern to mirror: src/users/domain/user-repository.ts
+
+## ADRs to load
+- [ADR-012](docs/decisions/012-notification-system.md)
+
+## Acceptance criteria
+- [ ] NotificationRepository interface in the domain layer
+- [ ] PostgreSQL implementation in the data layer
+- [ ] Integration test against a real test database
+
+## Estimated sessions
+1
 ```
 
-When starting a session to work on this issue:
+Four of those sections carry most of the weight. **Target** tells the agent where the work goes, so it stops hunting. **Pattern to mirror** names an existing file to copy in shape and naming — one skim replaces a paragraph of conventions. **ADRs to load** is a pre-reading list, so the session opens with the right constraints already in scope instead of discovering them halfway through. And **Estimated sessions** is a tripwire: anything above `1` must be decomposed into sub-issues *before* work starts, because a task that cannot fit in one session cannot be handed off cleanly either.
+
+You don't write this by hand. `/issue:new` interviews you for each field, refuses to continue if a decision the task depends on isn't an ADR yet — it sends you to `/decision:new` first — and then creates the issue:
 
 ```bash
-# View the issue with all its context
-gh issue view 42
-
-# Inside Claude Code, link the session to the issue
-> I'm working on issue #42. Read the issue description with
-  `gh issue view 42` and the referenced ADR before starting.
+> /issue:new
 ```
+
+Picking the work up is the mirror image:
+
+```bash
+> /issue:start 42
+```
+
+That command fetches the issue, refuses to proceed if a required section is missing rather than guessing, reads the listed ADRs, skims the pattern file for shape, and reads target files **only** when they already exist and will be modified. And if `docs/CURRENT_STATUS.md` already references an in-progress issue, `/session:start` loads it for you — the two entry points converge on the same readiness state.
+
+The principle is tracker-agnostic. Linear, Jira and Asana all qualify if their CLI can create, view, list by milestone, and edit. The body template stays; only the CLI changes.
 
 ### Pull Requests with Traceable Context
 
