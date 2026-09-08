@@ -14,7 +14,7 @@ ADRs, examples, case studies.
 
 - **Canonical methodology:**
   [`context-first-development.md`](context-first-development.md) (single
-  source of truth; a gist mirror exists for link stability).
+  source of truth; the old gist is a pointer here, not a copy).
   [`METHODOLOGY.md`](METHODOLOGY.md) is the navigable map.
 - **Templates:** `templates/` — drop-in scaffolding any project can copy.
 - **Shareable ADR catalog:** [`adrs/_index.md`](adrs/_index.md).
@@ -38,8 +38,8 @@ ADRs, examples, case studies.
   essay).
 - **No duplication of the essay's prose** in any other file of this
   repo. `context-first-development.md` is the single authoritative
-  copy; everything else links to it. The gist is a mirror — never edit
-  the gist first.
+  copy; everything else links to it. The old gist holds a pointer and no
+  prose — never restore the essay into it, and never edit it first.
 - **Templates are model-agnostic.** Use `CLAUDE.md` as the canonical
   filename but explicitly support `AGENTS.md` (symlink or duplicate).
   Slash commands are written in plain prose, not Claude-specific DSL.
