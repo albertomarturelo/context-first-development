@@ -173,12 +173,17 @@ Practical rule: code, file names, ADRs, context documents, and CLAUDE.md are wri
 
 Repetitive context maintenance tasks are automated through custom slash commands. You don't depend on someone "remembering" to update a document — the agent itself executes commands that generate and update context.
 
-Examples of commands that CFD defines:
+The commands CFD ships:
+- `/session:start` — Orient in ~1k tokens from the status file and the decision index
+- `/session:close` — Update status, capture corrections, stage docs with the code
 - `/project:init` — Initialize the context structure in an existing project
-- `/project:status` — Generate a summary of the current project state
 - `/decision:new` — Create a new ADR from a discussion
-- `/context:validate` — Verify that context is complete and consistent
-- `/session:start` — Session start routine with context loading
+- `/issue:new` — Create a self-sufficient work unit in the tracker
+- `/issue:start` — Load an issue and its ADRs as the focus of the session
+- `/review:pr` — Review a PR against ADRs, conventions and acceptance criteria
+- `/context:validate` — Audit context integrity and report PASS/WARN/FAIL
+
+A command still depends on someone invoking it, and a ritual that survives only on discipline is the first thing dropped under deadline pressure. So the commands are backed by a mechanical layer: a `SessionStart` hook that injects the status file and the decision index automatically, a commit-time guard that refuses to stage code without staging the status update, and a CI check that annotates — never blocks — a pull request that changes code without touching context. The commands stay the portable source of truth; the hooks are the enforcement.
 
 ---
 
@@ -201,12 +206,19 @@ project-root/
 │       ├── 003-auth-strategy.md
 │       └── ...
 ├── .claude/
-│   └── commands/
-│       ├── init.md                    # /project:init
-│       ├── status.md                  # /project:status
-│       ├── new-decision.md            # /decision:new
-│       ├── validate-context.md        # /context:validate
-│       └── start-session.md           # /session:start
+│   ├── commands/
+│   │   ├── session-start.md           # /session:start
+│   │   ├── session-close.md           # /session:close
+│   │   ├── project-init.md            # /project:init
+│   │   ├── new-decision.md            # /decision:new
+│   │   ├── issue-new.md               # /issue:new
+│   │   ├── issue-start.md             # /issue:start
+│   │   ├── review-pr.md               # /review:pr
+│   │   └── validate-context.md        # /context:validate
+│   ├── hooks/
+│   │   ├── session-start-context.sh   # injects status + decisions
+│   │   └── guard-commit-context.sh    # blocks code staged without status
+│   └── settings.json
 └── src/                               # (or lib/, app/, etc.)
     ├── feature-a/
     │   └── CLAUDE.md                  # Module-specific context
@@ -225,20 +237,12 @@ This is the entry point. The model reads it automatically when starting a sessio
 ## What This Project Does
 [2-3 sentences. What problem does it solve? Who uses it?]
 
-## Architecture
-@docs/ARCHITECTURE.md
-
-## Tech Stack
-@docs/STACK.md
-
-## Conventions
-@docs/CONVENTIONS.md
-
-## Current Status
-@docs/CURRENT_STATUS.md
-
-## Key Decisions
-@docs/decisions/_index.md
+## Context Map (read on demand, not upfront)
+- Architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- Tech stack: [docs/STACK.md](docs/STACK.md)
+- Conventions: [docs/CONVENTIONS.md](docs/CONVENTIONS.md)
+- Current status: [docs/CURRENT_STATUS.md](docs/CURRENT_STATUS.md)
+- Decisions index: [docs/decisions/_index.md](docs/decisions/_index.md)
 
 ## Build & Run
 - Install: `[command]`
@@ -247,12 +251,19 @@ This is the entry point. The model reads it automatically when starting a sessio
 - Lint: `[command]`
 
 ## Critical Rules
+- Read `docs/CONVENTIONS.md` before writing or editing code — not at
+  session start, at first-edit time.
 - [Rule 1: e.g., "Never modify the migration files directly"]
 - [Rule 2: e.g., "All API endpoints must have integration tests"]
-- [Rule 3: e.g., "Use the repository pattern for data access"]
+
+## When Context and Code Disagree
+Precedence: **code is the truth about WHAT the system does; ADRs are the
+truth about WHY; `docs/` describes both and can go stale.** If a document
+contradicts the code, STOP and flag the conflict — do not silently trust
+the document, and do not "fix" correct code to match a stale one.
 ```
 
-The `@docs/ARCHITECTURE.md` syntax is a reference that Claude Code resolves automatically. This keeps the root file compact while allowing depth exploration.
+**Use plain Markdown links here, not `@path` references.** In Claude Code an `@path` inside `CLAUDE.md` is an *eager import*: the entire referenced file is injected into context at the start of every session. Writing `@docs/ARCHITECTURE.md` in the root file does not keep it compact — it silently turns the index back into the encyclopedia, which is exactly what Principle 3 exists to prevent. Links are lazy: the agent follows one only when the work requires it, and `/session:start` performs the two orientation reads explicitly.
 
 ### ARCHITECTURE.md
 
@@ -347,22 +358,26 @@ gh issue list --label "in-progress"
 claude
 
 # 4. Inside Claude, run the start routine
-> /project:status
+> /session:start
 ```
 
-The slash command `/project:status` is defined in `.claude/commands/status.md`:
+The slash command `/session:start` is defined in `.claude/commands/session-start.md`:
 
 ```markdown
-Review the current project status by reading the following files in order:
-1. docs/CURRENT_STATUS.md - What's in progress and what's blocked
+Read the following files in order, then produce a brief summary:
+1. docs/CURRENT_STATUS.md - What's in progress, blocked, and next
 2. docs/decisions/_index.md - Recent decisions that might affect current work
 
-Then provide a brief summary of:
-- What was being worked on
+Then state:
+- What was being worked on at the last session close
 - What's blocked and why
-- What should be the focus of this session
+- What should be the focus of THIS session
 
-Do NOT read source code files unless specifically needed to answer the above.
+If CURRENT_STATUS.md references an in-progress issue by number, also run
+`gh issue view <n>` and surface its title and acceptance criteria.
+
+Do NOT read source code files yet. Orient in O(1k) tokens, not O(50k).
+Source code reading happens after the focus is chosen.
 ```
 
 This command consumes ~500-800 tokens instead of the 10,000-50,000 that scanning source code would cost. **That's the difference between a sustainable workflow and one that burns through your API budget.**
@@ -448,14 +463,14 @@ Now the convention is persisted. Next session, the model reads it automatically.
 Before closing the session, the agent updates the project status. This is **non-negotiable** in CFD.
 
 ```bash
-# Update project status
-> Update docs/CURRENT_STATUS.md with what was accomplished in this session,
-  what's still pending, and any blockers discovered. Keep the same format.
+# Run the close routine
+> /session:close
 
 # If there are changes to commit
-> /commit  # or manually:
 gh pr create --title "feat: notification repository" --body "..."
 ```
+
+`/session:close` updates `docs/CURRENT_STATUS.md`, captures any correction you made during the session as a rule in `docs/CONVENTIONS.md`, proposes ADRs for decisions that were taken informally, and stages the documentation in the **same** commit as the code — so context and code can never land separately.
 
 The session close produces a diff in `CURRENT_STATUS.md` that is essentially a **session log**. This creates natural traceability:
 
@@ -607,7 +622,7 @@ If your CLAUDE.md has more than 150 lines, it's already broken. Use `@references
 # docs/decisions/002.md says "we chose PostgreSQL"
 
 # ✅ GOOD: Single source, cross-references
-# CLAUDE.md: @docs/STACK.md
+# CLAUDE.md: link to docs/STACK.md from the Context Map
 # docs/STACK.md: "Database: PostgreSQL 16 (see ADR-002)"
 # docs/decisions/002.md: [source of truth with full context]
 ```
@@ -723,7 +738,9 @@ The model reads the nearest CLAUDE.md to the current working directory, with inh
 
 ## Metrics: How to Know if CFD is Working
 
-CFD is not dogma — it's a measurable practice. These are the metrics that matter:
+CFD is not dogma — it's a measurable practice. Before the numbers, though, be clear about which one matters.
+
+**The primary payoff is adherence, not tokens**: code that respects your conventions on the first attempt, decisions that don't get re-litigated, corrections that never repeat. Token savings are real and welcome, but they are a side effect. Modern agents don't naively scan whole repositories — they search, and they search well. What they cannot search for is the *why*: the rejected alternatives, the conventions, the in-flight state. That is what CFD persists. If you adopt CFD to save tokens, you are optimizing the wrong variable; the honest measures are re-explanation rate and time to first correct action, below.
 
 ### Tokens Per Productive Session
 
