@@ -25,8 +25,9 @@ for link stability; when the two differ, the repo wins.
 - **GitHub CLI integration** — issues, PRs, reviews, validation workflows.
 - **Anti-patterns** — six explicit failure modes.
 - **Scaling** — solo → team → monorepo.
-- **Metrics** — tokens/session, time-to-first-correct-action,
-  re-explanation rate, status freshness.
+- **Metrics** — adherence first (re-explanation rate,
+  time-to-first-correct-action), then tokens/session and status
+  freshness.
 - **Complementary tools** — Repomix, `gh` CLI.
 - **Case study** — implementing CFD in an existing project.
 - **Conclusion** — context is the competitive advantage.
