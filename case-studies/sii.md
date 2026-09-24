@@ -97,6 +97,18 @@ session. `sii` predates that guidance; its docs are small enough that
 the eager load stays cheap, but new adopters should start from the
 current template.
 
+**Enforcement held; discovery failed.** An external contributor
+opened a PR using a non-Claude agent running on a server. That agent
+never found the ADR structure: `sii` exposed only `CLAUDE.md`, and the
+contributor's own question was whether `AGENTS.md` was missing a
+reference. The CI context check rejected the PR until the ADR followed
+the template — the method was enforced on an agent that never read it,
+which is the case for
+[enforcing rituals with CI](../adrs/ai-workflow/enforce-rituals-with-hooks.md).
+But enforcement without discovery costs a review round-trip. The
+template now ships `AGENTS.md` as a symlink to `CLAUDE.md` by default,
+so any agent finds the index before it writes code.
+
 ## How to read this case study
 
 1. Open [`docs/decisions/_index.md`](https://github.com/albertomarturelo/sii/blob/main/docs/decisions/_index.md).

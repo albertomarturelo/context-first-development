@@ -52,7 +52,7 @@ Equifax (ID Watchdog Mobile) is in progress; see
 ```bash
 # In an existing repo:
 git clone https://github.com/albertomarturelo/context-first-development.git /tmp/cfd
-cp -r /tmp/cfd/templates/. .
+cp -R /tmp/cfd/templates/. .   # -R keeps the AGENTS.md symlink on macOS
 
 # Edit CLAUDE.md and fill in your project's 2–3 sentence description.
 # Open your agent (claude / gemini / codex / cursor) and run:
@@ -69,7 +69,7 @@ The `cp` above is the full setup. There is also an optional Claude Code
 plugin, but it is **not an alternative to copying** — the two cover
 different things:
 
-| What you get                                    | `cp -r templates/. .` | `/plugin install` |
+| What you get                                    | `cp -R templates/. .` | `/plugin install` |
 | ------------------------------------------------ | :-------------------: | :---------------: |
 | Slash commands (`session-start`, `issue-new`, …)  |          ✅           |  ✅ (`/cfd:*`)    |
 | `CLAUDE.md` + `docs/` scaffold                    |          ✅           |        ❌         |
@@ -91,7 +91,7 @@ you get the same procedure twice (`/cfd:session-start` *and*
 `/session-start`), two copies that drift. The plugin is a **distribution
 convenience, not the source of truth**: its manifest points at the same
 portable markdown in `templates/.claude/commands/`, and teams on
-non-Claude agents copy that markdown directly and lose nothing but the
+other agents copy that markdown directly and lose nothing but the
 installer. See
 [`adrs/ai-workflow/distribute-commands-as-plugin.md`](adrs/ai-workflow/distribute-commands-as-plugin.md).
 
@@ -158,8 +158,9 @@ pyproject.toml, Cargo.toml, go.mod, …) and the README. Then create:
    LINKS to the docs above (links, NOT @imports — imports load
    eagerly and defeat the index), build/test/lint commands, and the
    full "Standing rules" section below copied VERBATIM so every
-   future session inherits this workflow. If the team uses
-   non-Claude agents too, also create AGENTS.md as a copy or symlink.
+   future session inherits this workflow. Then create AGENTS.md as
+   a symlink to it (`ln -s CLAUDE.md AGENTS.md`) — never a copy, a
+   copy drifts — so agents other than Claude Code find the same index.
 
 ## Step 2 — Standing rules (copy into CLAUDE.md; follow from now on)
 

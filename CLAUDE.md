@@ -41,7 +41,8 @@ ADRs, examples, case studies.
   copy; everything else links to it. The gist is a mirror — never edit
   the gist first.
 - **Templates are model-agnostic.** Use `CLAUDE.md` as the canonical
-  filename but explicitly support `AGENTS.md` (symlink or duplicate).
+  filename and ship `AGENTS.md` by default (symlink). Never a
+  duplicate: a copy drifts.
   Slash commands are written in plain prose, not Claude-specific DSL.
 - **Slash commands are the canonical invocation primitive in
   `templates/`, but Claude Skills (`.claude/skills/<name>/SKILL.md`)
