@@ -29,6 +29,14 @@ checklist with PASS / WARN / FAIL per item:
    language? WARN per file.
 8. **Token budget annotations**: any template file or shareable ADR
    missing the top-of-file token-cost comment? WARN per file.
+9. **`AGENTS.md` alias**: must exist and resolve to `CLAUDE.md`
+   (`test -L AGENTS.md && [ "$(readlink AGENTS.md)" = CLAUDE.md ]`).
+   WARN if missing — agents other than Claude Code will not find the
+   index. FAIL
+   if it is a regular file whose content differs from `CLAUDE.md` — a
+   divergent copy, or a Windows checkout without `core.symlinks`, which
+   turns the link into a one-line text file. Propose replacing it with
+   `ln -sf CLAUDE.md AGENTS.md`.
 
 Output the checklist and propose concrete fixes for any failures.
 Do NOT auto-apply fixes — the user reviews first.

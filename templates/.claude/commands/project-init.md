@@ -30,7 +30,9 @@ it as the base):
    `docs/ARCHITECTURE.md` in the Decision section.
 7. `CLAUDE.md` — fill in the template, referencing the docs created
    above. Project name and 2–3 sentence description pulled from the
-   README; if no README, ask the user.
+   README; if no README, ask the user. Then create `AGENTS.md` as a
+   symlink to it (`ln -s CLAUDE.md AGENTS.md`), never a copy, so any
+   agent finds the same index.
 
 Stop after these files are written. Output a summary listing what was
 created and ask the user to review the inferred conventions and ADR-001

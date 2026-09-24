@@ -52,6 +52,7 @@ This file is the INDEX, not the encyclopedia. If you find yourself
 adding paragraphs of explanation here, move them to a docs/*.md file
 and link it from the Context Map instead.
 
-AGENTS.md is an accepted alias if your team uses non-Claude agents:
+AGENTS.md ships by default as a symlink to this file, so any agent
+finds the same index. Keep it a symlink; a copy drifts:
   ln -s CLAUDE.md AGENTS.md
 -->
