@@ -116,9 +116,28 @@ The templates ship a mechanical layer underneath them:
 - **CI warn** — annotates (never blocks) PRs that change code without a
   status update. Agent-agnostic.
 
-The hooks are Claude Code-specific; the slash commands remain the
-portable source of truth. See
+The hooks are Claude Code-specific — the local loop. CI is the layer
+that reaches every agent, including an external contributor's agent
+you never configured. The slash commands remain the portable source of
+truth. See
 [`adrs/ai-workflow/enforce-rituals-with-hooks.md`](adrs/ai-workflow/enforce-rituals-with-hooks.md).
+
+### Using CFD with other agents
+
+The index ships as `CLAUDE.md` with `AGENTS.md` symlinked to it. Most
+agents find it with no setup; two need one config line. Commands under
+`.claude/commands/` are plain prose: paste or alias them in any agent.
+
+| Agent                              | How it finds the index                                                |
+| ---------------------------------- | --------------------------------------------------------------------- |
+| Claude Code                        | `CLAUDE.md`, native                                                   |
+| Codex, Cursor, Amp, Jules, Zed     | `AGENTS.md`, native                                                   |
+| GitHub Copilot (coding agent)      | `AGENTS.md` (or root `CLAUDE.md`), native                             |
+| Gemini CLI                         | `.gemini/settings.json`: `{ "context": { "fileName": ["AGENTS.md"] } }` |
+| Aider                              | `.aider.conf.yml`: `read: AGENTS.md`                                  |
+
+Current list: [agents.md](https://agents.md/). No extra symlinks —
+every alias file is one more thing every adopter carries.
 
 ### Or paste one prompt (zero install, any agent)
 
