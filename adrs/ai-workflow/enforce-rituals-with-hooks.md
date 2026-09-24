@@ -1,4 +1,4 @@
-<!-- Shareable ADR. Token budget: ~450. -->
+<!-- Shareable ADR. Token budget: ~550. -->
 
 # ADR-`<NNN>`: Enforce Rituals with Hooks and CI, Not Discipline
 
@@ -47,9 +47,18 @@ slash commands as the source of truth:
 3. **Team backstop → CI WARN.** A workflow annotates (never blocks)
    PRs that change code without touching `CURRENT_STATUS.md`.
 
-Hooks are agent-specific (layer 1–2 ships for Claude Code); the CI
-layer is agent-agnostic. Teams on other agents keep the commands and
-the CI check and lose only the local automation. When
+The layers split by reach. Hooks (1–2) are the **local loop**: they
+run only inside the agent they are written for (Claude Code here).
+CI (3) is the **agent-agnostic guarantee**: the only layer that
+reaches an agent you do not control — a teammate's other tool, an
+external contributor's agent on a server. Evidence: in
+[sii](https://github.com/albertomarturelo/context-first-development/blob/main/case-studies/sii.md),
+a contributor's non-Claude agent never read the index, and the CI
+context check still held the ADR to the template. Alternative 2's
+objection covers in-session rituals; structural checks on artifacts in
+the PR diff (ADR sections, index sync) lose no session and may block.
+Teams on other agents keep the commands and CI and lose only the
+local automation. When
 `CURRENT_STATUS.md` is untracked (per-developer mode, see
 [current-status-per-developer](../process/current-status-per-developer.md)),
 layers 2–3 skip themselves and layer 1 falls back to file mtime.
@@ -75,6 +84,9 @@ A reader can confirm this ADR is being followed if:
   also touch source files — the same-commit rule holds in history.
 - `[skip-status]` appears rarely in `git log --grep`; frequent use
   means the guard is mis-tuned for the repo.
+- Every rule a hook enforces has a CI counterpart in
+  `.github/workflows/` (WARN or block); no rule depends on a hook
+  alone, so a PR from any agent meets the same checks.
 
 ## Trade-offs
 
