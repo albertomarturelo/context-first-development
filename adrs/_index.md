@@ -51,9 +51,10 @@ cp adrs/architecture/repository-pattern.md \
 
 - [English as the context language](ai-workflow/english-as-context-language.md)
 - [Write the ADR before implementing the decision](ai-workflow/adr-before-implementing.md)
-- [Slash commands vs Claude Skills — both are valid](ai-workflow/slash-commands-vs-skills.md)
+- [CFD procedures ship as Agent Skills, one copy for every agent](ai-workflow/agent-skills-as-procedures.md)
+- [Slash commands vs Claude Skills](ai-workflow/slash-commands-vs-skills.md) — *superseded by the entry above*
 - [Short sessions over long ones](ai-workflow/short-sessions-over-long.md)
-- [Distribute CFD commands as an optional plugin](ai-workflow/distribute-commands-as-plugin.md)
+- [Distribute CFD skills through installers, never as the source of truth](ai-workflow/distribute-commands-as-plugin.md)
 - [Enforce rituals with hooks and CI, not discipline](ai-workflow/enforce-rituals-with-hooks.md)
 - [One loop, with the developer as orchestrator](ai-workflow/single-loop-human-orchestrator.md)
 

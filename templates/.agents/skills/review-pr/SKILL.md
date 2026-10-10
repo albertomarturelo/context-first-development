@@ -1,7 +1,9 @@
 ---
-description: "Review a PR against the team's curated checklist sourced from ADRs, CONVENTIONS, the linked issue's acceptance criteria, and the PR template. Report findings; do not auto-fix."
+name: review-pr
+description: "Review a PR against the team's curated checklist sourced from ADRs, CONVENTIONS, the linked issue's acceptance criteria, and the PR template. Report findings; do not auto-fix. Use when asked to review a pull request in a CFD project."
 argument-hint: "[pr-number]"
-token-budget: "scales with the team's checklist depth, typically 3k–15k"
+metadata:
+  token-budget: "scales with the team's checklist depth, typically 3k–15k"
 ---
 
 The user passes a PR number. If not provided, infer from the current
@@ -108,5 +110,5 @@ Add more sections as your team's ADRs surface them.
 - **English only.**
 - **No silent scope expansion.** If the checklist genuinely needs a
   rule that is not yet in CONVENTIONS or an ADR, surface it as a
-  finding ("missing convention for X") and propose `/decision:new`
+  finding ("missing convention for X") and propose `/new-decision`
   before the next review.

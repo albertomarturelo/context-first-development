@@ -1,7 +1,9 @@
 ---
-description: "Close a session: update docs/CURRENT_STATUS.md, capture corrections in CONVENTIONS, propose ADRs for informal decisions, and stage docs in the same commit as the code."
+name: session-close
+description: "Close a session: update docs/CURRENT_STATUS.md, capture corrections in CONVENTIONS, propose ADRs for informal decisions, and stage docs in the same commit as the code. Invoke explicitly before ending every working session."
 disable-model-invocation: true
-token-budget: "~500–1,000"
+metadata:
+  token-budget: "~500–1,000"
 ---
 
 Before this session ends, do ALL of the following. Do not skip any step.
@@ -18,7 +20,7 @@ Before this session ends, do ALL of the following. Do not skip any step.
    corrections only in chat history — they'll be lost next session.
 
 3. **If a significant decision was made informally** (in chat, in a
-   review, in passing), propose creating an ADR via `/decision:new`
+   review, in passing), propose creating an ADR via `/new-decision`
    before closing.
 
 4. **Stage all TRACKED `docs/` changes in the SAME commit/PR as the

@@ -47,7 +47,7 @@ The fix is procedural: **restart before drift sets in**. CFD makes
 the restart cheap because context lives outside the session —
 `CURRENT_STATUS.md` (state), `CONVENTIONS.md` (rules), ADRs
 (rationale), the tracker issue (AC checklist). A fresh
-`/session:start` reaches readiness in ~1.5–3k tokens. **There is no
+`/session-start` reaches readiness in ~1.5–3k tokens. **There is no
 progress to lose.**
 
 ## Decision
@@ -86,7 +86,7 @@ defines the mechanic that makes the restart cheap; this ADR defines
 A reader can confirm this ADR is being followed if:
 
 - Sessions end at AC-item boundaries, not at exhaustion; transcripts
-  show `/session:close` firing before auto-compaction, not after.
+  show `/session-close` firing before auto-compaction, not after.
 - `docs/CURRENT_STATUS.md` shows multiple updates per day during
   active work, not one nightly mega-update.
 - PRs land in the "1 PR ≈ 1 session" cadence rather than "1 PR =

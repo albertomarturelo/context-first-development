@@ -20,7 +20,7 @@ and contradicts the prior work. The fix is procedural, not technical.
 
 ## Decision
 
-Every session ends with the `/session:close` ritual:
+Every session ends with the `/session-close` ritual:
 
 1. **Update `docs/CURRENT_STATUS.md`:**
    - Move completed items from "In Progress" to "Recently Completed".

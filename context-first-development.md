@@ -171,21 +171,21 @@ LLM tokenizers (both Anthropic's and Google's) are optimized for English. The sa
 
 Practical rule: code, file names, ADRs, context documents, and CLAUDE.md are written in English. PR comments and team communication can be in the team's language.
 
-### Principle 6: Automation Through Slash Commands
+### Principle 6: Automation Through Agent Skills
 
-Repetitive context maintenance tasks are automated through custom slash commands. You don't depend on someone "remembering" to update a document — the agent itself executes commands that generate and update context.
+Repetitive context maintenance tasks are automated as [Agent Skills](https://agentskills.io/specification): a folder with a `SKILL.md` that any skills-compatible agent loads on demand. You don't depend on someone "remembering" to update a document — the agent itself executes the procedures that generate and update context. Skills are the open standard Claude Code, Codex, GitHub Copilot and Gemini CLI all read, so one copy in `.agents/skills/` serves every agent on the team (`.claude/skills` is a symlink to it). Slash command formats still differ per agent; skills do not.
 
-The commands CFD ships:
-- `/session:start` — Orient in ~1k tokens from the status file and the decision index
-- `/session:close` — Update status, capture corrections, stage docs with the code
-- `/project:init` — Initialize the context structure in an existing project
-- `/decision:new` — Create a new ADR from a discussion
-- `/issue:new` — Create a self-sufficient work unit in the tracker
-- `/issue:start` — Load an issue and its ADRs as the focus of the session
-- `/review:pr` — Review a PR against ADRs, conventions and acceptance criteria
-- `/context:validate` — Audit context integrity and report PASS/WARN/FAIL
+The procedures CFD ships (invoked as `/name` in Claude Code and Copilot, `$name` in Codex):
+- `/session-start` — Orient in ~1k tokens from the status file and the decision index
+- `/session-close` — Update status, capture corrections, stage docs with the code
+- `/project-init` — Initialize the context structure in an existing project
+- `/new-decision` — Create a new ADR from a discussion
+- `/issue-new` — Create a self-sufficient work unit in the tracker
+- `/issue-start` — Load an issue and its ADRs as the focus of the session
+- `/review-pr` — Review a PR against ADRs, conventions and acceptance criteria
+- `/validate-context` — Audit context integrity and report PASS/WARN/FAIL
 
-A command still depends on someone invoking it, and a ritual that survives only on discipline is the first thing dropped under deadline pressure. So the commands are backed by a mechanical layer: a `SessionStart` hook that injects the status file and the decision index automatically, a commit-time guard that refuses to stage code without staging the status update, and a CI check that annotates — never blocks — a pull request that changes code without touching context. The commands stay the portable source of truth; the hooks are the enforcement.
+The session rituals are manual-only: they never fire on the model's judgement, only when the user invokes them. A manual procedure still depends on someone invoking it, and a ritual that survives only on discipline is the first thing dropped under deadline pressure. So the skills are backed by a mechanical layer: a `SessionStart` hook that injects the status file and the decision index automatically, a commit-time guard that refuses to stage code without staging the status update, and a CI check that annotates — never blocks — a pull request that changes code without touching context. The skills stay the portable source of truth; the hooks are the enforcement.
 
 ---
 
@@ -207,16 +207,18 @@ project-root/
 │       ├── 2026-01-16-database-selection.md
 │       ├── 2026-01-20-jwt-auth.md
 │       └── ...
+├── .agents/
+│   └── skills/                        # Canonical procedures, every agent
+│       ├── session-start/SKILL.md     # /session-start
+│       ├── session-close/SKILL.md     # /session-close
+│       ├── project-init/SKILL.md      # /project-init
+│       ├── new-decision/SKILL.md      # /new-decision
+│       ├── issue-new/SKILL.md         # /issue-new
+│       ├── issue-start/SKILL.md       # /issue-start
+│       ├── review-pr/SKILL.md         # /review-pr
+│       └── validate-context/SKILL.md  # /validate-context
 ├── .claude/
-│   ├── commands/
-│   │   ├── session-start.md           # /session:start
-│   │   ├── session-close.md           # /session:close
-│   │   ├── project-init.md            # /project:init
-│   │   ├── new-decision.md            # /decision:new
-│   │   ├── issue-new.md               # /issue:new
-│   │   ├── issue-start.md             # /issue:start
-│   │   ├── review-pr.md               # /review:pr
-│   │   └── validate-context.md        # /context:validate
+│   ├── skills -> ../.agents/skills    # Symlink for Claude Code
 │   ├── hooks/
 │   │   ├── session-start-context.sh   # injects status + decisions
 │   │   └── guard-commit-context.sh    # blocks code staged without status
@@ -265,7 +267,7 @@ contradicts the code, STOP and flag the conflict — do not silently trust
 the document, and do not "fix" correct code to match a stale one.
 ```
 
-**Use plain Markdown links here, not `@path` references.** In Claude Code an `@path` inside `CLAUDE.md` is an *eager import*: the entire referenced file is injected into context at the start of every session. Writing `@docs/ARCHITECTURE.md` in the root file does not keep it compact — it silently turns the index back into the encyclopedia, which is exactly what Principle 3 exists to prevent. Links are lazy: the agent follows one only when the work requires it, and `/session:start` performs the two orientation reads explicitly.
+**Use plain Markdown links here, not `@path` references.** In Claude Code an `@path` inside `CLAUDE.md` is an *eager import*: the entire referenced file is injected into context at the start of every session. Writing `@docs/ARCHITECTURE.md` in the root file does not keep it compact — it silently turns the index back into the encyclopedia, which is exactly what Principle 3 exists to prevent. Links are lazy: the agent follows one only when the work requires it, and `/session-start` performs the two orientation reads explicitly.
 
 ### ARCHITECTURE.md
 
@@ -360,10 +362,10 @@ gh issue list --label "in-progress"
 claude
 
 # 4. Inside Claude, run the start routine
-> /session:start
+> /session-start
 ```
 
-The slash command `/session:start` is defined in `.claude/commands/session-start.md`:
+The skill `/session-start` is defined in `.agents/skills/session-start/SKILL.md`:
 
 ```markdown
 Read the following files in order, then produce a brief summary:
@@ -392,10 +394,10 @@ During development, the flow follows a disciplined pattern:
 
 ```bash
 # If a significant technical decision arises
-> /decision:new
+> /new-decision
 ```
 
-The command `/decision:new` in `.claude/commands/new-decision.md`:
+The skill `/new-decision` in `.agents/skills/new-decision/SKILL.md`:
 
 ```markdown
 I need to document a new architectural decision. Guide me through the following:
@@ -466,13 +468,13 @@ Before closing the session, the agent updates the project status. This is **non-
 
 ```bash
 # Run the close routine
-> /session:close
+> /session-close
 
 # If there are changes to commit
 gh pr create --title "feat: notification repository" --body "..."
 ```
 
-`/session:close` updates `docs/CURRENT_STATUS.md`, captures any correction you made during the session as a rule in `docs/CONVENTIONS.md`, proposes ADRs for decisions that were taken informally, and stages the documentation in the **same** commit as the code — so context and code can never land separately.
+`/session-close` updates `docs/CURRENT_STATUS.md`, captures any correction you made during the session as a rule in `docs/CONVENTIONS.md`, proposes ADRs for decisions that were taken informally, and stages the documentation in the **same** commit as the code — so context and code can never land separately.
 
 The session close produces a diff in `CURRENT_STATUS.md` that is essentially a **session log**. This creates natural traceability:
 
@@ -491,7 +493,7 @@ GitHub CLI (`gh`) is a fundamental piece of CFD because it connects repository c
 
 Context, decisions and in-flight state live in the repository. **Tasks do not.** They live in a persistent, agent-readable tracker — canonically GitHub Issues — with a **fixed body template** so that any session can parse a work unit at constant token cost instead of reverse-engineering it from a prose description.
 
-The template is not a suggestion; `/issue:start` parses by section header, so the section names and their order are part of the contract:
+The template is not a suggestion; `/issue-start` parses by section header, so the section names and their order are part of the contract:
 
 ```markdown
 ## Context
@@ -515,19 +517,19 @@ What triggered this, and what the user-visible outcome is.
 
 Four of those sections carry most of the weight. **Target** tells the agent where the work goes, so it stops hunting. **Pattern to mirror** names an existing file to copy in shape and naming — one skim replaces a paragraph of conventions. **ADRs to load** is a pre-reading list, so the session opens with the right constraints already in scope instead of discovering them halfway through. And **Estimated sessions** is a tripwire: anything above `1` must be decomposed into sub-issues *before* work starts, because a task that cannot fit in one session cannot be handed off cleanly either.
 
-You don't write this by hand. `/issue:new` interviews you for each field, refuses to continue if a decision the task depends on isn't an ADR yet — it sends you to `/decision:new` first — and then creates the issue:
+You don't write this by hand. `/issue-new` interviews you for each field, refuses to continue if a decision the task depends on isn't an ADR yet — it sends you to `/new-decision` first — and then creates the issue:
 
 ```bash
-> /issue:new
+> /issue-new
 ```
 
 Picking the work up is the mirror image:
 
 ```bash
-> /issue:start 42
+> /issue-start 42
 ```
 
-That command fetches the issue, refuses to proceed if a required section is missing rather than guessing, reads the listed ADRs, skims the pattern file for shape, and reads target files **only** when they already exist and will be modified. And if `docs/CURRENT_STATUS.md` already references an in-progress issue, `/session:start` loads it for you — the two entry points converge on the same readiness state.
+That command fetches the issue, refuses to proceed if a required section is missing rather than guessing, reads the listed ADRs, skims the pattern file for shape, and reads target files **only** when they already exist and will be modified. And if `docs/CURRENT_STATUS.md` already references an in-progress issue, `/session-start` loads it for you — the two entry points converge on the same readiness state.
 
 The principle is tracker-agnostic. Linear, Jira and Asana all qualify if their CLI can create, view, list by milestone, and edit. The body template stays; only the CLI changes.
 
@@ -676,7 +678,7 @@ Articles, PRs, and team communication can be in any language. Technical context 
 next session doesn't know why Redis is there
 
 # ✅ GOOD: Decision documented before implementing
-> /decision:new
+> /new-decision
 → ADR redis-caching: Use Redis for caching
 → Recorded in docs/decisions/
 → Next session reads the ADR automatically
@@ -701,13 +703,13 @@ docs/
   CURRENT_STATUS.md           # Current status (required)
   decisions/
     _index.md                 # Decision index (required)
-.claude/
-  commands/
-    start-session.md          # Session start (recommended)
-    new-decision.md           # New decision (recommended)
+.agents/
+  skills/
+    session-start/SKILL.md    # Session start (recommended)
+    new-decision/SKILL.md     # New decision (recommended)
 ```
 
-Setup time: ~30 minutes with `/project:init`.
+Setup time: ~30 minutes with `/project-init`.
 Daily overhead: ~5-8 minutes (session start + close).
 ROI: pays for itself after 3-4 work sessions.
 
@@ -727,7 +729,7 @@ Additional team rules:
 
 1. **ADRs require review** — like code, decisions are reviewed in PRs.
 2. **CURRENT_STATUS.md leaves version control and becomes per-developer** — `.gitignore` it; each developer keeps a personal local copy for session continuity. A single shared status file is a merge-conflict magnet (every PR touches it) and pollutes each developer's session start with everyone else's in-flight state. Shared "who is doing what" lives in the tracker (issues, milestones, assignees), not in a status file. Solo developers keep the file tracked — for one person it doubles as a session log.
-3. **Slash commands are shared** — `.claude/commands/` lives in the repository.
+3. **Skills are shared** — `.agents/skills/` lives in the repository, installed at project scope, so every clone and worktree runs the same procedure version.
 4. **Each member can have local preferences** — `~/.claude/CLAUDE.md` for personal configuration that doesn't affect the team.
 
 ### For Monorepos
@@ -850,7 +852,7 @@ You don't need to document everything at once. Each time you work on an area of 
 
 ```bash
 > I see we're using [pattern X] in this module.
-  Let's document this as an ADR. /decision:new
+  Let's document this as an ADR. /new-decision
 ```
 
 After 2-3 weeks of normal work, you'll have 10-15 ADRs that capture the project's most important decisions.
@@ -860,7 +862,7 @@ After 2-3 weeks of normal work, you'll have 10-15 ADRs that capture the project'
 From here, the flow is:
 
 ```
-Session start → /session:start → Work → /decision:new (if applicable) → Close → Update CURRENT_STATUS.md
+Session start → /session-start → Work → /new-decision (if applicable) → Close → Update CURRENT_STATUS.md
 ```
 
 ---

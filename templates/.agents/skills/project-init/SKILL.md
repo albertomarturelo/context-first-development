@@ -1,7 +1,9 @@
 ---
-description: "One-time bootstrap of CFD in an existing project: infer architecture/stack/conventions from structure and dependency files, then scaffold docs/ and CLAUDE.md without reading source."
+name: project-init
+description: "One-time bootstrap of CFD in an existing project: infer architecture/stack/conventions from structure and dependency files, then scaffold docs/ and CLAUDE.md without reading source. Invoke explicitly once, when adopting CFD in an existing project."
 disable-model-invocation: true
-token-budget: "<10,000 total (hard cap)"
+metadata:
+  token-budget: "<10,000 total (hard cap)"
 ---
 
 Implement Context-First Development (CFD) in this project. Do NOT read
@@ -40,5 +42,5 @@ created and ask the user to review the inferred conventions and the
 
 Hard rule: if you find yourself reading source code to "figure out the
 architecture", stop. The directory layout and dependency files are
-sufficient for a first pass. Refinement comes from `/decision:new`
+sufficient for a first pass. Refinement comes from `/new-decision`
 conversations as real work surfaces it.

@@ -20,7 +20,7 @@ is now a pointer here, kept only so inbound links still resolve.
 - **The 6 principles** — Context Before Code, SSOT, Hierarchical Context,
   Decisions as First-Class, English, Automation.
 - **Knowledge architecture** — the `docs/` + `docs/decisions/` +
-  `.claude/commands/` layout.
+  `.agents/skills/` layout.
 - **The daily routine** — session start, development, session close.
 - **GitHub CLI integration** — issues, PRs, reviews, validation workflows.
 - **Anti-patterns** — six explicit failure modes.

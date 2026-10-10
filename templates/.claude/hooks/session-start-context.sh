@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # SessionStart hook: make orientation automatic instead of remembered.
 #
-# Injects the /session:start triad (CURRENT_STATUS + decisions index)
+# Injects the /session-start triad (CURRENT_STATUS + decisions index)
 # into the agent's context at session start, plus a staleness warning
 # when the code has moved past the last CURRENT_STATUS update. stdout
 # from a SessionStart hook is added to the agent's context.
 #
 # Claude Code-specific enforcement layer. Teams on other agents rely
-# on /session:start (the command remains the portable source of truth).
+# on /session-start (the skill remains the portable source of truth).
 # See adrs/ai-workflow/enforce-rituals-with-hooks.md.
 set -uo pipefail
 

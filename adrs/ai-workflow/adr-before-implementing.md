@@ -37,7 +37,7 @@ contradict earlier global decisions.
 
 Before any qualifying change is implemented:
 
-1. Run `/decision:new`.
+1. Run `/new-decision`.
 2. Articulate Context, Decision, Alternatives Considered, Consequences.
 3. Save as `docs/decisions/YYYY-MM-DD-<slug>.md` (see
    [adr-ids-date-slug](../process/adr-ids-date-slug.md)).

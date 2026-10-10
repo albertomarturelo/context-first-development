@@ -10,8 +10,8 @@
 
 Adopt this ADR when:
 
-- Your project runs the CFD session rituals (`/session:start`,
-  `/session:close`) and you have observed them being skipped under
+- Your project runs the CFD session rituals (`/session-start`,
+  `/session-close`) and you have observed them being skipped under
   deadline pressure.
 - Your agent supports lifecycle hooks (Claude Code `settings.json`
   hooks, or an equivalent), or your repo has CI.
@@ -22,8 +22,8 @@ become the default and teach everyone to ignore the guard.
 
 ## Context
 
-CFD Principle 6 promises "automation through slash commands", but a
-slash command is automation the human must *remember to invoke* — the
+CFD Principle 6 promises automation through procedures, but a
+manually invoked skill is automation the human must *remember to invoke* — the
 same failure mode the session-close ritual ADR criticizes in ad-hoc
 updates ("predictably skipped under deadline pressure"). A ritual
 whose only enforcement is discipline degrades exactly when the
@@ -34,7 +34,7 @@ mechanism, at the moments where the workflow already stops.
 ## Decision
 
 Layer mechanical enforcement under the rituals, keeping the portable
-slash commands as the source of truth:
+skills as the source of truth:
 
 1. **Session start → hook.** A `SessionStart` hook injects
    `docs/CURRENT_STATUS.md` + `docs/decisions/_index.md` into
@@ -57,7 +57,7 @@ a contributor's non-Claude agent never read the index, and the CI
 context check still held the ADR to the template. Alternative 2's
 objection covers in-session rituals; structural checks on artifacts in
 the PR diff (ADR sections, index sync) lose no session and may block.
-Teams on other agents keep the commands and CI and lose only the
+Teams on other agents keep the skills and CI and lose only the
 local automation. When
 `CURRENT_STATUS.md` is untracked (per-developer mode, see
 [current-status-per-developer](../process/current-status-per-developer.md)),

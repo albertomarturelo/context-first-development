@@ -38,7 +38,7 @@ For teams of 2+:
 
 - **`.gitignore` `docs/CURRENT_STATUS.md`.** Each developer keeps a
   personal local copy, created from the template on first
-  `/session:start`.
+  `/session-start`.
 - **Shared in-flight state lives in the tracker** (issues, milestone
   boards, assignees) — never in the status file.
 - The session-close ritual is unchanged (update before closing), but
@@ -75,7 +75,7 @@ A reader can confirm this ADR is being followed if:
 - Loses the git-history session log and the history-based freshness
   metric — both become local (file mtime).
 - A fresh clone or new machine starts with no status file; the first
-  `/session:start` bootstraps it from the template plus the tracker's
+  `/session-start` bootstraps it from the template plus the tracker's
   assigned issues. Costs one orientation session.
 - Personal status quality is now invisible to the team; the tracker
   must be kept honest or the shared picture degrades.

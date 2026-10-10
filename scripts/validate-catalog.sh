@@ -96,6 +96,35 @@ if [ -n "$ATTRIB_HITS" ]; then
   echo "$ATTRIB_HITS" | sed 's/^/    /'
 fi
 
+# 6. Template skills contract (adrs/ai-workflow/agent-skills-as-procedures.md).
+echo ""
+echo "6. Template skills: names, token budget, manual-only policy, symlink"
+SKILLS_DIR=templates/.agents/skills
+if [ ! -L templates/.claude/skills ] \
+  || [ "$(readlink templates/.claude/skills)" != "../.agents/skills" ]; then
+  err "templates/.claude/skills must be a symlink to ../.agents/skills"
+fi
+if [ -e templates/.claude/commands ]; then
+  err "templates/.claude/commands exists; skills are the only procedure format"
+fi
+for skill in "$SKILLS_DIR"/*/; do
+  skill=${skill%/}
+  dir=$(basename "$skill")
+  f="$skill/SKILL.md"
+  if [ ! -f "$f" ]; then err "$skill has no SKILL.md"; continue; fi
+  fm=$(awk 'NR==1 && /^---$/ {in_fm=1; next} in_fm && /^---$/ {exit} in_fm {print}' "$f")
+  name=$(printf '%s\n' "$fm" | sed -n 's/^name: *//p')
+  [ "$name" = "$dir" ] || err "$f: name '$name' does not match folder '$dir'"
+  printf '%s\n' "$fm" | grep -qE '^description: *.+' \
+    || err "$f: missing description"
+  printf '%s\n' "$fm" | grep -qE '^  token-budget: *.+' \
+    || err "$f: missing metadata.token-budget"
+  if printf '%s\n' "$fm" | grep -qE '^disable-model-invocation: *true'; then
+    grep -qE 'allow_implicit_invocation: *false' "$skill/agents/openai.yaml" 2>/dev/null \
+      || err "$dir is manual-only but agents/openai.yaml does not disable implicit invocation"
+  fi
+done
+
 # Summary.
 echo ""
 echo "== Summary =="

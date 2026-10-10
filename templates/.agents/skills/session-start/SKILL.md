@@ -1,7 +1,9 @@
 ---
-description: "Orient at the start of a session: read docs/CURRENT_STATUS.md and the decisions index in ~1k tokens, state the focus, and auto-load an in-progress issue if one is referenced."
+name: session-start
+description: "Orient at the start of a session: read docs/CURRENT_STATUS.md and the decisions index in ~1k tokens, state the focus, and auto-load an in-progress issue if one is referenced. Invoke explicitly at the start of every working session."
 disable-model-invocation: true
-token-budget: "~500–1,500 baseline; +1,000–2,000 if an in-progress issue is auto-loaded"
+metadata:
+  token-budget: "~500–1,500 baseline; +1,000–2,000 if an in-progress issue is auto-loaded"
 ---
 
 Read the following files in order, then produce a brief summary:
@@ -21,7 +23,7 @@ Then state:
 an in-progress item by issue number (e.g. `#142`), also run
 `gh issue view <n>` for that issue and surface its title + acceptance
 criteria. This reaches the same readiness state as if the user had
-opened with `/issue:start <n>`. If multiple in-progress issues are
+opened with `/issue-start <n>`. If multiple in-progress issues are
 referenced, list them and ASK which to focus on — do NOT load all of
 them blindly.
 
@@ -39,4 +41,4 @@ per-developer mode — the file is `.gitignore`d for teams, see
 If `docs/CURRENT_STATUS.md` was last updated more than 1 working day ago,
 warn the user that the context may be stale before proceeding.
 
-If `docs/decisions/_index.md` is empty, suggest running `/project:init`.
+If `docs/decisions/_index.md` is empty, suggest running `/project-init`.

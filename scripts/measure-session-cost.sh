@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Measure the token cost of /session:start (CFD-style index reads)
+# Measure the token cost of /session-start (CFD-style index reads)
 # vs the cost of reading every file in the project.
 #
 # HONEST FRAMING: Scenario B is an UPPER BOUND, not what a modern
@@ -29,14 +29,14 @@ cd "$PROJECT_DIR"
 if [ ! -f CLAUDE.md ]; then
   echo "✗ No CLAUDE.md found in $PROJECT_DIR."
   echo "  This script measures CFD-adopted projects."
-  echo "  Run /project:init first, or point at a CFD-adopted dir."
+  echo "  Run /project-init first, or point at a CFD-adopted dir."
   exit 1
 fi
 
-# Scenario A: CFD /session:start triad.
+# Scenario A: CFD /session-start triad.
 cfd_files=(CLAUDE.md docs/CURRENT_STATUS.md docs/decisions/_index.md)
 
-echo "=== Scenario A — CFD /session:start ==="
+echo "=== Scenario A — CFD /session-start ==="
 cfd_total=0
 for f in "${cfd_files[@]}"; do
   if [ -f "$f" ]; then
@@ -87,7 +87,7 @@ if [ "$cfd_tokens" -gt 0 ]; then
   ratio=$(awk "BEGIN { printf \"%.1f\", $all_tokens / $cfd_tokens }")
   savings=$(awk "BEGIN { printf \"%.1f\", (1 - $cfd_tokens / $all_tokens) * 100 }")
   echo "=== Result ==="
-  printf "  CFD /session:start  ≈ %5d tokens\n" "$cfd_tokens"
+  printf "  CFD /session-start  ≈ %5d tokens\n" "$cfd_tokens"
   printf "  scan-everything     ≈ %5d tokens\n" "$all_tokens"
   printf "  ratio               = %sx\n" "$ratio"
   printf "  tokens saved        = %s%%\n" "$savings"

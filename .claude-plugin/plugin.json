@@ -1,8 +1,8 @@
 {
   "name": "cfd",
   "displayName": "Context-First Development",
-  "version": "0.1.0",
-  "description": "Slash commands for the Context-First Development (CFD) workflow: session start/close, decision records, issue lifecycle, PR review, and context validation.",
+  "version": "0.2.0",
+  "description": "Agent Skills for the Context-First Development (CFD) workflow: session start/close, decision records, issue lifecycle, PR review, and context validation.",
   "author": {
     "name": "Alberto Marturelo Lorenzo",
     "email": "amarturelo@gmail.com"
@@ -15,9 +15,9 @@
     "cfd",
     "adr",
     "workflow",
-    "slash-commands"
+    "agent-skills"
   ],
-  "commands": [
-    "./templates/.claude/commands"
+  "skills": [
+    "./templates/.agents/skills"
   ]
 }

@@ -38,7 +38,7 @@ in:
 
 A CFD review loads those first, then applies them as a verification
 agenda against the diff AND the changed files. **The depth of file
-reading is a project-level decision, codified in the slash command
+reading is a project-level decision, codified in the skill
 itself.** A strict KMP project reads every changed file in full
 because the ADRs demand layer-boundary checks, Compose recomposition
 safety, networking conventions, etc. A small Node API may stop at the
@@ -47,15 +47,15 @@ from scratch.
 
 ## Decision
 
-PR review on this project is mediated by a `/review-pr <n>` slash
-command (or equivalent Skill) that:
+PR review on this project is mediated by a `/review-pr <n>` skill
+(or an equivalent command) that:
 
 1. **Fetches** PR metadata + diff via `gh pr view` / `gh pr diff`,
    plus the branch's commit history.
 2. **Loads the indices** that define the verification agenda:
    `CONVENTIONS`, the linked issue body, every ADR named there, the
    PR template, and any team-curated review checklist embedded in
-   the slash command body.
+   the skill body.
 3. **Reads source files to the depth the agenda requires.** No
    project-agnostic "minimize reads" rule — the team's checklist
    decides. Reads in service of verification, not discovery.
@@ -64,9 +64,9 @@ command (or equivalent Skill) that:
 5. **Does NOT auto-fix.** Findings are surfaced for the author to
    address on the next session.
 
-The slash command body itself **is** the team's checklist — it
-evolves with the project (new convention → new line in the slash
-command), echoing the `document-corrections-not-fixes` discipline.
+The skill body itself **is** the team's checklist — it
+evolves with the project (new convention → new line in the
+skill), echoing the `document-corrections-not-fixes` discipline.
 
 ## Alternatives Considered
 
@@ -83,17 +83,17 @@ command), echoing the `document-corrections-not-fixes` discipline.
 
 A reader can confirm this ADR is being followed if:
 
-- A `/review-pr` (or equivalent) exists in `.claude/commands/` or
-  `.claude/skills/` and its body **embeds the team's checklist**
+- A `/review-pr` (or equivalent) exists in `.agents/skills/` (or
+  `.claude/commands/`) and its body **embeds the team's checklist**
   citing real ADR numbers and CONVENTIONS sections.
 - Recent PR comment threads reference specific ADRs / CONVENTIONS
   lines, not generic "looks good" reactions.
-- The slash command grows with the project: `git log` on its file
+- The skill grows with the project: `git log` on its file
   shows additions after new conventions land.
 
 ## Trade-offs
 
 - Depends on indices being current. Stale CONVENTIONS or out-of-date
-  ADRs poison the review. Mitigation: `/context:validate` + the
+  ADRs poison the review. Mitigation: `/validate-context` + the
   `document-corrections-not-fixes` discipline.
 - Customizing the checklist is upfront work; pays back from review 1.
