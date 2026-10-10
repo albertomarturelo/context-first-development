@@ -1,7 +1,9 @@
 ---
-description: "Create a self-sufficient tracker issue with the fixed CFD body template. The completeness of the issue determines how cheaply the next session starts — be thorough here."
+name: issue-new
+description: "Create a self-sufficient tracker issue with the fixed CFD body template. The completeness of the issue determines how cheaply the next session starts — be thorough here. Invoke explicitly when a new unit of work needs a tracker issue."
 disable-model-invocation: true
-token-budget: "~1,500–3,000 for the full flow"
+metadata:
+  token-budget: "~1,500–3,000 for the full flow"
 ---
 
 Guide the user through creating a new tracker issue with the fixed body
@@ -22,7 +24,7 @@ confirm each answer before moving on:
    analog exists (rare; flag it explicitly).
 6. **ADRs to load.** ADR numbers the agent must read before starting.
    If a needed decision isn't an ADR yet, **STOP and run
-   `/decision:new` first** — implementing a decision that's not yet
+   `/new-decision` first** — implementing a decision that's not yet
    written is forbidden by the catalog's "ADR before implementing" ADR.
 7. **Acceptance criteria (DoD).** Bulleted markdown `[ ]` items.
    Include all three of:
@@ -38,7 +40,7 @@ confirm each answer before moving on:
     backend-dep, pro-only, etc.).
 
 Then generate the body using the fixed template. Do NOT deviate from
-section order or names — downstream `/issue:start` parses by section
+section order or names — downstream `/issue-start` parses by section
 header:
 
 ```markdown

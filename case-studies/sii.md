@@ -118,7 +118,7 @@ so any agent finds the index before it writes code.
    Notice the Critical Rules → ADR citation pattern.
 3. Check `.gitignore` for the local-only `CURRENT_STATUS.md` posture.
 4. Skim `.claude/commands/` and compare against
-   [`templates/.claude/commands/`](../templates/.claude/commands/).
+   [`templates/.agents/skills/`](../templates/.agents/skills/), where CFD now ships the same procedures as Agent Skills.
 
 ## Attribution
 

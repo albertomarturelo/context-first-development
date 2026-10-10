@@ -65,8 +65,8 @@ If "Estimated sessions" > 1, decompose into sub-issues before starting.
 
 ### Workflow
 
-- **Create**: `/issue:new` → `gh issue create` with the template.
-- **Start**: `/issue:start <n>` → `gh issue view <n>` + pre-loads ADRs.
+- **Create**: `/issue-new` → `gh issue create` with the template.
+- **Start**: `/issue-start <n>` → `gh issue view <n>` + pre-loads ADRs.
 - **Close**: PR closes the issue; AC checklist copies verbatim to PR.
 
 ## Alternatives Considered

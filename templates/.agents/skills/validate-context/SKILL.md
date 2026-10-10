@@ -1,6 +1,8 @@
 ---
-description: "Audit CFD context integrity — CLAUDE.md size/shape, status freshness, ADR index sync and completeness, conventions, language, token annotations — and report PASS/WARN/FAIL with proposed fixes."
-token-budget: "~2,000–5,000"
+name: validate-context
+description: "Audit CFD context integrity — CLAUDE.md size/shape, status freshness, ADR index sync and completeness, conventions, language, token annotations — and report PASS/WARN/FAIL with proposed fixes. Use when asked to audit CFD context, or periodically before a release."
+metadata:
+  token-budget: "~2,000–5,000"
 ---
 
 Validate the CFD context in this project. Check, in order, and output a
@@ -12,7 +14,7 @@ checklist with PASS / WARN / FAIL per item:
    has >10 lines of inlined content where a link would do. WARN on
    `@docs/...` references — in Claude Code those are EAGER imports
    that load the whole file every session, defeating the index; use
-   plain links plus `/session:start` for orientation reads.
+   plain links plus `/session-start` for orientation reads.
 3. **`docs/CURRENT_STATUS.md` freshness**: run
    `git log -1 --format=%ar -- docs/CURRENT_STATUS.md`. WARN if older
    than 2 working days; FAIL if older than 1 week.

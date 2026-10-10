@@ -9,7 +9,7 @@
     {
       "name": "cfd",
       "source": "./",
-      "description": "Slash commands for the CFD workflow: /cfd:session-start, /cfd:session-close, /cfd:new-decision, /cfd:issue-new, /cfd:issue-start, /cfd:review-pr, /cfd:validate-context, /cfd:project-init."
+      "description": "Agent Skills for the CFD workflow: /cfd:session-start, /cfd:session-close, /cfd:new-decision, /cfd:issue-new, /cfd:issue-start, /cfd:review-pr, /cfd:validate-context, /cfd:project-init."
     }
   ]
 }

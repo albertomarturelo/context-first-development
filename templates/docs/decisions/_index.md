@@ -13,6 +13,6 @@ See adrs/process/adr-ids-date-slug.md.
 Status values:
   Proposed | Accepted | Superseded by <slug> | Deprecated
 
-The index is the entry point the agent reads on /session:start.
+The index is the entry point the agent reads on /session-start.
 Keep it dense — one line per ADR, no prose.
 -->

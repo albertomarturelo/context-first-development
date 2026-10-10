@@ -7,7 +7,7 @@ In Claude Code, `@path` inside CLAUDE.md is an EAGER import — the whole
 referenced file is injected into context every session, which turns
 this index into an encyclopedia and defeats Principle 3. Links are
 lazy: the agent follows them only when the work requires it.
-/session:start does the orientation reads (CURRENT_STATUS + decisions
+/session-start does the orientation reads (CURRENT_STATUS + decisions
 index) explicitly.
 -->
 

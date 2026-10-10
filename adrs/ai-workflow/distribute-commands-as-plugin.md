@@ -1,6 +1,6 @@
-<!-- Shareable ADR. Token budget: ~500. -->
+<!-- Shareable ADR. Token budget: ~725. -->
 
-# Distribute CFD Commands as an Optional Plugin
+# Distribute CFD Skills Through Installers, Never as the Source of Truth
 
 ## Status
 
@@ -10,72 +10,67 @@
 
 Adopt this ADR when:
 
-- Your team has encoded CFD's procedures as slash commands and wants
-  teammates to install them in one step instead of copying files.
-- You maintain those commands in a shared repo and want a single source
-  of truth that also ships as an installable package.
-- Your agent supports a plugin/marketplace mechanism (Claude Code does).
+- Your team has encoded CFD's procedures as Agent Skills (see
+  [agent-skills-as-procedures](agent-skills-as-procedures.md)) and
+  wants them installed in one step instead of copied by hand.
+- You maintain those skills in a shared repo and want a single source
+  of truth that also ships through installers.
 
-Skip if every consumer already vendors the command files directly, or
-your agent has no plugin system — the portable markdown is enough on its
-own.
+Skip if every consumer already vendors the skill folders directly.
 
 ## Context
 
-CFD's automation lives in portable command markdown
-(`.claude/commands/*.md`, see
-`ai-workflow/slash-commands-vs-skills.md`). Copying those files into
-every project is friction, and copies drift from the source. Claude Code
-plugins solve distribution — `/plugin install` pulls the commands from a
-marketplace — but a plugin manifest is Claude-Code-specific. The failure
-mode this ADR prevents: treating the plugin as the canonical artifact,
-which would quietly lock a model-agnostic methodology to one agent.
+Copying skill folders into every project is friction, and copies drift
+from the source. Two installers remove the friction:
+
+- **The `skills` CLI** (`npx skills add <owner/repo>`) installs from a
+  git repo into every detected agent: a universal copy in
+  `.agents/skills/` for Codex and Copilot, symlinks for Claude Code.
+- **A Claude Code plugin** (`/plugin install`) keeps the skills updated
+  from a marketplace, namespaced as `/<plugin>:<skill>`.
+
+The failure mode this ADR prevents: treating an installer's manifest as
+the canonical artifact, which quietly locks a model-agnostic
+methodology to one tool.
 
 ## Decision
 
-**Ship the plugin as an ADDITIONAL distribution channel, never as the
-source of truth.** Concretely:
+**Installers are additional distribution channels, never the source of
+truth.** Concretely:
 
-1. The portable command markdown remains canonical. The plugin manifest
-   **points at those existing files** (`"commands": ["./path"]`) — it
-   does NOT duplicate them.
-2. The manifest carries no procedure logic. All behavior stays in the
-   markdown body, which any agent can read.
-3. Encode the methodology's determinism choice in frontmatter:
-   mandatory-boundary procedures (`session-start`, `session-close`,
-   issue pickup, project bootstrap) set `disable-model-invocation: true`
-   so only explicit user invocation fires them; discovery-friendly ones
-   (`decision:new`, `context:validate`) allow model invocation.
-4. Document that the plugin is optional. A team on a non-Claude agent
-   copies the same markdown by hand and loses nothing but the installer.
+1. The skill folders in the repo remain canonical. The plugin manifest
+   **points at them** (`"skills": ["./path"]`); it does NOT duplicate
+   them. The `skills` CLI reads the same folders.
+2. No installer carries procedure logic. All behavior stays in
+   `SKILL.md`, which any agent can read.
+3. Install at **project scope** and commit the result, so every clone
+   and every worktree runs the same procedure version. A global install
+   is personal and unversioned.
+4. **One channel per project.** Installing the plugin on top of copied
+   skills yields `/cfd:session-start` *and* `/session-start`: the same
+   procedure from two places.
 
 ## Alternatives Considered
 
-1. **No plugin, copy files only.** Zero lock-in, but distribution stays
-   manual and copies drift. Rejected as the sole option — a one-command
-   install is worth offering.
-2. **Plugin as canonical, markdown generated from it.** Inverts the
-   dependency and couples the methodology to one agent's manifest
-   format. Rejected — violates model-agnosticism.
-3. **Duplicate commands into a `commands/` dir inside the plugin.** Two
-   copies to keep in sync. Rejected — the manifest can reference the
-   originals.
+1. **No installer, copy files only.** Zero lock-in, but distribution
+   stays manual. Kept as a valid path, not the only one.
+2. **A CFD-specific installer.** Would maintain a per-agent path table
+   forever; the `skills` CLI already does it for 40+ agents.
+3. **Installer as canonical, folders generated from it.** Inverts the
+   dependency and couples the methodology to one tool. Rejected.
 
 ## Verifiable Consequences
 
 A reader can confirm this ADR is being followed if:
 
-- The plugin manifest references the existing command directory; no
-  command markdown is duplicated (`diff` finds no second copy).
-- Every command file is a plain-prose procedure readable without the
-  manifest — removing the manifest still leaves working, copyable
-  commands.
-- Mandatory-boundary commands set `disable-model-invocation: true`;
-  discovery-friendly ones do not.
+- The plugin manifest references the existing skills directory; no
+  `SKILL.md` is duplicated (`diff` finds no second copy).
+- Removing every manifest still leaves working, copyable skills.
+- Adopting projects commit `.agents/skills/`; it is not gitignored.
 
 ## Trade-offs
 
-- The plugin only serves Claude-Code users; other agents still copy
-  files. Accepted — the markdown covers them.
-- Frontmatter adds a small per-file surface most agents ignore. Cheap
-  next to the install ergonomics it buys.
+- The plugin serves Claude Code only; the `skills` CLI covers the rest.
+  Two channels to document, one source to maintain.
+- Project-scope installs add files to every adopting repo. That is the
+  point: the procedures version with the code they govern.

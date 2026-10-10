@@ -20,26 +20,26 @@ close, review.
 ```mermaid
 flowchart TD
     START(["You + an AI agent + a repository"]) --> Q{"Does the codebase<br/>exist yet?"}
-    Q -- "existing project" --> A["/project:init<br/>infer docs/ + CLAUDE.md from<br/>structure — Scenario A"]
+    Q -- "existing project" --> A["/project-init<br/>infer docs/ + CLAUDE.md from<br/>structure — Scenario A"]
     Q -- "starting from zero" --> G["Greenfield bootstrap<br/>ADRs first, then scaffold<br/>— Scenario G"]
     A --> R["Review inferred conventions<br/>and the initial-architecture ADR"]
-    R --> B0["Decompose upcoming work into<br/>1-session issues via /issue:new"]
+    R --> B0["Decompose upcoming work into<br/>1-session issues via /issue-new"]
     G --> B0
 
     subgraph LOOP["The daily loop — every working session"]
-        SS["/session:start<br/>orient in ~1.5–3k tokens"] --> P{"In-progress issue in<br/>CURRENT_STATUS.md?"}
+        SS["/session-start<br/>orient in ~1.5–3k tokens"] --> P{"In-progress issue in<br/>CURRENT_STATUS.md?"}
         P -- "yes — auto-loaded" --> IMPL
         P -- "no" --> T{"Issue ready<br/>in the tracker?"}
-        T -- "take one" --> IS["/issue:start N<br/>load its ADRs + pattern file"]
-        T -- "create one" --> IN["/issue:new<br/>fixed body template,<br/>then /issue:start"]
+        T -- "take one" --> IS["/issue-start N<br/>load its ADRs + pattern file"]
+        T -- "create one" --> IN["/issue-new<br/>fixed body template,<br/>then /issue-start"]
         IS --> IMPL
         IN --> IMPL
         IMPL["Implement AC items<br/>(read target files before editing)"] --> MID{"Mid-session<br/>event?"}
         MID -- "user corrects a pattern" --> C["Fix code AND document rule<br/>in CONVENTIONS.md — Scenario C"]
-        MID -- "significant decision surfaces" --> D["/decision:new — ADR lands<br/>BEFORE the code — Scenario D"]
+        MID -- "significant decision surfaces" --> D["/new-decision — ADR lands<br/>BEFORE the code — Scenario D"]
         C --> IMPL
         D --> IMPL
-        MID -- "AC done, or context filling up" --> SC["/session:close<br/>update CURRENT_STATUS.md"]
+        MID -- "AC done, or context filling up" --> SC["/session-close<br/>update CURRENT_STATUS.md"]
         SC --> PR["git push + gh pr create<br/>PR description = AC checklist"]
         PR --> RV["/review-pr N<br/>verify diff against context — Scenario E"]
     end
@@ -52,8 +52,8 @@ flowchart TD
 Three properties make the loop cheap: orientation is O(1k) tokens
 because state lives in `CURRENT_STATUS.md` and the tracker, not in
 chat history; every issue is 1-session-sized by construction
-(`/issue:new` forces decomposition); and sessions are disposable —
-closing early costs one `/session:start`, drifting costs redone work
+(`/issue-new` forces decomposition); and sessions are disposable —
+closing early costs one `/session-start`, drifting costs redone work
 (see the
 [short-sessions](../adrs/ai-workflow/short-sessions-over-long.md)
 catalog ADR).
@@ -61,7 +61,7 @@ catalog ADR).
 ## Scenario A — Bootstrap: adopting CFD on an existing project
 
 **When:** Day 0. You have a real repo with 100+ files, no `CLAUDE.md`,
-no `docs/`. You run `/project:init` once.
+no `docs/`. You run `/project-init` once.
 
 **Key property:** the agent does NOT scan source code. It infers from
 the directory layout and dependency files. Source code reading is
@@ -76,7 +76,7 @@ sequenceDiagram
     participant DOCS as docs/ + CLAUDE.md
 
     Note over E,A: Existing repo. No CFD scaffold yet.
-    E->>A: /project:init
+    E->>A: /project-init
     A->>FS: ls / tree -L 2
     A->>FS: read package.json / pyproject.toml / Cargo.toml / …
     A->>FS: read README.md (if any)
@@ -125,7 +125,7 @@ sequenceDiagram
     Note over E,A: Empty repository. git init, nothing else.
 
     E->>A: Product idea + constraints (a few paragraphs)
-    A-->>E: Stack, architecture, testing posture —<br/>these are DECISIONS, not defaults.<br/>Running /decision:new for each.
+    A-->>E: Stack, architecture, testing posture —<br/>these are DECISIONS, not defaults.<br/>Running /new-decision for each.
 
     A->>E: Language/runtime? Constraints? Alternatives?
     E-->>A: Trade-offs discussed, choices made.
@@ -136,10 +136,10 @@ sequenceDiagram
     Note right of DOCS: DECLARED, not inferred.<br/>Code must comply with docs —<br/>the reverse of Scenario A.
     A->>DOCS: CURRENT_STATUS.md ("scaffold is next")
 
-    A->>ISS: /issue:new — scaffold + first feature,<br/>each sized to 1 session
+    A->>ISS: /issue-new — scaffold + first feature,<br/>each sized to 1 session
     A-->>E: Day 0 done. Zero lines of code —<br/>and that is the point.
 
-    E->>A: /issue:start 1
+    E->>A: /issue-start 1
     A->>CODE: scaffold per ADRs stack + architecture
     Note right of CODE: The first commit lands inside<br/>an architecture, not before one.
 ```
@@ -169,7 +169,7 @@ sequenceDiagram
 
     Note over E,A: Project has CFD scaffold + at least one open issue.
 
-    E->>A: /session:start
+    E->>A: /session-start
     A->>DOCS: read CURRENT_STATUS.md
     A->>ADRs: read _index.md
     Note right of A: ~500–1.5k tokens
@@ -191,7 +191,7 @@ sequenceDiagram
         A-->>E: report
     end
 
-    E->>A: /session:close
+    E->>A: /session-close
     A->>DOCS: update CURRENT_STATUS.md
     A-->>E: session summary suitable for PR description
 
@@ -242,7 +242,7 @@ sequenceDiagram
 
 ---
 
-## Scenario D — Mid-session decision triggers `/decision:new`
+## Scenario D — Mid-session decision triggers `/new-decision`
 
 **When:** during implementation, a non-trivial decision surfaces (a
 new dependency, a new pattern, a new strategy). Instead of just doing
@@ -271,7 +271,7 @@ sequenceDiagram
 
     Note over A: Per catalog ADR<br/>"adr-before-implementing":<br/>stop, capture the decision first.
 
-    A-->>E: Hold — this is a significant decision.<br/>Running /decision:new.
+    A-->>E: Hold — this is a significant decision.<br/>Running /new-decision.
 
     A->>E: What problem? What constraints? What triggers it now?
     E-->>A: Reduce p99 on hot endpoint,<br/>1k req/s peak, no consistency requirement.
@@ -364,7 +364,7 @@ sequenceDiagram
 ## See also
 
 - [`adrs/_index.md`](../adrs/_index.md) — the shareable ADR catalog.
-- [`templates/`](../templates/) — the slash commands referenced above.
+- [`templates/`](../templates/) — the skills referenced above.
 - [`case-studies/sii.md`](../case-studies/sii.md) — a real
   project running these flows.
 - [`METHODOLOGY.md`](../METHODOLOGY.md) — the canonical essay.

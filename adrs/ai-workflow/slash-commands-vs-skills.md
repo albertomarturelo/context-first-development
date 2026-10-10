@@ -4,15 +4,17 @@
 
 ## Status
 
-`Accepted` — `<YYYY-MM-DD>`
+`Superseded by agent-skills-as-procedures` — Agent Skills became a
+cross-agent standard, which inverted this ADR's portability axis. See
+[agent-skills-as-procedures](agent-skills-as-procedures.md).
 
 ## When to Use
 
 Adopt this ADR when:
 
 - Your team is encoding CFD's automation procedures
-  (`session:start`, `session:close`, `decision:new`, `issue:new`,
-  `issue:start`, `context:validate`, etc.).
+  (`session-start`, `session-close`, `new-decision`, `issue-new`,
+  `issue-start`, `validate-context`, etc.).
 - You've seen examples or case studies using both styles and want a
   clear answer on which fits which procedure.
 - You're on Claude Code (where both primitives are available) or on
@@ -43,10 +45,10 @@ methodology.
 **Both are valid.** Pick per procedure on three axes:
 
 1. **Determinism.** If forgetting the procedure breaks the
-   methodology (`/session:start`, `/session:close` qualify), prefer
+   methodology (`/session-start`, `/session-close` qualify), prefer
    **slash commands** — explicit user choice, no model judgement.
 2. **Discoverability.** If the procedure should fire on context
-   signals the user might miss (`/decision:new` after the user says
+   signals the user might miss (`/new-decision` after the user says
    "let's just use Redis"), **Skills** earn their keep — the model
    notices and prompts.
 3. **Portability.** If the team uses non-Claude agents alongside
@@ -56,12 +58,12 @@ A defensible default mix:
 
 | Procedure          | Recommended       | Reason                                       |
 | ------------------ | ----------------- | -------------------------------------------- |
-| `session:start`    | slash command     | Mandatory at session boundary                |
-| `session:close`    | slash command     | Mandatory at session boundary                |
-| `decision:new`     | either            | Skills shine — model catches the signal      |
-| `issue:new`        | slash command     | Explicit creation moment                     |
-| `issue:start <n>`  | slash command     | Explicit pickup moment                       |
-| `context:validate` | either            | Periodic, low-stakes                         |
+| `session-start`    | slash command     | Mandatory at session boundary                |
+| `session-close`    | slash command     | Mandatory at session boundary                |
+| `new-decision`     | either            | Skills shine — model catches the signal      |
+| `issue-new`        | slash command     | Explicit creation moment                     |
+| `issue-start <n>`  | slash command     | Explicit pickup moment                       |
+| `validate-context` | either            | Periodic, low-stakes                         |
 
 All-Skills or all-slash-commands setups also work. The point is to
 **choose intentionally**, document the choice in
@@ -83,7 +85,7 @@ A reader can confirm this ADR is being followed if:
 - The repo's `.claude/commands/` and/or `.claude/skills/` contains
   procedures matching the methodology's named ones (start, close,
   new-decision, etc.).
-- Mandatory-at-boundary procedures (`session:start`, `session:close`)
+- Mandatory-at-boundary procedures (`session-start`, `session-close`)
   exist as slash commands UNLESS the team has explicitly justified
   Skills with a per-project addendum ADR.
 - `docs/CONVENTIONS.md` documents which primitive owns which

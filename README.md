@@ -20,7 +20,7 @@ That is what CFD persists.
 
 **Evidence.** Measure the ceiling on your own project with
 [`scripts/measure-session-cost.sh`](scripts/measure-session-cost.sh):
-it compares a CFD-style `/session:start` (reading the `CLAUDE.md` +
+it compares a CFD-style `/session-start` (reading the `CLAUDE.md` +
 `CURRENT_STATUS.md` + decisions-index triad) against reading every
 file — an **upper bound**, since a real agent explores selectively.
 The honest per-session metrics (re-explanation rate,
@@ -56,52 +56,54 @@ cp -R /tmp/cfd/templates/. .   # -R keeps the AGENTS.md symlink on macOS
 
 # Edit CLAUDE.md and fill in your project's 2–3 sentence description.
 # Open your agent (claude / gemini / codex / cursor) and run:
-> /session:start
+> /session-start            # $session-start in Codex
 ```
 
 Templates are deliberately minimal. Fill in what the agent needs to know
 about *your* project — and resist the temptation to write more. Brevity is
 the design.
 
-### The plugin is a shortcut for the commands only — not a second install path
+### Installing the skills into every agent
 
-The `cp` above is the full setup. There is also an optional Claude Code
-plugin, but it is **not an alternative to copying** — the two cover
-different things:
+The `cp` above is the full setup. CFD's procedures ship as
+[Agent Skills](https://agentskills.io/specification): one canonical copy
+in `.agents/skills/` (read by Codex, GitHub Copilot and Gemini CLI) and
+`.claude/skills` symlinked to it for Claude Code. To install or update
+**only the skills** from this repo into every agent detected on your
+machine:
 
-| What you get                                    | `cp -R templates/. .` | `/plugin install` |
-| ------------------------------------------------ | :-------------------: | :---------------: |
-| Slash commands (`session-start`, `issue-new`, …)  |          ✅           |  ✅ (`/cfd:*`)    |
-| `CLAUDE.md` + `docs/` scaffold                    |          ✅           |        ❌         |
-| Hooks + `settings.json` + freshness CI            |          ✅           |        ❌         |
+```bash
+npx skills add albertomarturelo/context-first-development
+```
 
-The plugin ships **only the slash commands**. The scaffold — which is most
-of CFD — comes from the templates regardless, so **you always copy the
-templates**; the plugin is just a one-command way to keep the *commands*
-updated from the marketplace instead of re-copying them.
+Claude Code users can use the plugin instead, namespaced as `/cfd:*`:
 
 ```text
 /plugin marketplace add albertomarturelo/context-first-development
 /plugin install cfd@context-first-development
 ```
 
-**Pick one channel for the commands, never both.** If you install the
-plugin, delete `.claude/commands/` from your copied templates — otherwise
-you get the same procedure twice (`/cfd:session-start` *and*
-`/session-start`), two copies that drift. The plugin is a **distribution
-convenience, not the source of truth**: its manifest points at the same
-portable markdown in `templates/.claude/commands/`, and teams on
-other agents copy that markdown directly and lose nothing but the
-installer. See
-[`adrs/ai-workflow/distribute-commands-as-plugin.md`](adrs/ai-workflow/distribute-commands-as-plugin.md).
+| What you get                                   | `cp -R templates/. .` | `npx skills add` | `/plugin install` |
+| ---------------------------------------------- | :-------------------: | :--------------: | :---------------: |
+| Skills (`session-start`, `issue-new`, …)       |          ✅           |   ✅ all agents  | ✅ Claude, `/cfd:*` |
+| `CLAUDE.md` + `docs/` scaffold                 |          ✅           |        ❌        |        ❌         |
+| Hooks + `settings.json` + CI checks            |          ✅           |        ❌        |        ❌         |
 
-> **Commands vs Skills.** CFD ships its procedures as slash commands, not
-> Claude Skills — this repo contains no `SKILL.md`. Skills are a valid
-> alternative an adopter can choose *per procedure* (the model discovers
-> and fires them), but pick one primitive per procedure: a command **or** a
-> skill for `session-start`, never both, or the procedure runs from two
-> places. See
-> [`adrs/ai-workflow/slash-commands-vs-skills.md`](adrs/ai-workflow/slash-commands-vs-skills.md).
+Installers ship **only the skills**. The scaffold, which is most of CFD,
+comes from the templates regardless. Install at project scope and
+commit `.agents/skills/`, so every clone and worktree runs the same
+procedure version. **Pick one channel per project**: the plugin on top
+of copied skills gives you `/cfd:session-start` *and* `/session-start`,
+two copies that drift. See
+[`adrs/ai-workflow/distribute-commands-as-plugin.md`](adrs/ai-workflow/distribute-commands-as-plugin.md)
+and
+[`adrs/ai-workflow/agent-skills-as-procedures.md`](adrs/ai-workflow/agent-skills-as-procedures.md).
+
+**The session rituals are manual-only.** `session-start`,
+`session-close`, `issue-new`, `issue-start` and `project-init` never
+fire on the model's judgement: invoke them as `/name` in Claude Code
+and Copilot, or `$name` in Codex. Gemini CLI has no manual-only flag
+and asks for consent before activating a skill.
 
 ### The enforcement layer (hooks + CI)
 
@@ -118,15 +120,16 @@ The templates ship a mechanical layer underneath them:
 
 The hooks are Claude Code-specific — the local loop. CI is the layer
 that reaches every agent, including an external contributor's agent
-you never configured. The slash commands remain the portable source of
+you never configured. The skills remain the portable source of
 truth. See
 [`adrs/ai-workflow/enforce-rituals-with-hooks.md`](adrs/ai-workflow/enforce-rituals-with-hooks.md).
 
 ### Using CFD with other agents
 
 The index ships as `CLAUDE.md` with `AGENTS.md` symlinked to it. Most
-agents find it with no setup; two need one config line. Commands under
-`.claude/commands/` are plain prose: paste or alias them in any agent.
+agents find it with no setup; two need one config line. The skills in
+`.agents/skills/` need no setup in Codex, Copilot or Gemini CLI, and
+Claude Code reads them through the `.claude/skills` symlink.
 
 | Agent                              | How it finds the index                                                |
 | ---------------------------------- | --------------------------------------------------------------------- |
@@ -214,8 +217,8 @@ inferred conventions and the initial-architecture ADR before any
 real work starts.
 ```
 
-This is the same flow as [`/project:init`](templates/.claude/commands/project-init.md)
-plus the standing rules the other commands encode — compressed into
+This is the same flow as [`/project-init`](templates/.agents/skills/project-init/SKILL.md)
+plus the standing rules the other skills encode — compressed into
 one portable prompt. The templates and hooks above remain the richer
 adoption path; this is the on-ramp.
 
@@ -268,10 +271,10 @@ The template forces every issue to declare:
 See
 [`adrs/process/work-units-as-external-tracker.md`](adrs/process/work-units-as-external-tracker.md)
 for the full ADR, and the
-[`/issue:new`](templates/.claude/commands/issue-new.md) /
-[`/issue:start`](templates/.claude/commands/issue-start.md) slash
-commands in the templates. To see this layer composed with the rest of
-CFD in motion (issue auto-load on `/session:start`, AC → PR
+[`/issue-new`](templates/.agents/skills/issue-new/SKILL.md) /
+[`/issue-start`](templates/.agents/skills/issue-start/SKILL.md)
+skills in the templates. To see this layer composed with the rest of
+CFD in motion (issue auto-load on `/session-start`, AC → PR
 description, etc.), see [**CFD in motion**](docs/session-flow.md) —
 a flowchart of the daily loop (both entry points: existing codebase
 and greenfield) plus six Mermaid sequence diagrams covering the two
@@ -302,8 +305,8 @@ session log. See
    becomes an ADR.
 5. **English as Context Language** — tokenizers compress English
    ~20–40% better than other languages.
-6. **Automation Through Slash Commands** — context maintenance is a
-   command, not a remembered chore.
+6. **Automation Through Agent Skills** — context maintenance is a
+   portable procedure every agent runs, not a remembered chore.
 
 The full essay (philosophy, anti-patterns, comparative landscape,
 references) lives in
@@ -350,7 +353,7 @@ is best-effort.
 
 ## License
 
-- Code, templates, slash commands: **MIT**.
+- Code, templates, skills: **MIT**.
 - Prose (essay, ADRs, case studies): **CC-BY-SA 4.0**.
 
 See [`LICENSE`](LICENSE) for the full text.

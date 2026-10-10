@@ -43,13 +43,14 @@ ADRs, examples, case studies.
 - **Templates are model-agnostic.** Use `CLAUDE.md` as the canonical
   filename and ship `AGENTS.md` by default (symlink). Never a
   duplicate: a copy drifts.
-  Slash commands are written in plain prose, not Claude-specific DSL.
-- **Slash commands are the canonical invocation primitive in
-  `templates/`, but Claude Skills (`.claude/skills/<name>/SKILL.md`)
-  are equally valid for project adopters.** See
-  `adrs/ai-workflow/slash-commands-vs-skills.md` for the per-procedure
-  guidance. Do NOT ship a parallel `templates/.claude/skills/`
-  directory — one canonical template set is enough.
+  Skills are written in plain prose, not agent-specific DSL.
+- **Procedures ship as Agent Skills in
+  `templates/.agents/skills/<name>/SKILL.md`** (canonical, read by
+  Codex, Copilot and Gemini CLI). `templates/.claude/skills` is a
+  symlink to it for Claude Code. Never ship a `.claude/commands/`
+  copy of a skill. Manual-only rituals carry both
+  `disable-model-invocation: true` and `agents/openai.yaml`. See
+  `adrs/ai-workflow/agent-skills-as-procedures.md`.
 - **Token-budget annotations.** Every template and shareable ADR file
   carries an estimated token cost at the top.
 - **Every shareable ADR is ≤100 lines.** If yours is longer, decompose it.
@@ -67,6 +68,9 @@ ADR-003) and a CI workflow enforces it:
 - Token budget annotation in the first 3 lines.
 - Index sync between `adrs/_index.md` and the catalog files.
 - No AI-tool attribution in `adrs/`, `templates/`, `case-studies/`.
+- Template skills: `name` matches folder, `metadata.token-budget`
+  present, manual-only skills disable Codex implicit invocation,
+  `templates/.claude/skills` is a symlink, no `templates/.claude/commands/`.
 
 Run locally: `bash scripts/validate-catalog.sh`. CI:
 `.github/workflows/validate-catalog.yml` (push to `main` + PRs).

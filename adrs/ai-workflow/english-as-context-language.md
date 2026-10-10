@@ -34,7 +34,7 @@ All technical context written for the agent is in English:
 - `CLAUDE.md` / `AGENTS.md`
 - `docs/**/*.md` (ARCHITECTURE, STACK, CONVENTIONS, CURRENT_STATUS,
   decisions)
-- `.claude/commands/**/*.md`
+- `.agents/skills/**/SKILL.md`
 - ADRs
 - Code comments meant for the agent
 

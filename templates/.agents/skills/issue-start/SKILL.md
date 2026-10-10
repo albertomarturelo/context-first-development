@@ -1,8 +1,10 @@
 ---
-description: "Pick up a tracker issue as the focus of this session: fetch it, load its ADRs and one reference file, and state the objective + acceptance checklist. Reads existing target files only if they will be modified."
+name: issue-start
+description: "Pick up a tracker issue as the focus of this session: fetch it, load its ADRs and one reference file, and state the objective + acceptance checklist. Reads existing target files only if they will be modified. Invoke explicitly with an issue number to make it the session's focus."
 argument-hint: "[issue-number]"
 disable-model-invocation: true
-token-budget: "~2,000–4,000 (issue + ADRs + 1 reference file)"
+metadata:
+  token-budget: "~2,000–4,000 (issue + ADRs + 1 reference file)"
 ---
 
 The user passes an issue number. If they don't, ask which.
@@ -49,7 +51,7 @@ The user passes an issue number. If they don't, ask which.
 7. Ask: **"Ready to start?"**
 
 If `Estimated sessions` > 1, also remind the user that the issue should
-have been decomposed and ask whether to split it now via `/issue:new`.
+have been decomposed and ask whether to split it now via `/issue-new`.
 
 **Token discipline:** do NOT scan unrelated code or neighboring
 modules at this step. The issue body + ADRs are the spec. Reading a
