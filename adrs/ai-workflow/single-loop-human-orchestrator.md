@@ -84,5 +84,5 @@ A reader can confirm this ADR is being followed if:
   issues can run as parallel CFD loops (e.g. in git worktrees), one
   agent per issue, with the developer orchestrating N loops and
   reviewing N PRs against context. That evolution changes *how many*
-  loops run — not a single artifact. Write it as its own ADR when
-  evidence justifies it.
+  loops run, plus one artifact: the status file leaves git even solo.
+  See [parallel-loops-in-worktrees](parallel-loops-in-worktrees.md).
