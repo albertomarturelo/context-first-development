@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~550. -->
 
-# ADR-`<NNN>`: Review the PR Against Context, Not Against Intent Discovery
+# Review the PR Against Context, Not Against Intent Discovery
 
 ## Status
 

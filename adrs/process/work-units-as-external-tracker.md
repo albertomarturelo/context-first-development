@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~600. -->
 
-# ADR-`<NNN>`: Work Units Live in an External Tracker with a Fixed Body Template
+# Work Units Live in an External Tracker with a Fixed Body Template
 
 ## Status
 
@@ -49,7 +49,7 @@ tracker-agnostic; the template is not.
 - Pattern to mirror: <existing file to copy shape/naming from>
 
 ## ADRs to load
-- [ADR-NNN](docs/decisions/NNN-*.md)
+- [<slug>](docs/decisions/YYYY-MM-DD-<slug>.md)
 
 ## Acceptance criteria
 - [ ] <DoD item — becomes the PR checklist>

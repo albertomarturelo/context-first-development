@@ -14,11 +14,17 @@ Guide the user through documenting a new architectural decision.
    short-circuit to your favorite — the user has to choose.
 
 4. Once chosen, generate a new ADR file at
-   `docs/decisions/<NNN>-<slug>.md` following
-   `docs/decisions/TEMPLATE.md` exactly. Increment `<NNN>` to one above
-   the highest existing.
+   `docs/decisions/YYYY-MM-DD-<slug>.md` (today's date) following
+   `docs/decisions/TEMPLATE.md` exactly. The slug is the ADR's
+   identity: short, specific, kebab-case. Before writing, check that
+   no file in `docs/decisions/` already ends in `-<slug>.md`; if one
+   does, pick a different slug or ask whether this supersedes it.
+   Never compute a sequence number — parallel branches would collide.
+   Existing numbered ADRs (`NNN-*.md`) keep their numbers; do not
+   rename them.
 
-5. Update `docs/decisions/_index.md` with the new entry (one row).
+5. Update `docs/decisions/_index.md` with the new entry (one row, the
+   slug in the ID column).
 
 Constraints:
 

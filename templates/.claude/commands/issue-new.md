@@ -50,7 +50,7 @@ header:
 - Pattern to mirror: <step 5>
 
 ## ADRs to load
-- [ADR-NNN](docs/decisions/NNN-*.md)
+- [<slug>](docs/decisions/YYYY-MM-DD-<slug>.md)
 
 ## Acceptance criteria
 - [ ] <step 7>

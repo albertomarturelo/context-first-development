@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~450. -->
 
-# ADR-`<NNN>`: One Loop, with the Developer as Orchestrator
+# One Loop, with the Developer as Orchestrator
 
 ## Status
 

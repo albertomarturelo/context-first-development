@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~400. -->
 
-# ADR-`<NNN>`: Atomic Task Instructions for AI Sessions
+# Atomic Task Instructions for AI Sessions
 
 ## Status
 
@@ -39,7 +39,7 @@ Implement the notification system.
 
 ```
 Create the notification repository interface in src/notifications/domain/.
-Follow the repository pattern from ADR-007.
+Follow the repository pattern from ADR repository-pattern.
 Mirror src/users/domain/user-repository.ts for shape and naming.
 ```
 

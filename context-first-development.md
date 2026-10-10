@@ -141,10 +141,10 @@ The model only needs to read Level 0 to orient itself. It dives into lower level
 Every significant technical decision is documented in an ADR (Architecture Decision Record) with a strict format:
 
 ```markdown
-# ADR-NNN: Decision Title
+# Decision Title
 
 ## Status
-Accepted | Superseded by ADR-XXX | Deprecated
+Accepted | Superseded by <slug> | Deprecated
 
 ## Context
 What is the issue that we're seeing that is motivating this decision?
@@ -159,7 +159,9 @@ What other options were evaluated and why were they rejected?
 What becomes easier or more difficult to do because of this change?
 ```
 
-This isn't bureaucracy — it's **persistent memory**. When you start a new session and the model reads `docs/decisions/007-use-repository-pattern.md`, it instantly understands why the code is structured that way. Without the ADR, the model might suggest refactoring toward a different pattern, wasting your time and its tokens.
+This isn't bureaucracy — it's **persistent memory**. When you start a new session and the model reads `docs/decisions/2026-01-16-repository-pattern.md`, it instantly understands why the code is structured that way. Without the ADR, the model might suggest refactoring toward a different pattern, wasting your time and its tokens.
+
+An ADR's identity is its **slug**, not a sequence number. Files are named `YYYY-MM-DD-<slug>.md`: the date orders them, the slug names them, and prose cites them as `ADR repository-pattern`. A sequence number is a global counter, and two branches or two parallel agent sessions that each write a decision will both claim the same "next" number. A slug needs no coordination, and a mistyped slug breaks a link a check can catch, where a mistyped number silently points at the wrong decision. Projects that already number their ADRs keep those numbers forever — git history and closed issues cite them — and use slugs for new ones ([catalog ADR](adrs/process/adr-ids-date-slug.md)).
 
 ### Principle 5: English as Context Language
 
@@ -201,9 +203,9 @@ project-root/
 │   ├── CURRENT_STATUS.md              # Current project status (WIP)
 │   └── decisions/
 │       ├── _index.md                  # Decision index with status
-│       ├── 001-initial-architecture.md
-│       ├── 002-database-selection.md
-│       ├── 003-auth-strategy.md
+│       ├── 2026-01-15-initial-architecture.md
+│       ├── 2026-01-16-database-selection.md
+│       ├── 2026-01-20-jwt-auth.md
 │       └── ...
 ├── .claude/
 │   ├── commands/
@@ -307,7 +309,7 @@ Last updated: 2026-02-19
 ## In Progress
 - [ ] Implementing user profile API (#142)
   - Endpoint created, missing validation tests
-  - Blocked by: Decision on email validation strategy (see ADR-015)
+  - Blocked by: Decision on email validation strategy (see ADR email-validation)
 
 ## Recently Completed
 - [x] Database migration for user preferences (#138)
@@ -330,10 +332,10 @@ Last updated: 2026-02-19
 
 | ID | Title | Status | Date |
 |----|-------|--------|------|
-| 001 | [Initial architecture](001-initial-architecture.md) | Accepted | 2026-01-15 |
-| 002 | [Use PostgreSQL](002-database-selection.md) | Accepted | 2026-01-16 |
-| 003 | [JWT auth strategy](003-auth-strategy.md) | Superseded by 004 | 2026-01-20 |
-| 004 | [Switch to session auth](004-session-auth.md) | Accepted | 2026-02-10 |
+| initial-architecture | [Initial architecture](2026-01-15-initial-architecture.md) | Accepted | 2026-01-15 |
+| database-selection | [Use PostgreSQL](2026-01-16-database-selection.md) | Accepted | 2026-01-16 |
+| jwt-auth | [JWT auth strategy](2026-01-20-jwt-auth.md) | Superseded by session-auth | 2026-01-20 |
+| session-auth | [Switch to session auth](2026-02-10-session-auth.md) | Accepted | 2026-02-10 |
 ```
 
 ---
@@ -401,11 +403,11 @@ I need to document a new architectural decision. Guide me through the following:
 1. Ask me what decision needs to be made
 2. Help me articulate the context (what problem are we solving?)
 3. Propose 2-3 alternatives with pros/cons
-4. Once I choose, generate a new ADR file in docs/decisions/ following this format:
+4. Once I choose, generate docs/decisions/[today's date]-[slug].md (the slug is the ADR's ID; never a sequence number) following this format:
 ```
 
 ```markdown
-# ADR-[next number]: [Title]
+# [Title]
 
 ## Status
 Accepted
@@ -437,7 +439,7 @@ CFD recommends implementation sessions focused on **one atomic task** at a time.
 
 # Good: atomic instruction with explicit context
 > "Create the notification repository interface in src/notifications/domain/.
-   Follow the repository pattern we use (see ADR-001).
+   Follow the repository pattern we use (see ADR repository-pattern).
    Look at src/users/domain/user_repository for reference."
 ```
 
@@ -500,7 +502,7 @@ What triggered this, and what the user-visible outcome is.
 - Pattern to mirror: src/users/domain/user-repository.ts
 
 ## ADRs to load
-- [ADR-012](docs/decisions/012-notification-system.md)
+- [notification-system](docs/decisions/2026-02-12-notification-system.md)
 
 ## Acceptance criteria
 - [ ] NotificationRepository interface in the domain layer
@@ -536,7 +538,7 @@ The principle is tracker-agnostic. Linear, Jira and Asana all qualify if their C
 gh pr create \
   --title "feat(notifications): add notification repository" \
   --body "## Summary
-Implements the notification repository following ADR-012.
+Implements the notification repository following ADR notification-system.
 
 ## Changes
 - Added NotificationRepository interface
@@ -544,8 +546,8 @@ Implements the notification repository following ADR-012.
 - Added unit and integration tests
 
 ## Decision References
-- ADR-012: Notification system architecture
-- ADR-001: Repository pattern convention
+- notification-system: Notification system architecture
+- repository-pattern: Repository pattern convention
 
 ## Testing
 \`\`\`bash
@@ -631,12 +633,12 @@ If your CLAUDE.md has more than 150 lines, it's already broken. Use `@references
 # ❌ BAD: Same information in three places
 # CLAUDE.md says "we use PostgreSQL"
 # docs/ARCHITECTURE.md says "the database is PostgreSQL"
-# docs/decisions/002.md says "we chose PostgreSQL"
+# docs/decisions/2026-01-16-database-selection.md says "we chose PostgreSQL"
 
 # ✅ GOOD: Single source, cross-references
 # CLAUDE.md: link to docs/STACK.md from the Context Map
-# docs/STACK.md: "Database: PostgreSQL 16 (see ADR-002)"
-# docs/decisions/002.md: [source of truth with full context]
+# docs/STACK.md: "Database: PostgreSQL 16 (see ADR database-selection)"
+# docs/decisions/2026-01-16-database-selection.md: [source of truth]
 ```
 
 ### Anti-pattern 3: Documentation in Native Language
@@ -675,7 +677,7 @@ next session doesn't know why Redis is there
 
 # ✅ GOOD: Decision documented before implementing
 > /decision:new
-→ ADR-015: Use Redis for caching
+→ ADR redis-caching: Use Redis for caching
 → Recorded in docs/decisions/
 → Next session reads the ADR automatically
 ```
@@ -837,7 +839,7 @@ claude
   4. Create docs/CURRENT_STATUS.md — initialize with "Project initialized
      with CFD"
   5. Create docs/decisions/_index.md — empty index
-  6. Create docs/decisions/001-initial-architecture.md documenting
+  6. Create docs/decisions/<today>-initial-architecture.md documenting
      the current architecture as the first ADR
   7. Update CLAUDE.md to reference all docs/ files
 ```

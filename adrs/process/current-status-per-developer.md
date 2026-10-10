@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~450. -->
 
-# ADR-`<NNN>`: CURRENT_STATUS Is Per-Developer, Out of Version Control
+# CURRENT_STATUS Is Per-Developer, Out of Version Control
 
 ## Status
 

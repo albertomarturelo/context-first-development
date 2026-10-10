@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~550. -->
 
-# ADR-`<NNN>`: Trunk-Based Workflow with Release-Candidate Branches
+# Trunk-Based Workflow with Release-Candidate Branches
 
 ## Status
 
