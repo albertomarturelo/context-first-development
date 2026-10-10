@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~500. -->
 
-# ADR-`<NNN>`: Distribute CFD Commands as an Optional Plugin
+# Distribute CFD Commands as an Optional Plugin
 
 ## Status
 

@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~400. -->
 
-# ADR-`<NNN>`: Write the ADR Before Implementing the Decision
+# Write the ADR Before Implementing the Decision
 
 ## Status
 
@@ -39,7 +39,8 @@ Before any qualifying change is implemented:
 
 1. Run `/decision:new`.
 2. Articulate Context, Decision, Alternatives Considered, Consequences.
-3. Save as `docs/decisions/<NNN>-<slug>.md`.
+3. Save as `docs/decisions/YYYY-MM-DD-<slug>.md` (see
+   [adr-ids-date-slug](../process/adr-ids-date-slug.md)).
 4. Update `docs/decisions/_index.md`.
 5. **Only THEN** implement.
 

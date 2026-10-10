@@ -25,7 +25,7 @@ it as the base):
 4. `docs/CURRENT_STATUS.md` — initialize with:
    "Project initialized with CFD on `<today>`. No work in progress yet."
 5. `docs/decisions/_index.md` — empty index header only.
-6. `docs/decisions/001-initial-architecture.md` — document the current
+6. `docs/decisions/<today>-initial-architecture.md` — document the current
    architecture as the first ADR. Status: `Accepted`. Reference
    `docs/ARCHITECTURE.md` in the Decision section.
 7. `CLAUDE.md` — fill in the template, referencing the docs created
@@ -35,8 +35,8 @@ it as the base):
    agent finds the same index.
 
 Stop after these files are written. Output a summary listing what was
-created and ask the user to review the inferred conventions and ADR-001
-before continuing.
+created and ask the user to review the inferred conventions and the
+`initial-architecture` ADR before continuing.
 
 Hard rule: if you find yourself reading source code to "figure out the
 architecture", stop. The directory layout and dependency files are

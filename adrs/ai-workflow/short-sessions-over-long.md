@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~550. -->
 
-# ADR-`<NNN>`: Short Sessions Over Long Ones
+# Short Sessions Over Long Ones
 
 ## Status
 

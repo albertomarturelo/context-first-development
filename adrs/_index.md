@@ -12,10 +12,11 @@ This is not a library you install. It is a catalog you copy from.
 ```bash
 # Browse the catalog, pick one (e.g., architecture/repository-pattern.md).
 cp adrs/architecture/repository-pattern.md \
-   /your/project/docs/decisions/007-repository-pattern.md
+   /your/project/docs/decisions/2026-10-10-repository-pattern.md
 
 # Edit the file:
-#   - Renumber to fit your repo's ADR sequence.
+#   - Name it YYYY-MM-DD-<slug>.md with today's date. The slug is the
+#     ADR's identity; no sequence number (see process/adr-ids-date-slug.md).
 #   - Set the date.
 #   - Replace placeholders with project-specific names.
 #   - Add a paragraph at the top of "Context" that names the trigger
@@ -44,6 +45,7 @@ cp adrs/architecture/repository-pattern.md \
 - [Trunk-based workflow with release-candidate branches](process/trunk-based-with-release-candidates.md)
 - [Review the PR against context, not the code](process/pr-review-against-context.md)
 - [CURRENT_STATUS is per-developer, out of version control](process/current-status-per-developer.md)
+- [ADR identity is a date-prefixed slug, not a sequence number](process/adr-ids-date-slug.md)
 
 ### AI Workflow
 

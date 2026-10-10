@@ -8,12 +8,12 @@
 
 ## Patterns
 
-- <e.g. "Repository pattern for all data access (see ADR-001).">
-- <e.g. "Dependency injection over singletons (see ADR-007).">
+- <e.g. "Repository pattern for all data access (see ADR `repository-pattern`).">
+- <e.g. "Dependency injection over singletons (see ADR `dependency-injection`).">
 
 ## Testing
 
-- <e.g. "Integration tests use a real database, never mocks (see ADR-004).">
+- <e.g. "Integration tests use a real database, never mocks (see ADR `integration-over-mocks`).">
 - <e.g. "Every public endpoint has at least one integration test.">
 
 ## Naming

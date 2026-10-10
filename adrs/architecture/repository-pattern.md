@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~500. -->
 
-# ADR-`<NNN>`: Repository Pattern for Data Access
+# Repository Pattern for Data Access
 
 ## Status
 

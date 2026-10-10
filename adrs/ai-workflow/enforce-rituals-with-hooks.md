@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~550. -->
 
-# ADR-`<NNN>`: Enforce Rituals with Hooks and CI, Not Discipline
+# Enforce Rituals with Hooks and CI, Not Discipline
 
 ## Status
 

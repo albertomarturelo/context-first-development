@@ -44,8 +44,8 @@ specific ADR / CONVENTIONS line / AC item it derives from.
 ```
 ### Workflow
 
-- Branch name follows `<your convention>` (ADR-NNN).
-- Base branch is `main` (ADR-NNN trunk-based).
+- Branch name follows `<your convention>` (ADR `<slug>`).
+- Base branch is `main` (ADR `trunk-based-with-release-candidates`).
 - PR title is Conventional Commits ≤70 chars (CONVENTIONS L<n>).
 - PR body references `Closes #<n>` when an issue exists.
 - All commits, branch, PR title, PR body are English (Principle 5).

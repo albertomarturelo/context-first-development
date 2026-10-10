@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~500. -->
 
-# ADR-`<NNN>`: Slash Commands vs Claude Skills — Both Are Valid
+# Slash Commands vs Claude Skills — Both Are Valid
 
 ## Status
 

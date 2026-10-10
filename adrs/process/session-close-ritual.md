@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~400. -->
 
-# ADR-`<NNN>`: The Session-Close Ritual
+# The Session-Close Ritual
 
 ## Status
 

@@ -1,7 +1,10 @@
-# WARN-only companion to the session-close ritual
-# (adrs/process/session-close-ritual.md): every PR that changes code
-# should also update docs/CURRENT_STATUS.md. This check warns — it
-# never blocks. Agent-agnostic: works whatever tool wrote the code.
+# Agent-agnostic context checks: they work whatever tool wrote the code.
+# - current-status-freshness WARNS (never blocks) when a PR changes code
+#   without updating docs/CURRENT_STATUS.md
+#   (adrs/process/session-close-ritual.md).
+# - adr-slug-unique FAILS when two date-prefixed ADRs share a slug, the
+#   collision parallel branches can create
+#   (adrs/process/adr-ids-date-slug.md).
 name: Context freshness
 
 on:
@@ -29,4 +32,21 @@ jobs:
           status=$(echo "$changed" | grep -c '^docs/CURRENT_STATUS\.md$' || true)
           if [ "${code:-0}" -gt 0 ] && [ "${status:-0}" -eq 0 ]; then
             echo "::warning::This PR changes code but not docs/CURRENT_STATUS.md. Per the session-close ritual, context updates ship with code — update it or state why it isn't needed."
+          fi
+
+  adr-slug-unique:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fail if two ADRs share a slug
+        run: |
+          [ -d docs/decisions ] || exit 0
+          dupes=$(ls docs/decisions \
+            | grep -E '^[0-9]{4}-[0-9]{2}-[0-9]{2}-.+\.md$' \
+            | sed -E 's/^[0-9]{4}-[0-9]{2}-[0-9]{2}-//' \
+            | sort | uniq -d)
+          if [ -n "$dupes" ]; then
+            echo "::error::Duplicate ADR slugs: $dupes. Two branches likely decided the same thing in parallel — reconcile them into one ADR or supersede one."
+            exit 1
           fi

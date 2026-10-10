@@ -1,10 +1,10 @@
 <!-- Shareable ADR. Token budget: ~<estimate, e.g. 500>. -->
 
-# ADR-`<NNN>`: `<Decision Title>`
+# `<Decision Title>`
 
 ## Status
 
-`<Accepted | Proposed | Superseded by ADR-XXX | Deprecated>` — `<YYYY-MM-DD>`
+`<Accepted | Proposed | Superseded by <slug> | Deprecated>` — `<YYYY-MM-DD>`
 
 ## When to Use
 

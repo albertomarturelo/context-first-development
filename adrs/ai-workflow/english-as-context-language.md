@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~350. -->
 
-# ADR-`<NNN>`: English as the Context Language
+# English as the Context Language
 
 ## Status
 

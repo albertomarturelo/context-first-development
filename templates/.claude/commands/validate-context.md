@@ -19,7 +19,9 @@ checklist with PASS / WARN / FAIL per item:
 4. **ADR index integrity**: every file matching
    `docs/decisions/[0-9]*.md` must be listed in
    `docs/decisions/_index.md`, and every row in `_index.md` must point to
-   a file that exists. FAIL on mismatch.
+   a file that exists. FAIL on mismatch. FAIL also if two
+   date-prefixed ADRs (`YYYY-MM-DD-<slug>.md`) share a slug; the slug
+   is the ADR's identity.
 5. **ADR completeness**: every ADR has Status, Context, Decision,
    Alternatives, Consequences sections. FAIL on any ADR missing one.
 6. **Convention coverage**: spot-check 3 random source files. Do their

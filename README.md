@@ -169,8 +169,8 @@ pyproject.toml, Cargo.toml, go.mod, …) and the README. Then create:
    Completed / Known Issues / Next Priorities. Initialize with
    "Project initialized with CFD on <today>. No work in progress."
 5. docs/decisions/_index.md — a table: ID | Title | Status | Date.
-6. docs/decisions/001-initial-architecture.md — the current
-   architecture as ADR-001 (Status: Accepted), with sections:
+6. docs/decisions/<today>-initial-architecture.md — the current
+   architecture as the first ADR (Status: Accepted), with sections:
    Status, Context, Decision, Alternatives Considered, Consequences.
 7. CLAUDE.md at the repo root, ≤100 lines — an INDEX, not an
    encyclopedia: a 2–3 sentence project description, plain markdown
@@ -189,7 +189,8 @@ pyproject.toml, Cargo.toml, go.mod, …) and the README. Then create:
 - Before writing code: read docs/CONVENTIONS.md.
 - Before modifying an existing file: read it. Never edit unread code.
 - When a significant decision surfaces (new dependency, new pattern,
-  new strategy): STOP. Write docs/decisions/NNN-<slug>.md FIRST —
+  new strategy): STOP. Write docs/decisions/YYYY-MM-DD-<slug>.md
+  FIRST (the slug is its ID; never a sequence number) —
   including the alternatives you rejected and why — update
   _index.md, then implement.
 - When the user corrects a pattern: fix the code AND append the rule
@@ -209,7 +210,8 @@ pyproject.toml, Cargo.toml, go.mod, …) and the README. Then create:
   in the issue tracker.
 
 Finish by listing what you created and asking the user to review the
-inferred conventions and ADR-001 before any real work starts.
+inferred conventions and the initial-architecture ADR before any
+real work starts.
 ```
 
 This is the same flow as [`/project:init`](templates/.claude/commands/project-init.md)

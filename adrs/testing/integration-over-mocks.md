@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~450. -->
 
-# ADR-`<NNN>`: Integration Tests Over Mocks for the Data Layer
+# Integration Tests Over Mocks for the Data Layer
 
 ## Status
 

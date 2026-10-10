@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~500. -->
 
-# ADR-`<NNN>`: Layered (Clean) Architecture
+# Layered (Clean) Architecture
 
 ## Status
 

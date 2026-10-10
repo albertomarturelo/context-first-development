@@ -1,8 +1,8 @@
-# ADR-`<NNN>`: `<Decision Title>`
+# `<Decision Title>`
 
 ## Status
 
-`<Proposed | Accepted | Superseded by ADR-XXX | Deprecated>` — `<YYYY-MM-DD>`
+`<Proposed | Accepted | Superseded by <slug> | Deprecated>` — `<YYYY-MM-DD>`
 
 ## Context
 

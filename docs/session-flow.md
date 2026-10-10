@@ -22,7 +22,7 @@ flowchart TD
     START(["You + an AI agent + a repository"]) --> Q{"Does the codebase<br/>exist yet?"}
     Q -- "existing project" --> A["/project:init<br/>infer docs/ + CLAUDE.md from<br/>structure — Scenario A"]
     Q -- "starting from zero" --> G["Greenfield bootstrap<br/>ADRs first, then scaffold<br/>— Scenario G"]
-    A --> R["Review inferred conventions<br/>and ADR-001"]
+    A --> R["Review inferred conventions<br/>and the initial-architecture ADR"]
     R --> B0["Decompose upcoming work into<br/>1-session issues via /issue:new"]
     G --> B0
 
@@ -86,7 +86,7 @@ sequenceDiagram
     A->>DOCS: create docs/STACK.md
     A->>DOCS: create docs/CONVENTIONS.md (marked "inferred — confirm")
     A->>DOCS: create docs/CURRENT_STATUS.md (empty stub)
-    A->>DOCS: create docs/decisions/{_index,001-initial-architecture}.md
+    A->>DOCS: create docs/decisions/{_index,<date>-initial-architecture}.md
     A-->>E: summary + ask to review inferred conventions
     Note over E: Review pass.<br/>Confirm or amend.
 ```
@@ -130,8 +130,8 @@ sequenceDiagram
     A->>E: Language/runtime? Constraints? Alternatives?
     E-->>A: Trade-offs discussed, choices made.
 
-    A->>ADRs: 001-adopt-cfd.md
-    A->>ADRs: 002-stack.md · 003-architecture.md<br/>(each with rejected alternatives)
+    A->>ADRs: <date>-adopt-cfd.md
+    A->>ADRs: <date>-stack.md · <date>-architecture.md<br/>(each with rejected alternatives)
     A->>DOCS: CLAUDE.md + STACK / ARCHITECTURE /<br/>CONVENTIONS
     Note right of DOCS: DECLARED, not inferred.<br/>Code must comply with docs —<br/>the reverse of Scenario A.
     A->>DOCS: CURRENT_STATUS.md ("scaffold is next")
@@ -140,7 +140,7 @@ sequenceDiagram
     A-->>E: Day 0 done. Zero lines of code —<br/>and that is the point.
 
     E->>A: /issue:start 1
-    A->>CODE: scaffold per ADR-002 / ADR-003
+    A->>CODE: scaffold per ADRs stack + architecture
     Note right of CODE: The first commit lands inside<br/>an architecture, not before one.
 ```
 
@@ -279,13 +279,13 @@ sequenceDiagram
     A->>E: Alternatives:<br/>Redis · Memcached · in-process LRU.<br/>Trade-offs?
     E-->>A: Picks Redis.
 
-    A->>ADRs: write 015-cache-with-redis.md (Status: Accepted)
+    A->>ADRs: write <date>-cache-with-redis.md (Status: Accepted)
     A->>ADRs: update _index.md
-    A-->>E: ADR-015 landed. Ready to implement.
+    A-->>E: ADR cache-with-redis landed. Ready to implement.
 
     E->>A: Go.
     A->>CODE: implement Redis client + cache invalidation
-    Note right of CODE: Implementation references ADR-015<br/>in the commit message and CONVENTIONS.md.
+    Note right of CODE: Implementation cites ADR cache-with-redis<br/>in the commit message and CONVENTIONS.md.
 ```
 
 ---

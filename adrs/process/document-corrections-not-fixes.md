@@ -1,6 +1,6 @@
 <!-- Shareable ADR. Token budget: ~400. -->
 
-# ADR-`<NNN>`: Document the Convention, Not Just the Fix
+# Document the Convention, Not Just the Fix
 
 ## Status
 
