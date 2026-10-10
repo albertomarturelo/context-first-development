@@ -1,6 +1,6 @@
 ---
 name: review-pr
-description: "Review a PR against the team's curated checklist sourced from ADRs, CONVENTIONS, the linked issue's acceptance criteria, and the PR template. Report findings; do not auto-fix. Use when asked to review a pull request in a CFD project."
+description: "Review a PR, or the local branch diff before /session-close, against the team's curated checklist sourced from ADRs, CONVENTIONS, the linked issue's acceptance criteria, and the PR template. Report findings; do not auto-fix. Use when asked to review a pull request or self-review work in a CFD project."
 argument-hint: "[pr-number]"
 metadata:
   token-budget: "scales with the team's checklist depth, typically 3k–15k"
@@ -13,15 +13,31 @@ branch:
 gh pr status --json number --jq '.currentBranch.number'
 ```
 
-If still no PR, ask.
+If the branch has no PR yet, this is a **self-review before
+`/session-close`**: review the local branch instead (step 1, local
+mode). The close ritual commits and opens the PR afterwards.
 
-## 1. Fetch PR metadata + diff + commit history
+## 1. Fetch metadata + diff + commit history
+
+PR mode:
 
 ```bash
 gh pr view <n> --json baseRefName,headRefName,title,body,labels,commits,closingIssuesReferences
 gh pr diff <n>
 git log <base>..<head> --pretty=format:%s     # branch commit story
 ```
+
+Local mode (no PR yet):
+
+```bash
+git diff <base>...HEAD     # committed on the branch
+git diff HEAD              # not yet committed
+git log <base>..HEAD --pretty=format:%s
+```
+
+Take the issue from the `#N` in `docs/CURRENT_STATUS.md` "In
+Progress". Skip the PR-body and PR-template items; they apply once the
+PR exists.
 
 ## 2. Load context indices that define the agenda
 

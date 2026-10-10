@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" width="1000" height="450" role="img" aria-label="The solo loop: start, pick one issue, implement, open the PR and review it yourself, fix the findings, close, merge; corrections and decisions are written down as they happen.">
-<title>The solo loop: start, pick one issue, implement, open the PR and review it yourself, fix the findings, close, merge; corrections and decisions are written down as they happen.</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" width="1000" height="450" role="img" aria-label="The solo loop: start, pick one issue, implement, review the local diff yourself, fix the findings, close, open the PR, merge; corrections and decisions are written down as they happen.">
+<title>The solo loop: start, pick one issue, implement, review the local diff yourself, fix the findings, close, open the PR, merge; corrections and decisions are written down as they happen.</title>
 <defs><marker id="a-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#565B68"/></marker><marker id="a-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#A8690F"/></marker><marker id="a-text" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#171921"/></marker><marker id="a-success" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2C7A6B"/></marker><marker id="a-danger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#AF463C"/></marker><pattern id="grid" width="46" height="46" patternUnits="userSpaceOnUse"><path d="M46 0 L0 0 0 46" fill="none" stroke="#171921" stroke-opacity="0.04"/></pattern></defs>
 <rect x="0.5" y="0.5" width="999" height="449" rx="14" fill="#E7E8EC" stroke="#CBCFD8"/>
 <rect x="0.5" y="0.5" width="999" height="449" rx="14" fill="url(#grid)"/>
@@ -25,15 +25,15 @@
 <path d="M492 170.0 L508 170.0" fill="none" stroke="#565B68" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-muted)"/>
 <rect x="510" y="120" width="136" height="100" rx="10" fill="#F2F3F6" stroke="#CBCFD8" stroke-width="1"/>
 <text x="522" y="142" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="700" fill="#565B68" text-anchor="start">4</text>
-<text x="522" y="166" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#171921" text-anchor="start">PR + /review-pr</text>
-<text x="522" y="190" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">self-review; fix</text>
-<text x="522" y="206" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">findings now</text>
+<text x="522" y="166" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="600" fill="#171921" text-anchor="start">/review-pr</text>
+<text x="522" y="190" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">self-review the diff;</text>
+<text x="522" y="206" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">fix findings now</text>
 <path d="M648 170.0 L664 170.0" fill="none" stroke="#565B68" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-muted)"/>
 <rect x="666" y="120" width="136" height="100" rx="10" fill="#F2F3F6" stroke="#A8690F" stroke-width="2"/>
 <text x="678" y="142" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="700" fill="#A8690F" text-anchor="start">5</text>
 <text x="678" y="166" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="600" fill="#171921" text-anchor="start">/session-close</text>
-<text x="678" y="190" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">updates STATUS;</text>
-<text x="678" y="206" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">docs ship with code</text>
+<text x="678" y="190" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">STATUS + docs ship</text>
+<text x="678" y="206" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">with code; PR opens</text>
 <path d="M804 170.0 L820 170.0" fill="none" stroke="#565B68" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-muted)"/>
 <rect x="822" y="120" width="136" height="100" rx="10" fill="#F2F3F6" stroke="#CBCFD8" stroke-width="1"/>
 <text x="834" y="142" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="700" fill="#565B68" text-anchor="start">6</text>

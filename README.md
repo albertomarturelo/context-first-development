@@ -72,7 +72,7 @@ four.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/case-solo-dark.svg">
-  <img alt="The solo loop: /session-start, /issue-start, implement one acceptance criterion at a time, open the PR and self-review it with /review-pr, fix the findings, /session-close, merge. Corrections go to CONVENTIONS.md and decisions become ADRs as they happen." src="docs/diagrams/case-solo-light.svg" width="100%">
+  <img alt="The solo loop: /session-start, /issue-start, implement one acceptance criterion at a time, self-review the local diff with /review-pr, fix the findings, /session-close, open the PR, merge. Corrections go to CONVENTIONS.md and decisions become ADRs as they happen." src="docs/diagrams/case-solo-light.svg" width="100%">
 </picture>
 
 - **One issue per session.** `/issue-new` forces decomposition until an
@@ -80,10 +80,10 @@ four.
 - **Write it down when it happens.** Correct a pattern once and it goes
   into `CONVENTIONS.md`; make a decision and it becomes an ADR *before*
   the code. The agent never hears the same correction twice.
-- **Review yourself before you close.** Open the PR and run
-  `/review-pr` on it while the session still holds the context; fix
-  what it finds, then close. Reviewing after the close means paying a
-  new session to rebuild that context.
+- **Review yourself before you close.** Run `/review-pr` while the
+  session still holds the context; with no PR yet it reviews your local
+  diff. Fix what it finds, then close. Reviewing after the close means
+  paying a new session to rebuild that context.
 - **Close the session on purpose.** `/session-close` is the habit that
   makes the next session cheap. Restart early when the agent starts
   drifting; there is no progress to lose
@@ -106,7 +106,8 @@ four.
   the PR is open; the reviewer runs `/review-pr`, and their findings
   open your next session.
 - **Decisions are reviewed like code.** An ADR lands in a PR, CI checks
-  its shape, and a teammate approves it before it binds everyone's agent.
+  its slug is unique, and a teammate approves it before it binds
+  everyone's agent.
 
 ### Case 3 · Parallel loops in git worktrees
 

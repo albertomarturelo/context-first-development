@@ -159,16 +159,16 @@ def how_it_works(t):
 
 def solo(t):
     f = Fig(1000, 450, t, "The solo loop: start, pick one issue, implement, "
-            "open the PR and review it yourself, fix the findings, close, "
-            "merge; corrections and decisions are written down as they "
-            "happen.")
+            "review the local diff yourself, fix the findings, close, "
+            "open the PR, merge; corrections and decisions are written "
+            "down as they happen.")
     f.header("CASE 1 · ONE DEVELOPER, ONE REPO",
              "One loop. One issue per session.")
     steps = [("1", "/session-start", "reads STATUS +", "decisions index"),
              ("2", "/issue-start N", "loads the AC", "+ its ADRs"),
              ("3", "implement", "one AC item", "at a time"),
-             ("4", "PR + /review-pr", "self-review; fix", "findings now"),
-             ("5", "/session-close", "updates STATUS;", "docs ship with code"),
+             ("4", "/review-pr", "self-review the diff;", "fix findings now"),
+             ("5", "/session-close", "STATUS + docs ship", "with code; PR opens"),
              ("6", "merge", "closes the issue", "")]
     x0, w, gap, y, h = 42, 136, 20, 120, 100
     for i, (n, title, l1, l2) in enumerate(steps):
@@ -233,8 +233,8 @@ def team(t):
 
     f.rect(430, 310, 230, 120, fill="surface")
     f.text(448, 340, "CI on every PR", 15, weight=700)
-    for i, s in enumerate(["ADR contract", "ADR slugs unique",
-                           "context freshness (warns)"]):
+    for i, s in enumerate(["ADR slugs unique (blocks)",
+                           "+ the checks you add"]):
         f.text(448, 366 + i * 20, "· " + s, 12, "muted")
 
     f.rect(720, 140, 240, 290, fill="surface", stroke="accent", width=2)

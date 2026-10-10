@@ -50,8 +50,8 @@ from scratch.
 PR review on this project is mediated by a `/review-pr <n>` skill
 (or an equivalent command) that:
 
-1. **Fetches** PR metadata + diff via `gh pr view` / `gh pr diff`,
-   plus the branch's commit history.
+1. **Fetches** PR metadata + diff (`gh pr view` / `gh pr diff`), or
+   the local branch diff in a self-review, plus the commit history.
 2. **Loads the indices** that define the verification agenda:
    `CONVENTIONS`, the linked issue body, every ADR named there, the
    PR template, and any team-curated review checklist embedded in
