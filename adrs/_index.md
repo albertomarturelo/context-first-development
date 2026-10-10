@@ -57,6 +57,7 @@ cp adrs/architecture/repository-pattern.md \
 - [Distribute CFD skills through installers, never as the source of truth](ai-workflow/distribute-commands-as-plugin.md)
 - [Enforce rituals with hooks and CI, not discipline](ai-workflow/enforce-rituals-with-hooks.md)
 - [One loop, with the developer as orchestrator](ai-workflow/single-loop-human-orchestrator.md)
+- [Parallel CFD loops in git worktrees](ai-workflow/parallel-loops-in-worktrees.md)
 
 ## Contributing
 

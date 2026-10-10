@@ -10,13 +10,15 @@
 
 Adopt this ADR when:
 
-- Two or more developers work on the repo with AI agents.
+- Two or more developers work on the repo with AI agents, or one
+  developer runs parallel loops in worktrees (see
+  [parallel-loops-in-worktrees](../ai-workflow/parallel-loops-in-worktrees.md)).
 - Work units live in an external tracker (see
   [work-units-as-external-tracker](work-units-as-external-tracker.md))
   — the tracker, not the status file, must already be the shared
   source of "who is doing what".
 
-Do NOT adopt solo: a tracked `CURRENT_STATUS.md` doubles as a session
+Do NOT adopt solo with a single loop: a tracked `CURRENT_STATUS.md` doubles as a session
 log (`git log -- docs/CURRENT_STATUS.md`) and its freshness is
 verifiable from history. Keep it in git until a second developer
 arrives.
