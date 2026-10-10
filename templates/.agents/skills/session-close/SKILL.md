@@ -36,8 +36,14 @@ Do NOT close the session without completing step 1.
 After completion, output a one-paragraph session summary suitable for
 pasting into the PR description.
 
-If a PR has been opened from this session, the natural next step is
-`/review-pr <n>` — it cross-checks the diff against the AC checklist,
-`CONVENTIONS`, the loaded ADRs, and the PR template, without scanning
-full files. See `adrs/process/pr-review-against-context.md` in the
-catalog.
+**Review order depends on who reviews.** `/review-pr <n>`
+cross-checks the diff against the AC checklist, `CONVENTIONS`, the
+loaded ADRs, and the PR template (see
+`adrs/process/pr-review-against-context.md` in the catalog).
+
+- **You are the reviewer (solo):** run `/review-pr` BEFORE this
+  skill. With no PR yet it reviews the local diff. Fix its findings
+  while the context is still loaded; this close then records the
+  reviewed state, commits, and the PR opens afterwards.
+- **A teammate reviews:** close first. Their findings arrive as PR
+  comments and become the focus of the next session.

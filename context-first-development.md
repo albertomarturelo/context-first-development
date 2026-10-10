@@ -476,6 +476,8 @@ gh pr create --title "feat: notification repository" --body "..."
 
 `/session-close` updates `docs/CURRENT_STATUS.md`, captures any correction you made during the session as a rule in `docs/CONVENTIONS.md`, proposes ADRs for decisions that were taken informally, and stages the documentation in the **same** commit as the code — so context and code can never land separately.
 
+Where the PR review falls depends on who reviews. Working alone, run `/review-pr` **before** closing: with no PR yet it reviews the local branch diff against the issue's acceptance criteria and the ADRs, its findings get fixed while the session still holds the context, and the close records the reviewed state before the PR opens. When a teammate reviews, close first; their findings become the focus of the next session.
+
 The session close produces a diff in `CURRENT_STATUS.md` that is essentially a **session log**. This creates natural traceability:
 
 ```bash

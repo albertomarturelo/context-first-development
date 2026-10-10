@@ -72,6 +72,9 @@ ADR-003) and a CI workflow enforces it:
   present, manual-only skills disable Codex implicit invocation,
   `templates/.claude/skills` is a symlink, no `templates/.claude/commands/`.
 
+README diagrams in `docs/diagrams/` are generated: edit
+`scripts/build-diagrams.py` and run it, never hand-edit the SVGs.
+
 Run locally: `bash scripts/validate-catalog.sh`. CI:
 `.github/workflows/validate-catalog.yml` (push to `main` + PRs).
 Failing checks block merge.

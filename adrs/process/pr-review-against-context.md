@@ -50,8 +50,8 @@ from scratch.
 PR review on this project is mediated by a `/review-pr <n>` skill
 (or an equivalent command) that:
 
-1. **Fetches** PR metadata + diff via `gh pr view` / `gh pr diff`,
-   plus the branch's commit history.
+1. **Fetches** PR metadata + diff (`gh pr view` / `gh pr diff`), or
+   the local branch diff in a self-review, plus the commit history.
 2. **Loads the indices** that define the verification agenda:
    `CONVENTIONS`, the linked issue body, every ADR named there, the
    PR template, and any team-curated review checklist embedded in
@@ -61,8 +61,9 @@ PR review on this project is mediated by a `/review-pr <n>` skill
    decides. Reads in service of verification, not discovery.
 4. **Reports** ✓ / ⚠ / ✗ per checklist item, citing the specific
    ADR / CONVENTIONS line / AC item being satisfied or violated.
-5. **Does NOT auto-fix.** Findings are surfaced for the author to
-   address on the next session.
+5. **Does NOT auto-fix.** Findings go to the author: fixed before
+   `/session-close` in a self-review, while the context is loaded;
+   in the next session after a teammate's review.
 
 The skill body itself **is** the team's checklist — it
 evolves with the project (new convention → new line in the
