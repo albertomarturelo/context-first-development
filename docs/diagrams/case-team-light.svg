@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 480" width="1000" height="480" role="img" aria-label="In a team, each developer's status file stays on their laptop; the tracker says who does what; shared rules on main change only through a reviewed PR that passes CI.">
+<title>In a team, each developer's status file stays on their laptop; the tracker says who does what; shared rules on main change only through a reviewed PR that passes CI.</title>
+<defs><marker id="a-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#565B68"/></marker><marker id="a-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#A8690F"/></marker><marker id="a-text" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#171921"/></marker><marker id="a-success" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2C7A6B"/></marker><marker id="a-danger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#AF463C"/></marker><pattern id="grid" width="46" height="46" patternUnits="userSpaceOnUse"><path d="M46 0 L0 0 0 46" fill="none" stroke="#171921" stroke-opacity="0.04"/></pattern></defs>
+<rect x="0.5" y="0.5" width="999" height="479" rx="14" fill="#E7E8EC" stroke="#CBCFD8"/>
+<rect x="0.5" y="0.5" width="999" height="479" rx="14" fill="url(#grid)"/>
+<text x="40" y="46" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="600" fill="#565B68" text-anchor="start">CASE 2 · A TEAM ON ONE REPO</text>
+<text x="40" y="78" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22" font-weight="700" fill="#171921" text-anchor="start">Personal state stays local. Shared truth goes through review.</text>
+<text x="40" y="124" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="600" fill="#565B68" text-anchor="start">ON EACH LAPTOP</text>
+<text x="430" y="124" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="600" fill="#565B68" text-anchor="start">SHARED</text>
+<rect x="40" y="140" width="250" height="130" rx="10" fill="#F2F3F6" stroke="#CBCFD8" stroke-width="1"/>
+<text x="58" y="170" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#171921" text-anchor="start">Developer A + agent</text>
+<rect x="56" y="186" width="218" height="32" rx="8" fill="#FBFBFD" stroke="#CBCFD8" stroke-width="1"/>
+<text x="68" y="206.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="400" fill="#171921" text-anchor="start">CURRENT_STATUS.md</text>
+<text x="58" y="240" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">gitignored: personal memory</text>
+<text x="58" y="258" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">of where they stopped</text>
+<rect x="40" y="300" width="250" height="130" rx="10" fill="#F2F3F6" stroke="#CBCFD8" stroke-width="1"/>
+<text x="58" y="330" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#171921" text-anchor="start">Developer B + agent</text>
+<rect x="56" y="346" width="218" height="32" rx="8" fill="#FBFBFD" stroke="#CBCFD8" stroke-width="1"/>
+<text x="68" y="366.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="400" fill="#171921" text-anchor="start">CURRENT_STATUS.md</text>
+<text x="58" y="400" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">gitignored: personal memory</text>
+<text x="58" y="418" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">of where they stopped</text>
+<rect x="430" y="140" width="230" height="110" rx="10" fill="#F2F3F6" stroke="#CBCFD8" stroke-width="1"/>
+<text x="448" y="170" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#171921" text-anchor="start">Tracker</text>
+<text x="448" y="196" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">issues with AC · assignees</text>
+<text x="448" y="216" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">who does what, right now</text>
+<rect x="430" y="310" width="230" height="120" rx="10" fill="#F2F3F6" stroke="#CBCFD8" stroke-width="1"/>
+<text x="448" y="340" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#171921" text-anchor="start">CI on every PR</text>
+<text x="448" y="366" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">· ADR contract</text>
+<text x="448" y="386" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">· ADR slugs unique</text>
+<text x="448" y="406" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">· context freshness (warns)</text>
+<rect x="720" y="140" width="240" height="290" rx="10" fill="#F2F3F6" stroke="#A8690F" stroke-width="2"/>
+<text x="738" y="170" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15" font-weight="700" fill="#A8690F" text-anchor="start">main</text>
+<rect x="736" y="188" width="208" height="34" rx="8" fill="#FBFBFD" stroke="#CBCFD8" stroke-width="1"/>
+<text x="748" y="209.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="400" fill="#171921" text-anchor="start">CLAUDE.md</text>
+<text x="932" y="209.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="end">index</text>
+<rect x="736" y="232" width="208" height="34" rx="8" fill="#FBFBFD" stroke="#CBCFD8" stroke-width="1"/>
+<text x="748" y="253.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="400" fill="#171921" text-anchor="start">decisions/</text>
+<text x="932" y="253.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="end">ADRs</text>
+<rect x="736" y="276" width="208" height="34" rx="8" fill="#FBFBFD" stroke="#CBCFD8" stroke-width="1"/>
+<text x="748" y="297.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="400" fill="#171921" text-anchor="start">CONVENTIONS.md</text>
+<text x="932" y="297.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="end">rules</text>
+<rect x="736" y="320" width="208" height="34" rx="8" fill="#FBFBFD" stroke="#CBCFD8" stroke-width="1"/>
+<text x="748" y="341.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="400" fill="#171921" text-anchor="start">.agents/skills/</text>
+<text x="932" y="341.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="end">rituals</text>
+<text x="738" y="382" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">changes only through</text>
+<text x="738" y="400" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">a reviewed PR</text>
+<path d="M290 205 L322 205" fill="none" stroke="#565B68" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M290 365 L322 365" fill="none" stroke="#565B68" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M322 195 L322 370" fill="none" stroke="#565B68" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M322 195 L426 195" fill="none" stroke="#565B68" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-muted)"/>
+<text x="374" y="185" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="middle">claim issues</text>
+<path d="M322 370 L426 370" fill="none" stroke="#565B68" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-muted)"/>
+<text x="374" y="360" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="middle">open PRs</text>
+<text x="374" y="392" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="middle">code + docs</text>
+<path d="M664 370 L716 370" fill="none" stroke="#565B68" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-muted)"/>
+<text x="690" y="360" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="middle">merge</text>
+</svg>

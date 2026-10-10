@@ -39,13 +39,19 @@ flowchart TD
         MID -- "significant decision surfaces" --> D["/new-decision — ADR lands<br/>BEFORE the code — Scenario D"]
         C --> IMPL
         D --> IMPL
-        MID -- "AC done, or context filling up" --> SC["/session-close<br/>update CURRENT_STATUS.md"]
-        SC --> PR["git push + gh pr create<br/>PR description = AC checklist"]
-        PR --> RV["/review-pr N<br/>verify diff against context — Scenario E"]
+        MID -- "context filling up" --> SCX["/session-close<br/>no PR yet; resume next session"]
+        MID -- "AC done" --> PR["git push + gh pr create<br/>PR description = AC checklist"]
+        PR --> WHO{"Who reviews?"}
+        WHO -- "you (solo)" --> RV["/review-pr N — Scenario E<br/>fix findings in this session"]
+        RV --> SC["/session-close<br/>update CURRENT_STATUS.md"]
+        WHO -- "a teammate" --> SCT["/session-close"]
+        SCT --> TR["teammate runs /review-pr N<br/>findings open the next session"]
     end
 
     B0 --> SS
-    RV --> M(["Merge — closes the issue"])
+    SCX -.-> SS
+    SC --> M(["Merge — closes the issue"])
+    TR --> M
     M -.->|"next session"| SS
 ```
 
@@ -292,7 +298,10 @@ sequenceDiagram
 
 ## Scenario E — PR review against context (closing the cycle)
 
-**When:** the session opened a PR. Before merge, the diff is reviewed
+**When:** the session opened a PR. If you are the reviewer, run it
+*before* `/session-close`, so its findings are fixed while the context
+is still loaded. If a teammate reviews, close first; their findings
+open the next session. Either way, before merge the diff is reviewed
 against the project's context — NOT by reading the changed files in
 full, but by **cross-checking the diff against indices** (CONVENTIONS,
 ADRs, the linked issue's AC, the PR template).

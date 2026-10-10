@@ -105,8 +105,9 @@ Add more sections as your team's ADRs surface them.
 
 ## Rules
 
-- **Do NOT auto-fix.** Report only; the author fixes on the next
-  session.
+- **Do NOT auto-fix.** Report only. In a self-review the author fixes
+  the findings in the same session, before `/session-close`; in a
+  teammate review the author fixes them in the next session.
 - **English only.**
 - **No silent scope expansion.** If the checklist genuinely needs a
   rule that is not yet in CONVENTIONS or an ADR, surface it as a

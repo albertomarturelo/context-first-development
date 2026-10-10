@@ -61,8 +61,9 @@ PR review on this project is mediated by a `/review-pr <n>` skill
    decides. Reads in service of verification, not discovery.
 4. **Reports** ✓ / ⚠ / ✗ per checklist item, citing the specific
    ADR / CONVENTIONS line / AC item being satisfied or violated.
-5. **Does NOT auto-fix.** Findings are surfaced for the author to
-   address on the next session.
+5. **Does NOT auto-fix.** Findings go to the author: fixed before
+   `/session-close` in a self-review, while the context is loaded;
+   in the next session after a teammate's review.
 
 The skill body itself **is** the team's checklist — it
 evolves with the project (new convention → new line in the

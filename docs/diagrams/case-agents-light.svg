@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 460" width="1000" height="460" role="img" aria-label="Several agents, one source: CLAUDE.md and .agents/skills are the only copies; AGENTS.md and .claude/skills are symlinks, so every agent reads the same context from the path it expects.">
+<title>Several agents, one source: CLAUDE.md and .agents/skills are the only copies; AGENTS.md and .claude/skills are symlinks, so every agent reads the same context from the path it expects.</title>
+<defs><marker id="a-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#565B68"/></marker><marker id="a-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#A8690F"/></marker><marker id="a-text" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#171921"/></marker><marker id="a-success" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2C7A6B"/></marker><marker id="a-danger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#AF463C"/></marker><pattern id="grid" width="46" height="46" patternUnits="userSpaceOnUse"><path d="M46 0 L0 0 0 46" fill="none" stroke="#171921" stroke-opacity="0.04"/></pattern></defs>
+<rect x="0.5" y="0.5" width="999" height="459" rx="14" fill="#E7E8EC" stroke="#CBCFD8"/>
+<rect x="0.5" y="0.5" width="999" height="459" rx="14" fill="url(#grid)"/>
+<text x="40" y="46" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="600" fill="#565B68" text-anchor="start">CASE 4 · SEVERAL AGENTS, ONE SOURCE</text>
+<text x="40" y="78" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22" font-weight="700" fill="#171921" text-anchor="start">One copy of the context. Every agent finds it where it looks.</text>
+<rect x="40" y="152" width="180" height="46" rx="8" fill="#FBFBFD" stroke="#CBCFD8" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="56" y="180" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="400" fill="#171921" text-anchor="start">AGENTS.md</text>
+<path d="M224 175 L316 175" fill="none" stroke="#565B68" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-muted)"/>
+<text x="270" y="166" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="400" fill="#565B68" text-anchor="middle">symlink</text>
+<rect x="320" y="130" width="250" height="90" rx="10" fill="#F2F3F6" stroke="#A8690F" stroke-width="2"/>
+<text x="340" y="168" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15" font-weight="700" fill="#A8690F" text-anchor="start">CLAUDE.md</text>
+<text x="340" y="192" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">the index · the only copy</text>
+<rect x="40" y="284" width="180" height="46" rx="8" fill="#FBFBFD" stroke="#CBCFD8" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="56" y="312" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="400" fill="#171921" text-anchor="start">.claude/skills/</text>
+<path d="M224 307 L316 307" fill="none" stroke="#565B68" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-muted)"/>
+<text x="270" y="298" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="400" fill="#565B68" text-anchor="middle">symlink</text>
+<rect x="320" y="262" width="250" height="90" rx="10" fill="#F2F3F6" stroke="#A8690F" stroke-width="2"/>
+<text x="340" y="300" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15" font-weight="700" fill="#A8690F" text-anchor="start">.agents/skills/</text>
+<text x="340" y="324" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="start">the procedures · the only copy</text>
+<rect x="680" y="110" width="280" height="56" rx="10" fill="#F2F3F6" stroke="#CBCFD8" stroke-width="1"/>
+<text x="696" y="133" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#171921" text-anchor="start">Claude Code</text>
+<text x="696" y="153" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="400" fill="#565B68" text-anchor="start">CLAUDE.md · .claude/skills · /name</text>
+<rect x="680" y="176" width="280" height="56" rx="10" fill="#F2F3F6" stroke="#CBCFD8" stroke-width="1"/>
+<text x="696" y="199" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#171921" text-anchor="start">Codex</text>
+<text x="696" y="219" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="400" fill="#565B68" text-anchor="start">AGENTS.md · .agents/skills · $name</text>
+<rect x="680" y="242" width="280" height="56" rx="10" fill="#F2F3F6" stroke="#CBCFD8" stroke-width="1"/>
+<text x="696" y="265" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#171921" text-anchor="start">GitHub Copilot</text>
+<text x="696" y="285" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="400" fill="#565B68" text-anchor="start">AGENTS.md · .agents/skills · /name</text>
+<rect x="680" y="308" width="280" height="56" rx="10" fill="#F2F3F6" stroke="#CBCFD8" stroke-width="1"/>
+<text x="696" y="331" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#171921" text-anchor="start">Gemini CLI</text>
+<text x="696" y="351" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="400" fill="#565B68" text-anchor="start">AGENTS.md* · .agents/skills</text>
+<path d="M572 175 L596 175 L596 307 L572 307" fill="none" stroke="#565B68" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M596 241 L676 241" fill="none" stroke="#565B68" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-muted)"/>
+<text x="636" y="231" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="middle">read by</text>
+<text x="636" y="261" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#565B68" text-anchor="middle">every agent</text>
+<text x="680" y="392" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#565B68" text-anchor="start">* one config line; see the per-agent table</text>
+<rect x="40" y="404" width="920" height="40" rx="10" fill="#F2F3F6" stroke="#CBCFD8" stroke-width="1"/>
+<text x="58" y="429" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#565B68" text-anchor="start">CI runs the same checks on every PR, whichever agent wrote it. Hooks are a Claude Code bonus, not the guarantee.</text>
+</svg>

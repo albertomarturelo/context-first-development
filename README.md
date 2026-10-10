@@ -9,6 +9,11 @@ Code, Gemini CLI, Codex, Cursor, Aider) **on real repositories.** It treats
 context as a first-class artifact: structured, versioned, and reviewed like
 code.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/how-it-works-dark.svg">
+  <img alt="Without CFD, every session starts from zero: you re-explain the architecture, the agent repeats mistakes and revives rejected ideas. With CFD, each session writes decisions and corrections into the repo at close, and the next session reads them back at start." src="docs/diagrams/how-it-works-light.svg" width="100%">
+</picture>
+
 **The primary payoff is adherence, not tokens**: code that respects your
 conventions on the first attempt, decisions that don't get re-litigated,
 corrections that never repeat. Token savings are a welcome side effect —
@@ -46,6 +51,111 @@ Equifax (ID Watchdog Mobile) is in progress; see
 | Project state          | Lives in your memory                        | `docs/CURRENT_STATUS.md` is the project's running session log     |
 | Hallucination surface  | Wide — agent invents details to fill blanks | Narrow — explicit ADRs constrain what is decided vs. open         |
 | Multi-model            | Locks you in to whichever tool you tried    | Plain Markdown; works with any agent that reads context files     |
+
+## CFD in your setup
+
+The files and the loop are the same everywhere. What changes with your
+setup is **where state lives** and **who has to agree before a decision
+lands**. Find yours:
+
+| Your setup                              | What changes                                              | Read            |
+| --------------------------------------- | --------------------------------------------------------- | --------------- |
+| One developer, one repo                 | Nothing extra: the loop below                             | [Case 1](#case-1--one-developer-one-repo) |
+| A team on one repo                      | Status file leaves git; the tracker says who does what    | [Case 2](#case-2--a-team-on-one-repo) |
+| Several agents in parallel (worktrees)  | Decisions land on `main` first; merges go one at a time   | [Case 3](#case-3--parallel-loops-in-git-worktrees) |
+| Mixed agents (Claude, Codex, Copilot…)  | Nothing to translate: one copy, symlinked                 | [Case 4](#case-4--several-agents-one-source) |
+
+The cases stack: a team running Codex and Claude in worktrees reads all
+four.
+
+### Case 1 · One developer, one repo
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/case-solo-dark.svg">
+  <img alt="The solo loop: /session-start, /issue-start, implement one acceptance criterion at a time, open the PR and self-review it with /review-pr, fix the findings, /session-close, merge. Corrections go to CONVENTIONS.md and decisions become ADRs as they happen." src="docs/diagrams/case-solo-light.svg" width="100%">
+</picture>
+
+- **One issue per session.** `/issue-new` forces decomposition until an
+  issue fits one session; the issue body is the spec.
+- **Write it down when it happens.** Correct a pattern once and it goes
+  into `CONVENTIONS.md`; make a decision and it becomes an ADR *before*
+  the code. The agent never hears the same correction twice.
+- **Review yourself before you close.** Open the PR and run
+  `/review-pr` on it while the session still holds the context; fix
+  what it finds, then close. Reviewing after the close means paying a
+  new session to rebuild that context.
+- **Close the session on purpose.** `/session-close` is the habit that
+  makes the next session cheap. Restart early when the agent starts
+  drifting; there is no progress to lose
+  ([short-sessions-over-long](adrs/ai-workflow/short-sessions-over-long.md)).
+
+### Case 2 · A team on one repo
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/case-team-dark.svg">
+  <img alt="In a team, each developer keeps CURRENT_STATUS.md local and gitignored. The tracker holds who does what. Shared rules on main, CLAUDE.md, ADRs, CONVENTIONS and skills, change only through a reviewed PR that passes CI." src="docs/diagrams/case-team-light.svg" width="100%">
+</picture>
+
+- **Status goes personal.** `echo docs/CURRENT_STATUS.md >> .gitignore`.
+  A shared status file conflicts on every PR and injects everyone's WIP
+  into your session
+  ([current-status-per-developer](adrs/process/current-status-per-developer.md)).
+- **The tracker is the shared picture.** Assignees and issue state
+  answer "who is doing what"; no doc in the repo does.
+- **A teammate's review inverts the order.** Close your session when
+  the PR is open; the reviewer runs `/review-pr`, and their findings
+  open your next session.
+- **Decisions are reviewed like code.** An ADR lands in a PR, CI checks
+  its shape, and a teammate approves it before it binds everyone's agent.
+
+### Case 3 · Parallel loops in git worktrees
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/case-worktrees-dark.svg">
+  <img alt="Parallel loops: ADRs for the batch land on main first. Each worktree runs one issue with one agent on disjoint paths. When a loop needs a new ADR it stops and lands it on main as its own PR; sibling worktrees rebase. Merges happen one at a time, each rebased and reviewed against current main." src="docs/diagrams/case-worktrees-light.svg" width="100%">
+</picture>
+
+- **A worktree isolates files, not decisions.** Everything on `main`
+  when you branch is shared; anything decided inside one worktree is
+  invisible to the others until it merges.
+- **So decide first, and stop when a new decision appears.** Pick
+  issues whose target paths don't overlap. A loop that needs a new ADR
+  lands it on `main` first; the other loops rebase.
+- **You are the bottleneck on purpose.** Each merge is reviewed against
+  the current `main`. Run as many loops as you can actually review,
+  usually two or three
+  ([parallel-loops-in-worktrees](adrs/ai-workflow/parallel-loops-in-worktrees.md)).
+
+### Case 4 · Several agents, one source
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/case-agents-dark.svg">
+  <img alt="Several agents, one source: CLAUDE.md and .agents/skills are the only copies. AGENTS.md and .claude/skills are symlinks, so Claude Code, Codex, GitHub Copilot and Gemini CLI each read the same context from the path they expect. CI runs the same checks on every PR." src="docs/diagrams/case-agents-light.svg" width="100%">
+</picture>
+
+- **Nothing to translate.** The index and the procedures exist once.
+  Symlinks give each agent the path it looks for
+  ([agent-skills-as-procedures](adrs/ai-workflow/agent-skills-as-procedures.md)).
+- **CI is the guarantee.** Hooks help inside Claude Code; the CI checks
+  hold any agent's PR to the same rules, including one you never
+  configured.
+
+### What it costs, honestly
+
+CFD is a discipline, not a tool that works while you look away.
+
+- **A few minutes per session** for the start and close rituals, and
+  about 30 minutes to bootstrap an existing repo.
+- **Decisions get written before code.** The first week feels slower;
+  the payoff is the week after, when nothing gets re-explained.
+- **It only works if the docs stay true.** A stale ADR misleads the
+  agent with confidence. The close ritual, the hooks and CI exist to
+  keep that from happening, but someone still has to run the ritual.
+- **It is not for throwaway code.** See
+  [Who CFD is NOT for](#who-cfd-is-not-for).
+
+[**CFD in motion**](docs/session-flow.md) shows the same loop message
+by message.
 
 ## Try it in 60 seconds
 
@@ -231,6 +341,8 @@ METHODOLOGY.md                  navigable map of the essay
 templates/                      drop-in scaffolding for any project
 adrs/                           shareable ADR catalog ("shadcn for AI context")
 case-studies/                   evidenced adoption write-ups
+docs/                           CFD in motion + the README diagrams
+scripts/                        catalog validator, session-cost probe, diagram builder
 CONTRIBUTING.md                 how to propose ADRs, examples, case studies
 LICENSE                         MIT for code, CC-BY-SA 4.0 for prose
 ```

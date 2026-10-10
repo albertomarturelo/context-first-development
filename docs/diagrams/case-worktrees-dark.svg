@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 580" width="1000" height="580" role="img" aria-label="Parallel loops: decisions for the batch land on main first; each worktree runs one issue with one agent on its own paths; a mid-loop decision lands on main as its own PR, siblings rebase, and merges happen one at a time.">
+<title>Parallel loops: decisions for the batch land on main first; each worktree runs one issue with one agent on its own paths; a mid-loop decision lands on main as its own PR, siblings rebase, and merges happen one at a time.</title>
+<defs><marker id="a-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#969CAB"/></marker><marker id="a-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0A93E"/></marker><marker id="a-text" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#E9EAF0"/></marker><marker id="a-success" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#63B9AB"/></marker><marker id="a-danger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#DC7A70"/></marker><pattern id="grid" width="46" height="46" patternUnits="userSpaceOnUse"><path d="M46 0 L0 0 0 46" fill="none" stroke="#E9EAF0" stroke-opacity="0.04"/></pattern></defs>
+<rect x="0.5" y="0.5" width="999" height="579" rx="14" fill="#0F1118" stroke="#2B303C"/>
+<rect x="0.5" y="0.5" width="999" height="579" rx="14" fill="url(#grid)"/>
+<text x="40" y="46" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="600" fill="#969CAB" text-anchor="start">CASE 3 · PARALLEL LOOPS IN GIT WORKTREES</text>
+<text x="40" y="78" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22" font-weight="700" fill="#E9EAF0" text-anchor="start">Isolate files per worktree. Settle decisions on main first.</text>
+<text x="40" y="214" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="700" fill="#E9EAF0" text-anchor="start">main</text>
+<path d="M40 190 L960 190" fill="none" stroke="#E9EAF0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M150 190 L150 455 Q150 465 160 465" fill="none" stroke="#969CAB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M150 275 Q150 285 160 285" fill="none" stroke="#969CAB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M160 285 L590 285 Q600 285 600 275 L600 199" fill="none" stroke="#969CAB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-muted)"/>
+<text x="168" y="273" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="400" fill="#E9EAF0" text-anchor="start">wt-1 · Claude Code · #41 · src/auth/</text>
+<circle cx="210" cy="285" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<circle cx="300" cy="285" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<circle cx="390" cy="285" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<circle cx="480" cy="285" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<path d="M150 365 Q150 375 160 375" fill="none" stroke="#969CAB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M160 375 L750 375 Q760 375 760 365 L760 199" fill="none" stroke="#969CAB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-muted)"/>
+<text x="168" y="363" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="400" fill="#E9EAF0" text-anchor="start">wt-2 · Codex · #42 · src/billing/</text>
+<circle cx="210" cy="375" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<circle cx="300" cy="375" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<circle cx="390" cy="375" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<circle cx="570" cy="375" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<circle cx="660" cy="375" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<path d="M160 465 L910 465 Q920 465 920 455 L920 199" fill="none" stroke="#969CAB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#a-muted)"/>
+<text x="168" y="453" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="400" fill="#E9EAF0" text-anchor="start">wt-3 · Copilot · #43 · docs/api/</text>
+<circle cx="210" cy="465" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<circle cx="300" cy="465" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<circle cx="390" cy="465" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<circle cx="480" cy="465" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<circle cx="570" cy="465" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<circle cx="660" cy="465" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<circle cx="750" cy="465" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<circle cx="840" cy="465" r="4.5" fill="#1E222D" stroke="#969CAB" stroke-width="1.5"/>
+<circle cx="530" cy="285" r="6" fill="#1E222D" stroke="#E9EAF0" stroke-width="1.5"/>
+<text x="530" y="307" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="400" fill="#969CAB" text-anchor="middle">rebase</text>
+<circle cx="530" cy="465" r="6" fill="#1E222D" stroke="#E9EAF0" stroke-width="1.5"/>
+<text x="530" y="487" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="400" fill="#969CAB" text-anchor="middle">rebase</text>
+<circle cx="100" cy="190" r="8" fill="#F0A93E" stroke="#F0A93E" stroke-width="1.5"/>
+<text x="100" y="144" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#F0A93E" text-anchor="middle">ADRs for the batch</text>
+<text x="100" y="162" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#F0A93E" text-anchor="middle">decided first</text>
+<circle cx="470" cy="190" r="7" fill="#1E222D" stroke="#E9EAF0" stroke-width="1.5"/>
+<text x="470" y="144" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#E9EAF0" text-anchor="middle">mid-loop ADR</text>
+<text x="470" y="162" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#969CAB" text-anchor="middle">lands as own PR</text>
+<circle cx="600" cy="190" r="7" fill="#1E222D" stroke="#63B9AB" stroke-width="1.5"/>
+<text x="600" y="144" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#E9EAF0" text-anchor="middle">merge #41</text>
+<text x="600" y="162" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#969CAB" text-anchor="middle">rebased + reviewed</text>
+<circle cx="760" cy="190" r="7" fill="#1E222D" stroke="#63B9AB" stroke-width="1.5"/>
+<text x="760" y="144" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#E9EAF0" text-anchor="middle">merge #42</text>
+<text x="760" y="162" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#969CAB" text-anchor="middle">rebased + reviewed</text>
+<circle cx="920" cy="190" r="7" fill="#1E222D" stroke="#63B9AB" stroke-width="1.5"/>
+<text x="920" y="144" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#E9EAF0" text-anchor="middle">merge #43</text>
+<text x="920" y="162" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#969CAB" text-anchor="middle">rebased + reviewed</text>
+<rect x="458" y="363" width="24" height="24" rx="4" fill="#1E222D" stroke="#DC7A70" stroke-width="1"/>
+<text x="470" y="380" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#DC7A70" text-anchor="middle">!</text>
+<path d="M470 359 L470 201" fill="none" stroke="#DC7A70" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 5" marker-end="url(#a-danger)"/>
+<text x="490" y="402" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="400" fill="#DC7A70" text-anchor="start">new ADR needed: stop, land it first</text>
+<rect x="40" y="506" width="920" height="50" rx="10" fill="#171A22" stroke="#2B303C" stroke-width="1"/>
+<text x="58" y="536" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#E9EAF0" text-anchor="start">You orchestrate:</text>
+<text x="190" y="536" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#969CAB" text-anchor="start">disjoint targets per issue  ·  every merge reviewed against current main  ·  loops ≤ what you can review (2–3)</text>
+</svg>
