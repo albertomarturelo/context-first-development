@@ -132,6 +132,13 @@ if ! bash scripts/stamp-version.sh --check | sed 's/^/    /'; then
   err "version stamps out of date: run scripts/stamp-version.sh and add the CHANGELOG entry"
 fi
 
+# 8. The telemetry-report script, on synthetic fixtures (scripts/tests/).
+echo ""
+echo "8. telemetry-report adapters pass their tests"
+TEST_OUT=$(python3 -m unittest discover -s scripts/tests -p 'test_*.py' 2>&1); TEST_RC=$?
+printf '%s\n' "$TEST_OUT" | tail -3 | sed 's/^/    /'
+[ "$TEST_RC" -eq 0 ] || err "telemetry-report tests failed (python3 -m unittest discover -s scripts/tests)"
+
 # Summary.
 echo ""
 echo "== Summary =="

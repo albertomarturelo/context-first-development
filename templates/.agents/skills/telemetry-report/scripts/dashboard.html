@@ -475,10 +475,20 @@ footer p { margin: 4px 0; max-width: 90ch; }
       'Codex: ' + n('codex_files') + ' session files read, ' + n('codex_bad_lines') + ' unreadable lines, ' +
         n('codex_unknown_files') + ' files in an unknown format, ' + n('codex_zst_skipped') +
         ' compressed sessions skipped' + (h.codex_zst_skipped ? ' (install zstd to read them).' : '.'),
+      h.copilot_source_missing
+        ? 'Copilot: no OpenTelemetry file export on this machine. Copilot Chat in VS Code writes one once ' +
+          'github.copilot.chat.otel.outfile is set (see SKILL.md); until then its sessions are not counted.'
+        : h.copilot_unparsed && !D.agents.includes('copilot')
+        ? 'Copilot: an OpenTelemetry file export exists on this machine, but this version of the script does not ' +
+          'read it yet, so its sessions are not counted.'
+        : !D.agents.includes('copilot') && h.copilot_scanned
+          ? 'Copilot: export read, ' + n('copilot_scanned') + ' sessions on this machine, none for this project.'
+          : 'Copilot: ' + n('copilot_sessions') + ' sessions read from the export, ' + n('copilot_bad_lines') +
+            ' unreadable lines, ' + n('copilot_no_usage') + ' requests without token counts.',
       full(h.history_only_sessions || 0) + ' sessions come from the local history file only: the agent has already deleted their logs. ' +
         'Agents prune old logs (Claude Code after 30 days by default), so run this at least monthly.',
       'Not measured here: re-explanation rate (it cannot be derived from logs) and agents without an adapter yet ' +
-        '(Copilot, Gemini). Human turns and time to first edit are approximations.',
+        '(Gemini). Human turns and time to first edit are approximations.',
       'Only counters leave the logs. No prompt, response or file content is stored in this page. Generated ' + D.generated + '.',
     ];
     $('#health').replaceChildren(...lines.map((t) => el('p', { text: t })));
