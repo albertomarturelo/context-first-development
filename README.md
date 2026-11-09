@@ -215,9 +215,9 @@ and
 [`adrs/ai-workflow/agent-skills-as-procedures.md`](adrs/ai-workflow/agent-skills-as-procedures.md).
 
 **The session rituals are manual-only.** `session-start`,
-`session-close`, `issue-new`, `issue-start` and `project-init` never
-fire on the model's judgement: invoke them as `/name` in Claude Code
-and Copilot, or `$name` in Codex. Gemini CLI has no manual-only flag
+`session-close`, `issue-new`, `issue-start`, `project-init` and
+`cfd-upgrade` never fire on the model's judgement: invoke them as
+`/name` in Claude Code and Copilot, or `$name` in Codex. Gemini CLI has no manual-only flag
 and asks for consent before activating a skill.
 
 ### The enforcement layer (hooks + CI)
@@ -295,7 +295,10 @@ pyproject.toml, Cargo.toml, go.mod, …) and the README. Then create:
    LINKS to the docs above (links, NOT @imports — imports load
    eagerly and defeat the index), build/test/lint commands, and the
    full "Standing rules" section below copied VERBATIM so every
-   future session inherits this workflow. Then create AGENTS.md as
+   future session inherits this workflow, and a first line
+   `<!-- CFD version: 0.3.0 -->` so a later upgrade knows where this
+   project started (changelog: CHANGELOG.md in the repo above). Then
+   create AGENTS.md as
    a symlink to it (`ln -s CLAUDE.md AGENTS.md`) — never a copy, a
    copy drifts — so agents other than Claude Code find the same index.
 
@@ -363,6 +366,7 @@ adrs/                           shareable ADR catalog ("shadcn for AI context")
 case-studies/                   evidenced adoption write-ups
 docs/                           CFD in motion, telemetry quickstart, README diagrams
 scripts/                        catalog validator, session-cost probe, diagram builder
+CHANGELOG.md                    versions, with the upgrade steps an agent applies
 CONTRIBUTING.md                 how to propose ADRs, examples, case studies
 LICENSE                         MIT for code, CC-BY-SA 4.0 for prose
 ```

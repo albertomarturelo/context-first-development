@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# CFD version: 0.3.0
 # SessionStart hook: make orientation automatic instead of remembered.
 #
 # Injects the /session-start triad (CURRENT_STATUS + decisions index)

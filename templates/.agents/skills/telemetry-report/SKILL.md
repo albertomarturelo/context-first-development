@@ -3,6 +3,7 @@ name: telemetry-report
 description: "Build the local agent-telemetry dashboard for this project from the session logs coding agents already keep: tokens per day, task, skill and session, and before/after medians around context changes. On request, publish a counters-only monthly report to the cfd-telemetry branch so a central dashboard can read it. Use when asked about agent usage, token consumption, or whether a context change made sessions cheaper."
 argument-hint: "[publish]"
 metadata:
+  cfd-version: "0.3.0"
   token-budget: "~1,000 (the script runs outside the context; never read it)"
 ---
 

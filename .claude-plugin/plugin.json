@@ -1,8 +1,8 @@
 {
   "name": "cfd",
   "displayName": "Context-First Development",
-  "version": "0.2.0",
-  "description": "Agent Skills for the Context-First Development (CFD) workflow: session start/close, decision records, issue lifecycle, PR review, context validation, and local agent telemetry.",
+  "version": "0.3.0",
+  "description": "Agent Skills for the Context-First Development (CFD) workflow: session start/close, decision records, issue lifecycle, PR review, context validation, local agent telemetry, and versioned upgrades.",
   "author": {
     "name": "Alberto Marturelo Lorenzo",
     "email": "amarturelo@gmail.com"

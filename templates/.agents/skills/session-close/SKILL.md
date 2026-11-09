@@ -3,6 +3,7 @@ name: session-close
 description: "Close a session: update docs/CURRENT_STATUS.md, capture corrections in CONVENTIONS, propose ADRs for informal decisions, and stage docs in the same commit as the code. Invoke explicitly before ending every working session."
 disable-model-invocation: true
 metadata:
+  cfd-version: "0.3.0"
   token-budget: "~500–1,000"
 ---
 
