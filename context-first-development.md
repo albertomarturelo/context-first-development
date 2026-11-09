@@ -184,6 +184,7 @@ The procedures CFD ships (invoked as `/name` in Claude Code and Copilot, `$name`
 - `/issue-start` — Load an issue and its ADRs as the focus of the session
 - `/review-pr` — Review a PR against ADRs, conventions and acceptance criteria
 - `/validate-context` — Audit context integrity and report PASS/WARN/FAIL
+- `/telemetry-report` — Build the local agent-telemetry dashboard from the agents' own session logs; publish counters on request
 
 The session rituals are manual-only: they never fire on the model's judgement, only when the user invokes them. A manual procedure still depends on someone invoking it, and a ritual that survives only on discipline is the first thing dropped under deadline pressure. So the skills are backed by a mechanical layer: a `SessionStart` hook that injects the status file and the decision index automatically, a commit-time guard that refuses to stage code without staging the status update, and a CI check that annotates — never blocks — a pull request that changes code without touching context. The skills stay the portable source of truth; the hooks are the enforcement.
 
@@ -216,7 +217,8 @@ project-root/
 │       ├── issue-new/SKILL.md         # /issue-new
 │       ├── issue-start/SKILL.md       # /issue-start
 │       ├── review-pr/SKILL.md         # /review-pr
-│       └── validate-context/SKILL.md  # /validate-context
+│       ├── validate-context/SKILL.md  # /validate-context
+│       └── telemetry-report/          # /telemetry-report (SKILL.md + script)
 ├── .claude/
 │   ├── skills -> ../.agents/skills    # Symlink for Claude Code
 │   ├── hooks/
