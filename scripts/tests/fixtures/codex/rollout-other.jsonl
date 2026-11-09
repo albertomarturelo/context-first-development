@@ -1,0 +1,2 @@
+{"timestamp":"2026-03-05T09:00:00Z","type":"session_meta","payload":{"id":"codex-session-0002","cwd":"{OTHER}","git":{"branch":"main"}}}
+{"timestamp":"2026-03-05T09:00:10Z","type":"event_msg","payload":{"type":"token_count","info":{"total_token_usage":{"total_tokens":10},"last_token_usage":{"input_tokens":5,"cached_input_tokens":0,"output_tokens":5}}}}

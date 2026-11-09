@@ -1,0 +1,2 @@
+{"type":"user","cwd":"{PROJECT}","timestamp":"2026-03-02T10:02:20Z","uuid":"su1","gitBranch":"feat/demo-12","message":{"role":"user","content":"subtask"}}
+{"type":"assistant","cwd":"{PROJECT}","timestamp":"2026-03-02T10:02:30Z","uuid":"sa1","requestId":"sr1","gitBranch":"feat/demo-12","message":{"id":"sm1","model":"model-a","usage":{"input_tokens":500,"output_tokens":70,"cache_read_input_tokens":0,"cache_creation_input_tokens":0},"content":[{"type":"text","text":"sub done"}]}}

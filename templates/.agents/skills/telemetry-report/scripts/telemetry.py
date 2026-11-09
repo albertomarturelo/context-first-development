@@ -17,6 +17,9 @@ Usage:
 Adapters (add one function to ADAPTERS to support another agent):
   Claude Code  ~/.claude/projects/<slug>/**/*.jsonl   (CLAUDE_CONFIG_DIR)
   Codex        ~/.codex/sessions/**/rollout-*.jsonl[.zst]   (CODEX_HOME)
+  Copilot      the OpenTelemetry file export of Copilot Chat in VS Code:
+               the path in github.copilot.chat.otel.outfile (user settings)
+               or COPILOT_OTEL_FILE_EXPORTER_PATH; nothing without it
 
 These log formats are undocumented and change between agent versions.
 Every adapter counts what it could not read and the dashboard prints
@@ -257,7 +260,56 @@ def read_codex_file(fh, project, health):
     return s
 
 
-ADAPTERS = [("claude", read_claude), ("codex", read_codex)]
+# --------------------------------------------------------------------- Copilot
+
+COPILOT_OUTFILE_KEY = "github.copilot.chat.otel.outfile"
+COPILOT_SOURCE_HINT = ("no OpenTelemetry file export on this machine (set %s in VS Code "
+                       "user settings; see SKILL.md)" % COPILOT_OUTFILE_KEY)
+
+
+def copilot_export_path():
+    """Copilot Chat has no fixed log location: the user names the export file.
+    The extension's own env var wins, then the `outfile` setting in each VS Code
+    user settings.json. That file is JSONC (comments, trailing commas), so the
+    key is matched with a pattern instead of json.loads."""
+    path = os.environ.get("COPILOT_OTEL_FILE_EXPORTER_PATH")
+    if path:
+        return os.path.expanduser(path)
+    home = os.path.expanduser("~")
+    roots = [os.path.join(home, "Library", "Application Support"), os.path.join(home, ".config")]
+    if os.environ.get("APPDATA"):
+        roots.insert(0, os.environ["APPDATA"])
+    pattern = re.compile(r'"%s"\s*:\s*"((?:[^"\\]|\\.)*)"' % re.escape(COPILOT_OUTFILE_KEY))
+    for root in roots:
+        for app in ("Code", "Code - Insiders"):
+            try:
+                with open(os.path.join(root, app, "User", "settings.json"), encoding="utf-8",
+                          errors="replace") as fh:
+                    found = pattern.search(fh.read())
+            except OSError:
+                continue
+            if found and found.group(1):
+                try:
+                    return os.path.expanduser(json.loads('"' + found.group(1) + '"'))
+                except ValueError:
+                    continue
+    return None
+
+
+def read_copilot(project, health):
+    """Three cases the summary tells apart: no export on this machine
+    (`copilot_source_missing`), an export whose sessions all belong to other
+    projects (`copilot_scanned` > 0, no session returned), sessions read."""
+    path = copilot_export_path()
+    health["copilot_scanned"] += 0
+    if not path or not os.path.isfile(path):
+        health["copilot_source_missing"] = 1
+        return []
+    return []
+
+
+ADAPTERS = [("claude", read_claude), ("codex", read_codex), ("copilot", read_copilot)]
+SOURCE_HINTS = {"copilot": COPILOT_SOURCE_HINT}
 
 
 # ------------------------------------------------------------------ aggregation
@@ -543,13 +595,22 @@ def main():
     print("Project   " + project)
     for agent, _ in ADAPTERS:
         mine = [r for r in rows if r["a"] == agent]
-        print("%-9s %3d sessions  %6d requests  %12s output tokens" % (
-            agent, len(mine), sum(r["n"] for r in mine), format(sum(r["o"] for r in mine), ",")))
+        # An adapter may say WHY it has nothing: its source is absent from this
+        # machine, or present but every session belongs to another project.
+        # Zeros alone cannot tell those apart from "nothing read here".
+        if health.get(agent + "_source_missing") and not mine:
+            print("%-9s %s" % (agent, SOURCE_HINTS.get(agent, "source not found on this machine")))
+        elif not mine and health.get(agent + "_scanned"):
+            print("%-9s %3d sessions on this machine, none for this project" % (
+                agent, health[agent + "_scanned"]))
+        else:
+            print("%-9s %3d sessions  %6d requests  %12s output tokens" % (
+                agent, len(mine), sum(r["n"] for r in mine), format(sum(r["o"] for r in mine), ",")))
     if rows:
         print("Median context at first request: " + format(
             int(statistics.median(r["ctx0"] for r in rows)), ","))
     for key in sorted(health):
-        if not key.endswith("_files") and health[key]:
+        if not key.endswith(("_files", "_scanned", "_source_missing")) and health[key]:
             print("  note  %-22s %d" % (key, health[key]))
     print("Wrote     " + out)
     if not args.out and subprocess.run(["git", "-C", project, "check-ignore", "-q", out],
