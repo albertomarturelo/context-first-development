@@ -16,6 +16,30 @@ the templates and the catalog; it lives in `.claude-plugin/plugin.json`
 and is stamped into the templates by `scripts/stamp-version.sh`.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Changed
+
+- `telemetry-report`: the summary and the dashboard footer have a
+  `copilot` line. It says whether an OpenTelemetry file export of
+  Copilot Chat exists on this machine (found through
+  `COPILOT_OTEL_FILE_EXPORTER_PATH` or the `outfile` user setting of
+  VS Code), and, when one does, that this version does not read it yet;
+  a `copilot_unparsed` note marks that gap. Copilot left the "not
+  measured here" sentence; Gemini stays. The parser follows once the
+  export's record shape has been observed on a real file
+  (albertomarturelo/context-first-development#23).
+- `scripts/tests/`: a dependency-free test harness over synthetic
+  fixtures for every adapter of `telemetry-report`, run by
+  `scripts/validate-catalog.sh` and CI. Repository-only; adopters copy
+  nothing new.
+
+### Upgrade
+
+1. Fetch the templates as in 0.3.0, step 1.
+2. Replace the skill:
+   `cp -R "$tmp/cfd/templates/.agents/skills/telemetry-report/." .agents/skills/telemetry-report/`
+
 ## [0.3.0] — 2026-11-09
 
 ### Added

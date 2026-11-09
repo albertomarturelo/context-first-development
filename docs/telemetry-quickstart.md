@@ -61,12 +61,14 @@ It writes `.cfd/telemetry/index.html` and prints a summary. Then:
 - Relay the totals per agent, and every `note` line as plainly as the
   totals: a note is something the script could not read.
 - Say which agents have data. Claude Code and Codex need nothing
-  enabled. If this team uses GitHub Copilot in VS Code, tell the user
-  the two user settings that start its history
-  (`github.copilot.chat.otel.exporterType: "file"` and
+  enabled. The `copilot` line says whether an OpenTelemetry file
+  export exists on this machine. If this team uses GitHub Copilot in
+  VS Code and it does not, tell the user the three user settings that
+  start its history (`github.copilot.chat.otel.enabled: true`,
+  `github.copilot.chat.otel.exporterType: "file"` and
   `github.copilot.chat.otel.outfile: "<absolute path outside the
-  repo>"`), and that no Copilot adapter ships yet. Do not change user
-  settings yourself.
+  repo>"`, then reload the window), and that the script does not read
+  that export yet. Do not change user settings yourself.
 - Tell the user to re-run it at least monthly: agents delete their own
   logs (Claude Code after 30 days) and the script only keeps what it
   has seen.

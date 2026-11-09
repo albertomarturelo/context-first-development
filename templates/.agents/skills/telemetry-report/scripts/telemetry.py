@@ -299,12 +299,18 @@ def copilot_export_path():
 def read_copilot(project, health):
     """Three cases the summary tells apart: no export on this machine
     (`copilot_source_missing`), an export whose sessions all belong to other
-    projects (`copilot_scanned` > 0, no session returned), sessions read."""
+    projects (`copilot_scanned` > 0, no session returned), sessions read.
+
+    The parser is not written yet: the export's record shape has to be
+    observed on a real file first, and none was available. An export that
+    exists is therefore reported as found-but-unread (`copilot_unparsed`),
+    never as zero sessions, so nobody mistakes a gap for "no usage"."""
     path = copilot_export_path()
     health["copilot_scanned"] += 0
     if not path or not os.path.isfile(path):
         health["copilot_source_missing"] = 1
         return []
+    health["copilot_unparsed"] = 1
     return []
 
 
@@ -600,6 +606,8 @@ def main():
         # Zeros alone cannot tell those apart from "nothing read here".
         if health.get(agent + "_source_missing") and not mine:
             print("%-9s %s" % (agent, SOURCE_HINTS.get(agent, "source not found on this machine")))
+        elif health.get(agent + "_unparsed") and not mine:
+            print("%-9s export found, but this version does not read it yet" % agent)
         elif not mine and health.get(agent + "_scanned"):
             print("%-9s %3d sessions on this machine, none for this project" % (
                 agent, health[agent + "_scanned"]))

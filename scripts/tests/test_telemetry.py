@@ -180,6 +180,16 @@ class CopilotAdapter(AdapterCase):
                      '  "github.copilot.chat.otel.outfile": %s,\n}\n' % json.dumps(export))
         self.assertEqual(telemetry.copilot_export_path(), export)
 
+    def test_export_found_is_reported_as_unread_not_as_zero(self):
+        export = os.path.join(self.box.root, "otel", "copilot.jsonl")
+        os.makedirs(os.path.dirname(export))
+        with open(export, "w", encoding="utf-8") as fh:
+            fh.write('{"name":"chat"}\n')
+        os.environ["COPILOT_OTEL_FILE_EXPORTER_PATH"] = export
+        self.assertEqual(telemetry.read_copilot(self.box.project, self.health), [])
+        self.assertEqual(self.health["copilot_unparsed"], 1)
+        self.assertEqual(self.health["copilot_source_missing"], 0)
+
     def test_env_var_wins_over_settings(self):
         os.environ["COPILOT_OTEL_FILE_EXPORTER_PATH"] = "/x/y.jsonl"
         self.assertEqual(telemetry.copilot_export_path(), "/x/y.jsonl")
@@ -216,6 +226,15 @@ class EndToEnd(AdapterCase):
         stdout, _ = self.run_script()
         self.assertIn("claude      0 sessions", stdout)
         self.assertRegex(stdout, r"copilot\s+no OpenTelemetry file export on this machine")
+
+    def test_export_present_prints_the_unread_line_and_a_note(self):
+        export = os.path.join(self.box.root, "otel", "copilot.jsonl")
+        os.makedirs(os.path.dirname(export))
+        open(export, "w").close()
+        os.environ["COPILOT_OTEL_FILE_EXPORTER_PATH"] = export
+        stdout, _ = self.run_script()
+        self.assertRegex(stdout, r"copilot\s+export found, but this version does not read it yet")
+        self.assertIn("note  copilot_unparsed", stdout)
 
 
 if __name__ == "__main__":

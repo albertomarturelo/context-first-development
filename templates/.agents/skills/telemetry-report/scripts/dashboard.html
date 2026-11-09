@@ -478,6 +478,9 @@ footer p { margin: 4px 0; max-width: 90ch; }
       h.copilot_source_missing
         ? 'Copilot: no OpenTelemetry file export on this machine. Copilot Chat in VS Code writes one once ' +
           'github.copilot.chat.otel.outfile is set (see SKILL.md); until then its sessions are not counted.'
+        : h.copilot_unparsed && !D.agents.includes('copilot')
+        ? 'Copilot: an OpenTelemetry file export exists on this machine, but this version of the script does not ' +
+          'read it yet, so its sessions are not counted.'
         : !D.agents.includes('copilot') && h.copilot_scanned
           ? 'Copilot: export read, ' + n('copilot_scanned') + ' sessions on this machine, none for this project.'
           : 'Copilot: ' + n('copilot_sessions') + ' sessions read from the export, ' + n('copilot_bad_lines') +

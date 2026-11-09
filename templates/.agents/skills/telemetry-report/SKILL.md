@@ -57,7 +57,7 @@ keeps its numbers:
 |---|---|---|
 | Claude Code | `~/.claude/projects/` transcripts | Nothing |
 | Codex | `~/.codex/sessions/` rollouts | Nothing |
-| Copilot (VS Code) | OpenTelemetry file export | Set `github.copilot.chat.otel.exporterType` to `file` and `github.copilot.chat.otel.outfile` to an absolute path outside the repo. **No adapter ships yet**: enabling it now only starts the history. |
+| Copilot (VS Code) | OpenTelemetry file export | Set `github.copilot.chat.otel.enabled` to `true`, `github.copilot.chat.otel.exporterType` to `file` and `github.copilot.chat.otel.outfile` to an absolute path outside the repo; reload the window. **The script finds that export and says whether one exists, but does not read it yet**: enabling it now starts the history. |
 | Gemini CLI | Telemetry `outfile` in `.gemini/settings.json` | No adapter yet |
 
 Any agent can run this skill and report on every agent's sessions:
