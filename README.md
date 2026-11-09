@@ -30,7 +30,11 @@ it compares a CFD-style `/session-start` (reading the `CLAUDE.md` +
 file — an **upper bound**, since a real agent explores selectively.
 The honest per-session metrics (re-explanation rate,
 time-to-first-correct-action) are defined in the methodology essay's
-Metrics section; measure those on real sessions.
+Metrics section; measure those on real sessions. To see what your
+sessions actually spend, per task and around each context change,
+paste the [telemetry quickstart](docs/telemetry-quickstart.md) prompt
+into your agent: it installs the `telemetry-report` skill and builds a
+local dashboard from the logs your agents already keep.
 
 Real-world adopter you can click through:
 **[`sii`](case-studies/sii.md)** — a TypeScript monorepo (shared core
@@ -357,7 +361,7 @@ METHODOLOGY.md                  navigable map of the essay
 templates/                      drop-in scaffolding for any project
 adrs/                           shareable ADR catalog ("shadcn for AI context")
 case-studies/                   evidenced adoption write-ups
-docs/                           CFD in motion + the README diagrams
+docs/                           CFD in motion, telemetry quickstart, README diagrams
 scripts/                        catalog validator, session-cost probe, diagram builder
 CONTRIBUTING.md                 how to propose ADRs, examples, case studies
 LICENSE                         MIT for code, CC-BY-SA 4.0 for prose

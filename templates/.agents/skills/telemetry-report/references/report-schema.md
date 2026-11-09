@@ -6,6 +6,9 @@ Published by `scripts/telemetry.py --publish` to the orphan branch
 `cfd-telemetry` of each repository. A central dashboard reads that
 branch from every repository it tracks; nothing else is needed.
 
+The branch names people and what they spent. It belongs in private
+repositories only: the script refuses to publish from a public one.
+
 ## Layout
 
 ```

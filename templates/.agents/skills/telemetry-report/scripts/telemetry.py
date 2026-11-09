@@ -30,7 +30,8 @@ once a month, or history is lost.
 Publishing writes reports/<developer>/<YYYY-MM>.json on an orphan branch,
 through git plumbing: the checkout and the index are never touched. The
 developer is the git identity (user.email), so a task shared by several
-people adds up per person and per agent. The schema is documented in
+people adds up per person and per agent. A public repository is refused:
+the branch would expose that to everyone. The schema is documented in
 ../references/report-schema.md.
 
 Token vocabulary (normalized across agents):
@@ -373,6 +374,18 @@ def repo_identity(project):
     return found.group(1) + "/" + re.sub(r"^\d+/", "", found.group(2))   # drop an ssh port
 
 
+def repo_visibility(project):
+    """PUBLIC / PRIVATE / INTERNAL as the forge reports it, or "" when unknown."""
+    if not shutil.which("gh"):
+        return ""
+    try:
+        done = subprocess.run(["gh", "repo", "view", "--json", "visibility", "-q", ".visibility"],
+                              cwd=project, capture_output=True, text=True, timeout=20)
+    except (OSError, subprocess.SubprocessError):
+        return ""
+    return done.stdout.strip().upper() if done.returncode == 0 else ""
+
+
 def developer_identity(project, state_dir, anonymous):
     """The git identity by default: it is what already signs the work, and it
     lets a shared task add up per person. --anonymous swaps it for a random id
@@ -496,6 +509,8 @@ def main():
     ap.add_argument("--push", action="store_true", help="with --publish: push that branch to origin")
     ap.add_argument("--anonymous", action="store_true",
                     help="with --publish: a random id instead of the git identity")
+    ap.add_argument("--allow-public", action="store_true",
+                    help="with --publish: proceed even though the repository is public")
     args = ap.parse_args()
 
     project = os.path.realpath(args.project)
@@ -542,6 +557,14 @@ def main():
         print("⚠ " + os.path.relpath(out, project) + " is not git-ignored. "
               "Add `.cfd/` to .gitignore: this file is per-developer.")
     if args.publish or args.push:
+        visibility = repo_visibility(project)
+        if visibility == "PUBLIC" and not args.allow_public:
+            sys.exit("✗ This repository is PUBLIC. A telemetry branch here would show per-person usage "
+                     "and git identities to everyone, so nothing was committed or pushed. Publish from "
+                     "private repositories; --allow-public overrides this (pair it with --anonymous).")
+        if not visibility:
+            print("⚠ Could not tell whether this repository is public (no `gh`, or not a GitHub repo). "
+                  "Confirm it is private before pushing.")
         developer = developer_identity(project, os.path.dirname(os.path.abspath(out)), args.anonymous)
         files, status_path, status = build_reports(records, repo_identity(project), developer, agents, health)
         done = publish(project, files, status_path, status, args.anonymous, args.push)

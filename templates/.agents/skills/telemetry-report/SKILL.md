@@ -3,7 +3,7 @@ name: telemetry-report
 description: "Build the local agent-telemetry dashboard for this project from the session logs coding agents already keep: tokens per day, task, skill and session, and before/after medians around context changes. On request, publish a counters-only monthly report to the cfd-telemetry branch so a central dashboard can read it. Use when asked about agent usage, token consumption, or whether a context change made sessions cheaper."
 argument-hint: "[publish]"
 metadata:
-  token-budget: "~900 (the script runs outside the context; never read it)"
+  token-budget: "~1,000 (the script runs outside the context; never read it)"
 ---
 
 Run the bundled script. **Do not read `scripts/telemetry.py` or
@@ -39,6 +39,12 @@ reading them costs ~15,000 tokens.
    touched. Show the user `git show --stat cfd-telemetry`, state what
    leaves the machine (below), and wait for an explicit yes before
    re-running with `--publish --push`. Never force-push that branch.
+
+   **Never publish from a public repository.** The branch would show
+   per-person usage and git identities to everyone. The script refuses
+   when the forge reports the repo as public; when it cannot tell (it
+   prints a warning), ask the user and do not push until they confirm
+   the repo is private. Do not pass `--allow-public` on your own.
 
 ## What the data source is, per agent
 
