@@ -2,6 +2,7 @@
 name: new-decision
 description: "Guide the user through documenting a new architectural decision as an ADR (≤100 lines) with real alternatives, then update the decisions index. Use when a significant technical decision surfaces without an ADR: a new dependency, pattern, or strategy."
 metadata:
+  cfd-version: "0.3.0"
   token-budget: "~1,000–2,500 for the whole flow"
 ---
 

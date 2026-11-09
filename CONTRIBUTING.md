@@ -53,6 +53,25 @@ Case studies are first-person accounts of adopting CFD. They require:
 - Translations of the essay — model-facing artifacts are English by
   Principle 5.
 
+## Releases
+
+One version covers the essay, the templates and the catalog. It lives
+in `.claude-plugin/plugin.json` and is stamped into every template an
+adopter copies, so an agent in an adopting repo can tell which CFD it
+has and `/cfd-upgrade` can tell what is missing.
+
+To release:
+
+1. Bump `version` in `.claude-plugin/plugin.json` (semver: major for a
+   workflow rule change, minor for a new skill, ADR or template, patch
+   for corrections).
+2. Add the entry to `CHANGELOG.md` with an **Upgrade** section: the
+   exact, idempotent steps that take a project from the previous
+   version to this one. Write them for the agent that will run them.
+3. `bash scripts/stamp-version.sh`, then `bash scripts/validate-catalog.sh`
+   (it fails on any stamp or changelog mismatch).
+4. Tag the merge commit `vX.Y.Z`.
+
 ## Governance
 
 Currently the maintainer is Alberto Marturelo. PR turnaround is

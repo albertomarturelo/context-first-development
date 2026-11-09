@@ -2,6 +2,7 @@
 name: validate-context
 description: "Audit CFD context integrity — CLAUDE.md size/shape, status freshness, ADR index sync and completeness, conventions, language, token annotations — and report PASS/WARN/FAIL with proposed fixes. Use when asked to audit CFD context, or periodically before a release."
 metadata:
+  cfd-version: "0.3.0"
   token-budget: "~2,000–5,000"
 ---
 
@@ -41,6 +42,9 @@ checklist with PASS / WARN / FAIL per item:
    divergent copy, or a Windows checkout without `core.symlinks`, which
    turns the link into a one-line text file. Propose replacing it with
    `ln -sf CLAUDE.md AGENTS.md`.
+10. **CFD version**: `grep -h '^  cfd-version:' .agents/skills/*/SKILL.md
+    | sort -u` must print one line. WARN if it prints several (partial
+    upgrade) or none (older than 0.3.0); propose `/cfd-upgrade`.
 
 Output the checklist and propose concrete fixes for any failures.
 Do NOT auto-apply fixes — the user reviews first.

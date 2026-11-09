@@ -1,3 +1,4 @@
+# CFD version: 0.3.0
 # Agent-agnostic context checks: they work whatever tool wrote the code.
 # - current-status-freshness WARNS (never blocks) when a PR changes code
 #   without updating docs/CURRENT_STATUS.md

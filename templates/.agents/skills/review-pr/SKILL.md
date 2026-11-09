@@ -3,6 +3,7 @@ name: review-pr
 description: "Review a PR, or the local branch diff before /session-close, against the team's curated checklist sourced from ADRs, CONVENTIONS, the linked issue's acceptance criteria, and the PR template. Report findings; do not auto-fix. Use when asked to review a pull request or self-review work in a CFD project."
 argument-hint: "[pr-number]"
 metadata:
+  cfd-version: "0.3.0"
   token-budget: "scales with the team's checklist depth, typically 3k–15k"
 ---
 

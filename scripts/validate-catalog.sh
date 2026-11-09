@@ -125,6 +125,13 @@ for skill in "$SKILLS_DIR"/*/; do
   fi
 done
 
+# 7. One version everywhere (CONTRIBUTING.md § Releases).
+echo ""
+echo "7. Version stamps match .claude-plugin/plugin.json and CHANGELOG.md"
+if ! bash scripts/stamp-version.sh --check | sed 's/^/    /'; then
+  err "version stamps out of date: run scripts/stamp-version.sh and add the CHANGELOG entry"
+fi
+
 # Summary.
 echo ""
 echo "== Summary =="

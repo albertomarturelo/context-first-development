@@ -3,6 +3,7 @@ name: issue-new
 description: "Create a self-sufficient tracker issue with the fixed CFD body template. The completeness of the issue determines how cheaply the next session starts — be thorough here. Invoke explicitly when a new unit of work needs a tracker issue."
 disable-model-invocation: true
 metadata:
+  cfd-version: "0.3.0"
   token-budget: "~1,500–3,000 for the full flow"
 ---
 
