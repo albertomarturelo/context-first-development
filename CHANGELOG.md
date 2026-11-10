@@ -25,6 +25,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   counters only, gaps as numbers, per-developer reports on an orphan
   branch, private repositories only), plus the rule for a team view: it
   filters by contributor and never ranks.
+- Catalog ADR [agent-cost-estimates-at-read-time](adrs/ai-workflow/agent-cost-estimates-at-read-time.md):
+  reports stay in tokens; a reader computes dollar estimates from a
+  dated price table the team owns, prices each token type and tier on
+  its own, leaves unknown models unpriced instead of at $0, and shows
+  billed units (credits, premium requests) in their own unit.
 
 ### Changed
 

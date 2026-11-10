@@ -59,6 +59,7 @@ cp adrs/architecture/repository-pattern.md \
 - [One loop, with the developer as orchestrator](ai-workflow/single-loop-human-orchestrator.md)
 - [Parallel CFD loops in git worktrees](ai-workflow/parallel-loops-in-worktrees.md)
 - [Agent telemetry from local logs, published per developer](ai-workflow/agent-telemetry-from-local-logs.md)
+- [Dollar estimates of agent usage, computed at read time](ai-workflow/agent-cost-estimates-at-read-time.md)
 
 ## Contributing
 
