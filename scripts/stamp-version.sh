@@ -12,6 +12,9 @@
 #   templates/CLAUDE.md                   "CFD version: X.Y.Z" in the header comment
 #   templates/.claude/hooks/*.sh          "# CFD version: X.Y.Z" on line 2
 #   templates/.github/workflows/*.yml     "# CFD version: X.Y.Z" on line 1
+#   README.md                             "CFD version: X.Y.Z" in the setup prompt: the
+#                                         version a new project starts at (replaced,
+#                                         never inserted: it sits inside prose)
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -37,12 +40,14 @@ stamp_skill() {  # $1 = SKILL.md
   echo "  stamped $f"
 }
 
-stamp_line() {  # $1 = file, $2 = line to hold the marker, $3 = marker prefix
+stamp_line() {  # $1 = file, $2 = line to hold the marker ("" = never insert), $3 = marker prefix
   local f=$1 line=$2 prefix=$3
   if grep -q "CFD version: $VERSION" "$f"; then return 0; fi
   if [ -n "$CHECK" ]; then echo "  $f: missing 'CFD version: $VERSION'"; status=1; return 0; fi
-  if grep -q "CFD version: " "$f"; then
+  if grep -q "CFD version: [0-9]" "$f"; then
     perl -pi -e "s/CFD version: [0-9][0-9.]*/CFD version: $VERSION/" "$f"
+  elif [ -z "$line" ]; then
+    echo "  $f: no 'CFD version: X.Y.Z' marker to replace"; status=1; return 0
   else
     perl -pi -e "print \"${prefix}CFD version: $VERSION\\n\" if \$. == $line" "$f"
   fi
@@ -54,6 +59,7 @@ for f in templates/.agents/skills/*/SKILL.md; do stamp_skill "$f"; done
 stamp_line templates/CLAUDE.md 2 ""
 for f in templates/.claude/hooks/*.sh; do stamp_line "$f" 2 "# "; done
 for f in templates/.github/workflows/*.yml; do stamp_line "$f" 1 "# "; done
+stamp_line README.md "" ""
 grep -q "^## \[$VERSION\]" CHANGELOG.md || { echo "  CHANGELOG.md has no '## [$VERSION]' entry"; status=1; }
 [ "$status" -eq 0 ] && echo "all stamps at $VERSION" || echo "✗ stamps out of date (run without --check to fix; add the CHANGELOG entry by hand)"
 exit $status
