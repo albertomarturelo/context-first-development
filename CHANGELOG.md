@@ -18,6 +18,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- Catalog ADR [agent-telemetry-from-local-logs](adrs/ai-workflow/agent-telemetry-from-local-logs.md):
+  the decision behind `telemetry-report` (local logs as the source,
+  counters only, gaps as numbers, per-developer reports on an orphan
+  branch, private repositories only), plus the rule for a team view: it
+  filters by contributor and never ranks.
+
 ### Changed
 
 - `scripts/stamp-version.sh` also stamps the README setup prompt, the
