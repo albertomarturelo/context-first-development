@@ -44,6 +44,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- `telemetry-report` skill: the description names the team view, so an
+  agent picks the skill when asked about several contributors' usage;
+  step 5 asks for the repositories when none are named, documents
+  `--config` and `--open`, and relays the team view's gaps
+  (unreachable repositories, unknown schemas, contributors not
+  reporting) the way step 2 does for the local dashboard.
+
 - `scripts/stamp-version.sh` also stamps the README setup prompt, the
   line that sets the version a new project starts at, and
   `scripts/validate-catalog.sh` therefore refuses a stale one. The

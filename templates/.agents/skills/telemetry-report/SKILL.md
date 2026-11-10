@@ -1,10 +1,10 @@
 ---
 name: telemetry-report
-description: "Build the local agent-telemetry dashboard for this project from the session logs coding agents already keep: tokens per day, task, skill and session, and before/after medians around context changes. On request, publish a counters-only monthly report to the cfd-telemetry branch so a central dashboard can read it. Use when asked about agent usage, token consumption, or whether a context change made sessions cheaper."
+description: "Build the local agent-telemetry dashboard for this project from the session logs coding agents already keep: tokens per day, task, skill and session, and before/after medians around context changes. On request, publish a counters-only monthly report to the cfd-telemetry branch so a central dashboard can read it, and merge the reports of several contributors and repositories into a team view. Use when asked about agent usage, token consumption, the team's or other contributors' usage, or whether a context change made sessions cheaper."
 argument-hint: "[publish | team]"
 metadata:
   cfd-version: "0.4.0"
-  token-budget: "~1,500 (the scripts run outside the context; never read them)"
+  token-budget: "~1,700 (the scripts run outside the context; never read them)"
 ---
 
 Run the bundled scripts. **Do not read `scripts/telemetry.py`,
@@ -54,13 +54,21 @@ them costs nothing, reading them costs ~21,000 tokens.
    ```
 
    Each `<repo>` is a local clone or a git URL whose `cfd-telemetry`
-   branch holds published reports. It writes `.cfd/team/index.html`:
+   branch holds published reports. If the user names none, ask which
+   repositories to include; offer the current one (`.`). A list kept in
+   a file, one repository per line, goes in with `--config <file>`; add
+   `--open` to open the page. It writes `.cfd/team/index.html`:
    the same dashboard with contributor and repository filters, and a
    footer naming who has not reported in `--stale-days` (14). The page
    names people: keep it out of git and do not paste per-person figures
    into issues or PRs. Contributors appear alphabetically; never order
    or compare them by consumption
    ([agent-telemetry-from-local-logs](https://github.com/albertomarturelo/context-first-development/blob/main/adrs/ai-workflow/agent-telemetry-from-local-logs.md), rule 7).
+
+   Relay the gaps as in step 2: unreachable repositories, repositories
+   without the branch, files with an unknown schema and contributors
+   not reporting are counted in the output. Name them; a missing
+   contributor is not a contributor at zero.
 
 ## What the data source is, per agent
 
