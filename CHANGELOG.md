@@ -18,13 +18,27 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- `telemetry-report`: a `copilot-cli` adapter. It reads the usage table
+  of the Copilot CLI session store (`~/.copilot/session-store.db`,
+  `COPILOT_HOME`), selecting named columns only: the tables and files
+  that hold prompts and responses are never opened. Sessions from
+  before any OpenTelemetry setup count; the CLI's own OpenTelemetry
+  export is not read, so nothing counts twice. The summary and the
+  dashboard footer tell apart no store, a store from a CLI version
+  that records no usage, a store with no session for this project, and
+  sessions read (albertomarturelo/context-first-development#25).
+
 ### Changed
 
 - `telemetry-report`: the summary and the dashboard footer have a
-  `copilot` line. It says whether an OpenTelemetry file export of
-  Copilot Chat exists on this machine (found through
-  `COPILOT_OTEL_FILE_EXPORTER_PATH` or the `outfile` user setting of
-  VS Code), and, when one does, that this version does not read it yet;
+  `copilot` line (Copilot Chat in VS Code). It says whether an
+  OpenTelemetry file export of Copilot Chat exists on this machine,
+  found through the `outfile` user setting of VS Code only:
+  `COPILOT_OTEL_FILE_EXPORTER_PATH` is shared with Copilot CLI, so a
+  path there cannot be attributed to either product. When an export
+  exists, the line says this version does not read it yet;
   a `copilot_unparsed` note marks that gap. Copilot left the "not
   measured here" sentence; Gemini stays. The parser follows once the
   export's record shape has been observed on a real file

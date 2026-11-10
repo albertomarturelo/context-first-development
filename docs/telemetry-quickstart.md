@@ -60,8 +60,11 @@ It writes `.cfd/telemetry/index.html` and prints a summary. Then:
 
 - Relay the totals per agent, and every `note` line as plainly as the
   totals: a note is something the script could not read.
-- Say which agents have data. Claude Code and Codex need nothing
-  enabled. The `copilot` line says whether an OpenTelemetry file
+- Say which agents have data. Claude Code, Codex and Copilot CLI need
+  nothing enabled. If the `copilot-cli` line says the store records no
+  usage, the CLI predates usage recording: ask the developer to update
+  it; earlier sessions stay uncounted. The `copilot` line (Copilot Chat
+  in VS Code) says whether an OpenTelemetry file
   export exists on this machine. If this team uses GitHub Copilot in
   VS Code and it does not, ask the developer to set three VS Code
   USER settings (never change them yourself):

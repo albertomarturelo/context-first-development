@@ -46,7 +46,7 @@ generation timestamp: an unchanged month is byte-identical.
 
 | Field | Meaning |
 |---|---|
-| `a` | Agent: `claude`, `codex` (later `copilot`, `gemini`) |
+| `a` | Agent: `claude`, `codex`, `copilot-cli` (later `copilot` for Copilot Chat in VS Code, `gemini`) |
 | `d`, `start` | First day of the session (`YYYY-MM-DD`); no time of day is published |
 | `active` | Active minutes; gaps over 5 minutes do not count |
 | `turns` | Human turns (approximate) |
@@ -69,6 +69,13 @@ branch; an issue number is whatever digits the branch name carries.
 
 Only agents that attribute requests to skills produce runs (Claude
 Code today).
+
+### Per agent
+
+`copilot-cli` fills every `row` field. Its `turns` counts distinct
+main-agent turn indexes; `orient` and `edit_min` start at the first
+file edited with `apply_patch`, `edit` or `create`; it produces no
+`runs`.
 
 ## `status.json`
 
