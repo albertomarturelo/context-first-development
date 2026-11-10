@@ -296,7 +296,7 @@ pyproject.toml, Cargo.toml, go.mod, …) and the README. Then create:
    eagerly and defeat the index), build/test/lint commands, and the
    full "Standing rules" section below copied VERBATIM so every
    future session inherits this workflow, and a first line
-   `<!-- CFD version: 0.3.0 -->` so a later upgrade knows where this
+   `<!-- CFD version: 0.4.0 -->` so a later upgrade knows where this
    project started (changelog: CHANGELOG.md in the repo above). Then
    create AGENTS.md as
    a symlink to it (`ln -s CLAUDE.md AGENTS.md`) — never a copy, a

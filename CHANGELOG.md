@@ -18,6 +18,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-11-09
+
 ### Added
 
 - `telemetry-report`: a `copilot-cli` adapter. It reads the usage table
@@ -27,20 +29,17 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   before any OpenTelemetry setup count; the CLI's own OpenTelemetry
   export is not read, so nothing counts twice. The summary and the
   dashboard footer tell apart no store, a store from a CLI version
-  that records no usage, a store with no session for this project, and
-  sessions read (albertomarturelo/context-first-development#25).
-
-### Changed
-
-- `telemetry-report`: the summary and the dashboard footer have a
-  `copilot` line (Copilot Chat in VS Code). It says whether an
+  that records no usage, an unreadable store, a store with no session
+  for this project, and sessions read. Published reports carry
+  `a: "copilot-cli"` (albertomarturelo/context-first-development#25).
+- `telemetry-report`: a `copilot` line for Copilot Chat in VS Code in
+  the summary and the dashboard footer. It says whether an
   OpenTelemetry file export of Copilot Chat exists on this machine,
   found through the `outfile` user setting of VS Code only:
   `COPILOT_OTEL_FILE_EXPORTER_PATH` is shared with Copilot CLI, so a
   path there cannot be attributed to either product. When an export
-  exists, the line says this version does not read it yet;
-  a `copilot_unparsed` note marks that gap. Copilot left the "not
-  measured here" sentence; Gemini stays. The parser follows once the
+  exists, the line says this version does not read it yet; a
+  `copilot_unparsed` note marks that gap. The parser follows once the
   export's record shape has been observed on a real file
   (albertomarturelo/context-first-development#23).
 - `scripts/tests/`: a dependency-free test harness over synthetic
@@ -48,11 +47,32 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `scripts/validate-catalog.sh` and CI. Repository-only; adopters copy
   nothing new.
 
+### Changed
+
+- `telemetry-report`: the dashboard names the agents Copilot CLI and
+  Copilot Chat, and the "not measured here" sentence names Gemini
+  only. Nothing in the workflow rules; the other skills change only in
+  their version stamp.
+
 ### Upgrade
 
+Run from the repository root. Each step is idempotent.
+
 1. Fetch the templates as in 0.3.0, step 1.
-2. Replace the skill:
-   `cp -R "$tmp/cfd/templates/.agents/skills/telemetry-report/." .agents/skills/telemetry-report/`
+2. Replace the skills (this updates `telemetry-report` and stamps
+   0.4.0 into every skill):
+   `cp -R "$tmp/cfd/templates/.agents/skills/." .agents/skills/`
+   Skills installed with `npx skills add` or as the Claude Code plugin:
+   as in 0.3.0, step 2.
+3. Restamp the scaffold: change `CFD version: 0.3.0` to
+   `CFD version: 0.4.0` in the comment at the top of `CLAUDE.md`, and
+   `# CFD version: 0.3.0` to `# CFD version: 0.4.0` in
+   `.claude/hooks/*.sh` and `.github/workflows/context-freshness.yml`.
+   Nothing else in those files changed.
+4. A central reader of the `cfd-telemetry` branch accepts the agent
+   `copilot-cli`; the schema stays `cfd-telemetry/1`.
+5. Verify: `grep -h '^  cfd-version:' .agents/skills/*/SKILL.md | sort -u`
+   prints one line, `0.4.0`.
 
 ## [0.3.0] — 2026-11-09
 
@@ -173,7 +193,8 @@ Reconstructed from git history; this version was not tagged.
 - Fresh install: `cp -R "$tmp/cfd/templates/. .` and follow
   `/project-init`.
 
-[0.3.0]: https://github.com/albertomarturelo/context-first-development/compare/bf55ab8...main
+[0.4.0]: https://github.com/albertomarturelo/context-first-development/compare/68b9599...main
+[0.3.0]: https://github.com/albertomarturelo/context-first-development/compare/bf55ab8...68b9599
 [0.2.0]: https://github.com/albertomarturelo/context-first-development/compare/c7dda28...bf55ab8
 [0.1.1]: https://github.com/albertomarturelo/context-first-development/compare/a6a1e64...c7dda28
 [0.1.0]: https://github.com/albertomarturelo/context-first-development/commits/a6a1e64

@@ -1,5 +1,5 @@
 <!--
-CFD version: 0.3.0
+CFD version: 0.4.0
 This file is the only context loaded unconditionally at session start.
 Keep it ≤150 lines, ideally ≤100.
 

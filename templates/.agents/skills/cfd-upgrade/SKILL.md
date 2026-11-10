@@ -3,7 +3,7 @@ name: cfd-upgrade
 description: "Upgrade this project's CFD artifacts: read the installed version from the skills and the scaffold, fetch the CFD changelog, show what changed since, and apply each release's Upgrade steps in order after the user approves. Invoke explicitly; it changes committed files."
 disable-model-invocation: true
 metadata:
-  cfd-version: "0.3.0"
+  cfd-version: "0.4.0"
   token-budget: "~1,500 plus the changelog entries read (~300 each)"
 ---
 

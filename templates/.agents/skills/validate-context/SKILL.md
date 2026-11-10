@@ -2,7 +2,7 @@
 name: validate-context
 description: "Audit CFD context integrity — CLAUDE.md size/shape, status freshness, ADR index sync and completeness, conventions, language, token annotations — and report PASS/WARN/FAIL with proposed fixes. Use when asked to audit CFD context, or periodically before a release."
 metadata:
-  cfd-version: "0.3.0"
+  cfd-version: "0.4.0"
   token-budget: "~2,000–5,000"
 ---
 
