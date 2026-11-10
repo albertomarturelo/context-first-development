@@ -20,6 +20,17 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- `telemetry-report`: a team view, `scripts/central.py`. It reads the
+  `cfd-telemetry` branch of several repositories (local clones or git
+  URLs, cloned bare without file contents and fetched on later runs),
+  skips report files with an unknown schema major, and renders the
+  dashboard with contributor and repository filters, a per-repository
+  table, before/after windows per repository, and a footer naming who
+  has not reported within `--stale-days`. Contributors are listed
+  alphabetically and never ranked, per
+  [agent-telemetry-from-local-logs](adrs/ai-workflow/agent-telemetry-from-local-logs.md)
+  (albertomarturelo/context-first-development#15).
+
 - Catalog ADR [agent-telemetry-from-local-logs](adrs/ai-workflow/agent-telemetry-from-local-logs.md):
   the decision behind `telemetry-report` (local logs as the source,
   counters only, gaps as numbers, per-developer reports on an orphan

@@ -140,6 +140,13 @@ never conflicts, and a task shared by several people adds up
 per person and per agent. The file format is documented in
 [`report-schema.md`](../templates/.agents/skills/telemetry-report/references/report-schema.md).
 
-A central reader that merges that branch across repositories is not
-shipped yet. Per-person numbers explain what a task cost; they are
-not a ranking.
+To see the whole team, one person runs the reader over the
+repositories (local clones or URLs they can fetch):
+
+     python3 .agents/skills/telemetry-report/scripts/central.py <repo> [<repo> ...]
+
+It writes `.cfd/team/index.html`: the same dashboard with contributor
+and repository filters, totals per repository, and a footer naming who
+has not published in the last 14 days (`--stale-days`). Contributors
+are listed alphabetically. Per-person numbers explain what a task
+cost; they are not a ranking.

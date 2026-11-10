@@ -85,6 +85,14 @@ for the machine that published last. It changes once per day of
 publishing even with no new session: a stale `updated` means "has not
 reported", which is different from "did not use an agent".
 
+## Readers
+
+`scripts/central.py` is the reader shipped with the skill. It takes
+local clones or git URLs, reads this branch from each, skips files
+whose major version it does not know, and renders the dashboard with
+the repository and the contributor as filters. A developer whose
+`status.json` is older than `--stale-days` is shown as not reporting.
+
 ## Rules for readers
 
 - Totals are additive across developers, repositories and agents in
