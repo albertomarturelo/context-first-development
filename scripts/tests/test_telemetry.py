@@ -5,7 +5,7 @@ Every adapter is exercised on SYNTHETIC fixtures under scripts/tests/fixtures/
 (no real transcript, identity, path or figure). The fixtures carry {PROJECT} and
 {OTHER} placeholders that the harness replaces with temporary directories, and
 the adapters find them through the environment knobs they already honour
-(CLAUDE_CONFIG_DIR, CODEX_HOME, COPILOT_OTEL_FILE_EXPORTER_PATH, HOME).
+(CLAUDE_CONFIG_DIR, CODEX_HOME, COPILOT_HOME, HOME).
 
 Run: python3 -m unittest discover -s scripts/tests   (scripts/validate-catalog.sh does)
 """
@@ -17,6 +17,7 @@ import json
 import os
 import re
 import shutil
+import sqlite3
 import subprocess
 import sys
 import tempfile
@@ -53,9 +54,10 @@ class Sandbox:
             os.makedirs(path)
         self.claude = os.path.join(self.home, ".claude")
         self.codex = os.path.join(self.home, ".codex")
+        self.copilot = os.path.join(self.home, ".copilot")
         self.env = {
             "HOME": self.home, "CLAUDE_CONFIG_DIR": self.claude, "CODEX_HOME": self.codex,
-            "COPILOT_OTEL_FILE_EXPORTER_PATH": "", "APPDATA": "",
+            "COPILOT_HOME": self.copilot, "COPILOT_OTEL_FILE_EXPORTER_PATH": "", "APPDATA": "",
         }
 
     def fill(self, text):
@@ -83,6 +85,26 @@ class Sandbox:
         day = os.path.join(self.codex, "sessions", "2026", "03", "03")
         for name in ("rollout-project", "rollout-other", "rollout-unknown"):
             self.copy("codex/%s.jsonl" % name, os.path.join(day, name + ".jsonl"))
+
+    def install_copilot_cli(self, sql=None):
+        """Build session-store.db from the SQL fixture, or from `sql` when given."""
+        os.makedirs(self.copilot, exist_ok=True)
+        if sql is None:
+            with open(os.path.join(FIXTURES, "copilot-cli", "session-store.sql"), encoding="utf-8") as fh:
+                sql = fh.read()
+        db = sqlite3.connect(os.path.join(self.copilot, "session-store.db"))
+        db.executescript(self.fill(sql))
+        db.commit()
+        db.close()
+
+    def vscode_outfile(self, export):
+        """Point the VS Code `outfile` user setting at `export` (JSONC on purpose)."""
+        settings = os.path.join(self.home, "Library", "Application Support", "Code", "User", "settings.json")
+        os.makedirs(os.path.dirname(settings), exist_ok=True)
+        with open(settings, "w", encoding="utf-8") as fh:
+            fh.write('{\n  // a JSONC file: comments and trailing commas are legal here\n'
+                     '  "github.copilot.chat.otel.exporterType": "file",\n'
+                     '  "github.copilot.chat.otel.outfile": %s,\n}\n' % json.dumps(export))
 
     def apply_env(self):
         self.saved = {k: os.environ.get(k) for k in self.env}
@@ -171,13 +193,8 @@ class CopilotAdapter(AdapterCase):
         self.assertEqual(self.health["copilot_scanned"], 0)
 
     def test_outfile_setting_is_found_in_vscode_user_settings(self):
-        settings = os.path.join(self.box.home, "Library", "Application Support", "Code", "User", "settings.json")
-        os.makedirs(os.path.dirname(settings))
         export = os.path.join(self.box.root, "otel", "copilot.jsonl")
-        with open(settings, "w", encoding="utf-8") as fh:
-            fh.write('{\n  // a JSONC file: comments and trailing commas are legal here\n'
-                     '  "github.copilot.chat.otel.exporterType": "file",\n'
-                     '  "github.copilot.chat.otel.outfile": %s,\n}\n' % json.dumps(export))
+        self.box.vscode_outfile(export)
         self.assertEqual(telemetry.copilot_export_path(), export)
 
     def test_export_found_is_reported_as_unread_not_as_zero(self):
@@ -185,14 +202,69 @@ class CopilotAdapter(AdapterCase):
         os.makedirs(os.path.dirname(export))
         with open(export, "w", encoding="utf-8") as fh:
             fh.write('{"name":"chat"}\n')
-        os.environ["COPILOT_OTEL_FILE_EXPORTER_PATH"] = export
+        self.box.vscode_outfile(export)
         self.assertEqual(telemetry.read_copilot(self.box.project, self.health), [])
         self.assertEqual(self.health["copilot_unparsed"], 1)
         self.assertEqual(self.health["copilot_source_missing"], 0)
 
-    def test_env_var_wins_over_settings(self):
-        os.environ["COPILOT_OTEL_FILE_EXPORTER_PATH"] = "/x/y.jsonl"
-        self.assertEqual(telemetry.copilot_export_path(), "/x/y.jsonl")
+    def test_shared_env_var_is_not_attributed_to_vscode(self):
+        # Copilot CLI honours the same variable: a path there may be the CLI's export.
+        export = os.path.join(self.box.root, "otel", "cli.jsonl")
+        os.makedirs(os.path.dirname(export))
+        open(export, "w").close()
+        os.environ["COPILOT_OTEL_FILE_EXPORTER_PATH"] = export
+        self.assertIsNone(telemetry.copilot_export_path())
+        self.assertEqual(telemetry.read_copilot(self.box.project, self.health), [])
+        self.assertEqual(self.health["copilot_source_missing"], 1)
+
+
+class CopilotCliAdapter(AdapterCase):
+    def test_reads_the_project_session_from_the_usage_table(self):
+        self.box.install_copilot_cli()
+        sessions = telemetry.read_copilot_cli(self.box.project, self.health)
+        self.assertEqual([s.sid for s in sessions], ["cli-session-0001"])
+        row = self.summarize(sessions)["copilot-cli:cli-session-0001"]["row"]
+        self.assertEqual(row["a"], "copilot-cli")
+        self.assertEqual(row["n"], 4)                    # rows 5 and 6 are unreadable
+        self.assertEqual(row["sub"], 1)
+        self.assertEqual(row["turns"], 2)                # distinct main-agent turn indexes
+        self.assertEqual(row["o"], 100 + 50 + 30 + 80)   # output already includes reasoning
+        self.assertEqual(row["f"], (200 + 300) + (100 + 200) + (500 + 0) + (50 + 50))
+        self.assertEqual(row["r"], 1000 + 1500 + 100 + 1900)
+        self.assertEqual(row["ctx0"], 1500)              # input_tokens is the whole context
+        self.assertEqual(row["ctxmax"], 2000)            # main agent only
+        self.assertEqual(row["orient"], (100 + 200 + 300) + (50 + 100 + 200))   # before the apply_patch
+        self.assertEqual(row["models"], ["model-c"])
+        self.assertEqual(row["branches"], ["feat/demo-56"])
+        self.assertEqual(self.health["copilot_cli_scanned"], 2)
+        self.assertEqual(self.health["copilot_cli_no_usage"], 1)
+        self.assertEqual(self.health["copilot_cli_bad_rows"], 1)
+
+    def test_store_with_sessions_of_other_projects_only(self):
+        self.box.install_copilot_cli()
+        elsewhere = os.path.join(self.box.root, "work", "elsewhere")
+        self.assertEqual(telemetry.read_copilot_cli(elsewhere, self.health), [])
+        self.assertEqual(self.health["copilot_cli_scanned"], 2)
+        self.assertEqual(self.health["copilot_cli_source_missing"], 0)
+
+    def test_no_store_on_this_machine(self):
+        self.assertEqual(telemetry.read_copilot_cli(self.box.project, self.health), [])
+        self.assertEqual(self.health["copilot_cli_source_missing"], 1)
+
+    def test_store_from_a_version_without_usage(self):
+        self.box.install_copilot_cli(
+            "CREATE TABLE sessions (id TEXT, cwd TEXT, branch TEXT);"
+            "INSERT INTO sessions VALUES ('old-0001', '{PROJECT}', 'main');")
+        self.assertEqual(telemetry.read_copilot_cli(self.box.project, self.health), [])
+        self.assertEqual(self.health["copilot_cli_no_usage_table"], 1)
+        self.assertEqual(self.health["copilot_cli_scanned"], 1)
+
+    def test_damaged_store_is_reported_not_raised(self):
+        os.makedirs(self.box.copilot)
+        with open(os.path.join(self.box.copilot, "session-store.db"), "w") as fh:
+            fh.write("not a database")
+        self.assertEqual(telemetry.read_copilot_cli(self.box.project, self.health), [])
+        self.assertEqual(self.health["copilot_cli_unreadable"], 1)
 
 
 class EndToEnd(AdapterCase):
@@ -207,8 +279,9 @@ class EndToEnd(AdapterCase):
         self.box.install_claude()
         self.box.install_codex()
         stdout, out = self.run_script()
-        self.assertIn("claude      1 sessions       4 requests", stdout)
-        self.assertIn("codex       1 sessions       2 requests", stdout)
+        self.assertRegex(stdout, r"claude\s+1 sessions\s+4 requests")
+        self.assertRegex(stdout, r"codex\s+1 sessions\s+2 requests")
+        self.assertRegex(stdout, r"copilot-cli\s+no session store on this machine")
         self.assertRegex(stdout, r"copilot\s+no OpenTelemetry file export on this machine")
         self.assertIn("note  claude_dup_lines", stdout)
         self.assertNotIn("copilot_source_missing", stdout)   # said on the copilot line, not as a gap
@@ -224,17 +297,34 @@ class EndToEnd(AdapterCase):
 
     def test_empty_machine(self):
         stdout, _ = self.run_script()
-        self.assertIn("claude      0 sessions", stdout)
+        self.assertRegex(stdout, r"claude\s+0 sessions")
         self.assertRegex(stdout, r"copilot\s+no OpenTelemetry file export on this machine")
 
     def test_export_present_prints_the_unread_line_and_a_note(self):
         export = os.path.join(self.box.root, "otel", "copilot.jsonl")
         os.makedirs(os.path.dirname(export))
         open(export, "w").close()
-        os.environ["COPILOT_OTEL_FILE_EXPORTER_PATH"] = export
+        self.box.vscode_outfile(export)
         stdout, _ = self.run_script()
         self.assertRegex(stdout, r"copilot\s+export found, but this version does not read it yet")
         self.assertIn("note  copilot_unparsed", stdout)
+
+    def test_copilot_cli_session_and_no_private_text(self):
+        self.box.install_copilot_cli()
+        stdout, out = self.run_script()
+        self.assertRegex(stdout, r"copilot-cli\s+1 sessions\s+4 requests")
+        self.assertIn("note  copilot_cli_bad_rows", stdout)
+        self.assertIn("note  copilot_cli_no_usage", stdout)
+        history = os.path.join(os.path.dirname(out), "index.history.json")
+        for path in (out, history):
+            with open(path, encoding="utf-8") as fh:
+                body = fh.read()
+            self.assertNotIn("SECRET", body)          # prompts, responses, summaries, file paths
+        with open(out, encoding="utf-8") as fh:
+            data = json.loads(re.search(r'<script id="data" type="application/json">(.*?)</script>',
+                                        fh.read(), re.S).group(1))
+        self.assertEqual(data["agents"], ["copilot-cli"])
+        self.assertEqual(data["sessions"][0]["a"], "copilot-cli")
 
 
 if __name__ == "__main__":
