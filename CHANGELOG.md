@@ -18,6 +18,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- `scripts/stamp-version.sh` also stamps the README setup prompt, the
+  line that sets the version a new project starts at, and
+  `scripts/validate-catalog.sh` therefore refuses a stale one. The
+  marker is replaced, never inserted: a README without it fails.
+  Repository-only; adopters copy nothing new.
+
 ## [0.4.0] — 2026-11-09
 
 ### Added
