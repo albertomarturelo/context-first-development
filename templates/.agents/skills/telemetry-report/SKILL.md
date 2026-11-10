@@ -3,13 +3,13 @@ name: telemetry-report
 description: "Build the local agent-telemetry dashboard for this project from the session logs coding agents already keep: tokens per day, task, skill and session, and before/after medians around context changes. On request, publish a counters-only monthly report to the cfd-telemetry branch so a central dashboard can read it. Use when asked about agent usage, token consumption, or whether a context change made sessions cheaper."
 argument-hint: "[publish]"
 metadata:
-  cfd-version: "0.3.0"
+  cfd-version: "0.4.0"
   token-budget: "~1,000 (the script runs outside the context; never read it)"
 ---
 
 Run the bundled script. **Do not read `scripts/telemetry.py` or
 `scripts/dashboard.html` into context**: running them costs nothing,
-reading them costs ~15,000 tokens.
+reading them costs ~16,000 tokens.
 
 1. **Build the dashboard:**
 
@@ -57,11 +57,15 @@ keeps its numbers:
 |---|---|---|
 | Claude Code | `~/.claude/projects/` transcripts | Nothing |
 | Codex | `~/.codex/sessions/` rollouts | Nothing |
+| Copilot CLI | `~/.copilot/session-store.db`, its usage table only | Nothing. Versions that record no usage (the summary says so) need a CLI update; their earlier sessions stay uncounted. Never open the store or `session-state/` yourself: they hold prompts and responses. |
 | Copilot (VS Code) | OpenTelemetry file export | Ask the developer to set three VS Code user settings (never change them yourself): `github.copilot.chat.otel.enabled` to `true`, `github.copilot.chat.otel.exporterType` to `file`, `github.copilot.chat.otel.outfile` to an absolute path outside any repo; reload the window; run one short agent-mode session in a git repo with a GitHub remote, one turn editing a file; report the outfile path back. **The script finds that export and says whether one exists, but does not read it yet**: this starts the history. |
 | Gemini CLI | Telemetry `outfile` in `.gemini/settings.json` | No adapter yet |
 
 Any agent can run this skill and report on every agent's sessions:
 the script reads logs, it does not ask the running agent for anything.
+Copilot CLI and Copilot Chat are separate agents (`copilot-cli`,
+`copilot`); `COPILOT_OTEL_FILE_EXPORTER_PATH` is shared by both, so the
+script never attributes an export to Copilot Chat through it.
 
 ## What a published report contains
 

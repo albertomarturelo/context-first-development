@@ -3,7 +3,7 @@ name: project-init
 description: "One-time bootstrap of CFD in an existing project: infer architecture/stack/conventions from structure and dependency files, then scaffold docs/ and CLAUDE.md without reading source. Invoke explicitly once, when adopting CFD in an existing project."
 disable-model-invocation: true
 metadata:
-  cfd-version: "0.3.0"
+  cfd-version: "0.4.0"
   token-budget: "<10,000 total (hard cap)"
 ---
 

@@ -3,7 +3,7 @@ name: session-start
 description: "Orient at the start of a session: read docs/CURRENT_STATUS.md and the decisions index in ~1k tokens, state the focus, and auto-load an in-progress issue if one is referenced. Invoke explicitly at the start of every working session."
 disable-model-invocation: true
 metadata:
-  cfd-version: "0.3.0"
+  cfd-version: "0.4.0"
   token-budget: "~500–1,500 baseline; +1,000–2,000 if an in-progress issue is auto-loaded"
 ---
 

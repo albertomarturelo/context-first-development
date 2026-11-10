@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# CFD version: 0.3.0
+# CFD version: 0.4.0
 # PreToolUse(Bash) hook: enforce the session-close ritual at the moment
 # it matters — commit time — instead of relying on discipline.
 #

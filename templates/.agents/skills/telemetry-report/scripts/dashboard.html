@@ -12,7 +12,7 @@
   color-scheme: light;
   --bg: #E7E8EC; --surface: #F2F3F6; --surface-2: #FBFBFD; --border: #CBCFD8;
   --grid: #DADDE4; --text: #171921; --muted: #565B68; --accent: #A8690F;
-  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #8a5cd6;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 }
@@ -21,7 +21,7 @@
     color-scheme: dark;
     --bg: #0F1118; --surface: #171A22; --surface-2: #1E222D; --border: #2B303C;
     --grid: #242934; --text: #E9EAF0; --muted: #969CAB; --accent: #F0A93E;
-    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #9a72e8;
   }
 }
 * { box-sizing: border-box; }
@@ -152,7 +152,8 @@ footer p { margin: 4px 0; max-width: 90ch; }
 (function () {
   const D = JSON.parse(document.getElementById('data').textContent);
   const AGENTS = { claude: ['Claude Code', 'var(--s1)'], codex: ['Codex', 'var(--s2)'],
-    copilot: ['Copilot', 'var(--s3)'], gemini: ['Gemini CLI', 'var(--s4)'] };
+    'copilot-cli': ['Copilot CLI', 'var(--s5)'], copilot: ['Copilot Chat', 'var(--s3)'],
+    gemini: ['Gemini CLI', 'var(--s4)'] };
   const METRICS = [['o', 'Output'], ['f', 'Fresh input'], ['r', 'Cache read'], ['n', 'Requests']];
   const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const WINDOW = 14, PAGE = 12;
@@ -475,15 +476,27 @@ footer p { margin: 4px 0; max-width: 90ch; }
       'Codex: ' + n('codex_files') + ' session files read, ' + n('codex_bad_lines') + ' unreadable lines, ' +
         n('codex_unknown_files') + ' files in an unknown format, ' + n('codex_zst_skipped') +
         ' compressed sessions skipped' + (h.codex_zst_skipped ? ' (install zstd to read them).' : '.'),
+      h.copilot_cli_source_missing
+        ? 'Copilot CLI: no session store on this machine (~/.copilot/session-store.db), so its sessions are not counted.'
+        : h.copilot_cli_no_usage_table && !D.agents.includes('copilot-cli')
+        ? 'Copilot CLI: a session store exists, but this version of the CLI records no token usage. Update the CLI; ' +
+          'sessions from before the update stay uncounted.'
+        : h.copilot_cli_unreadable && !D.agents.includes('copilot-cli')
+        ? 'Copilot CLI: a session store exists, but it could not be read (locked, damaged, or a format change).'
+        : !D.agents.includes('copilot-cli') && h.copilot_cli_scanned
+          ? 'Copilot CLI: ' + n('copilot_cli_scanned') + ' sessions on this machine, none for this project.'
+          : 'Copilot CLI: ' + n('copilot_cli_scanned') + ' sessions in the store, ' + n('copilot_cli_bad_rows') +
+            ' unreadable rows, ' + n('copilot_cli_no_usage') + ' requests without token counts. Its ' +
+            'OpenTelemetry export is not read, so no session counts twice.',
       h.copilot_source_missing
-        ? 'Copilot: no OpenTelemetry file export on this machine. Copilot Chat in VS Code writes one once ' +
+        ? 'Copilot Chat: no OpenTelemetry file export on this machine. Copilot Chat in VS Code writes one once ' +
           'github.copilot.chat.otel.outfile is set (see SKILL.md); until then its sessions are not counted.'
         : h.copilot_unparsed && !D.agents.includes('copilot')
-        ? 'Copilot: an OpenTelemetry file export exists on this machine, but this version of the script does not ' +
+        ? 'Copilot Chat: an OpenTelemetry file export exists on this machine, but this version of the script does not ' +
           'read it yet, so its sessions are not counted.'
         : !D.agents.includes('copilot') && h.copilot_scanned
-          ? 'Copilot: export read, ' + n('copilot_scanned') + ' sessions on this machine, none for this project.'
-          : 'Copilot: ' + n('copilot_sessions') + ' sessions read from the export, ' + n('copilot_bad_lines') +
+          ? 'Copilot Chat: export read, ' + n('copilot_scanned') + ' sessions on this machine, none for this project.'
+          : 'Copilot Chat: ' + n('copilot_sessions') + ' sessions read from the export, ' + n('copilot_bad_lines') +
             ' unreadable lines, ' + n('copilot_no_usage') + ' requests without token counts.',
       full(h.history_only_sessions || 0) + ' sessions come from the local history file only: the agent has already deleted their logs. ' +
         'Agents prune old logs (Claude Code after 30 days by default), so run this at least monthly.',
