@@ -1,15 +1,15 @@
 ---
 name: telemetry-report
 description: "Build the local agent-telemetry dashboard for this project from the session logs coding agents already keep: tokens per day, task, skill and session, and before/after medians around context changes. On request, publish a counters-only monthly report to the cfd-telemetry branch so a central dashboard can read it. Use when asked about agent usage, token consumption, or whether a context change made sessions cheaper."
-argument-hint: "[publish]"
+argument-hint: "[publish | team]"
 metadata:
   cfd-version: "0.4.0"
-  token-budget: "~1,000 (the script runs outside the context; never read it)"
+  token-budget: "~1,500 (the scripts run outside the context; never read them)"
 ---
 
-Run the bundled script. **Do not read `scripts/telemetry.py` or
-`scripts/dashboard.html` into context**: running them costs nothing,
-reading them costs ~16,000 tokens.
+Run the bundled scripts. **Do not read `scripts/telemetry.py`,
+`scripts/central.py` or `scripts/dashboard.html` into context**: running
+them costs nothing, reading them costs ~21,000 tokens.
 
 1. **Build the dashboard:**
 
@@ -46,6 +46,21 @@ reading them costs ~16,000 tokens.
    when the forge reports the repo as public; when it cannot tell (it
    prints a warning), ask the user and do not push until they confirm
    the repo is private. Do not pass `--allow-public` on your own.
+
+5. **Team view, only when the user asks** (`/telemetry-report team`):
+
+   ```bash
+   python3 .agents/skills/telemetry-report/scripts/central.py <repo> [<repo> ...]
+   ```
+
+   Each `<repo>` is a local clone or a git URL whose `cfd-telemetry`
+   branch holds published reports. It writes `.cfd/team/index.html`:
+   the same dashboard with contributor and repository filters, and a
+   footer naming who has not reported in `--stale-days` (14). The page
+   names people: keep it out of git and do not paste per-person figures
+   into issues or PRs. Contributors appear alphabetically; never order
+   or compare them by consumption
+   ([agent-telemetry-from-local-logs](https://github.com/albertomarturelo/context-first-development/blob/main/adrs/ai-workflow/agent-telemetry-from-local-logs.md), rule 7).
 
 ## What the data source is, per agent
 
