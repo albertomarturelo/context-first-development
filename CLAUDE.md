@@ -74,6 +74,9 @@ ADR-003) and a CI workflow enforces it:
 
 README diagrams in `docs/diagrams/` are generated: edit
 `scripts/build-diagrams.py` and run it, never hand-edit the SVGs.
+Telemetry screenshots in `docs/screenshots/` are generated the same
+way by `scripts/build-telemetry-screenshots.py` (sample data, headless
+Chrome); re-run it when `dashboard.html` changes.
 
 Run locally: `bash scripts/validate-catalog.sh`. CI:
 `.github/workflows/validate-catalog.yml` (push to `main` + PRs).
