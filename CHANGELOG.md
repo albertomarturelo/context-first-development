@@ -41,6 +41,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   dated price table the team owns, prices each token type and tier on
   its own, leaves unknown models unpriced instead of at $0, and shows
   billed units (credits, premium requests) in their own unit.
+- Screenshots of the telemetry dashboard in the README and the
+  telemetry quickstart (overview, context changes, team view; light
+  and dark). `scripts/build-telemetry-screenshots.py` renders them
+  from the real `dashboard.html` over fictional sample data with
+  headless Chrome. Repository-only; adopters copy nothing new.
 
 ### Changed
 
